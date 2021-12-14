@@ -2,7 +2,7 @@
 @import 'variables';
 @import 'keyframes';
 
-
+/* reset */
 *,
 *::before,
 *::after {
@@ -47,6 +47,8 @@ ul{
     list-style: none;
 }
 
+/* general */
+
 ::selection{
     color: rgba(95, 0, 185, .8);;
     background: rgba(117, 255, 186, .8);
@@ -72,6 +74,8 @@ p{
     font-size: calc(1rem + .2vw + .2vh);
     font-weight: 200;
 }
+
+/* header */
 
 .header{
     display: flex; 
@@ -186,12 +190,16 @@ p{
     }
 }
 
+/* main */
+
 .main{
     display: flex;
     flex-direction: column;
     position: relative;
     width: 100%;
 }
+
+/* hero page */
 
 .landingVid{
     position: absolute;
@@ -222,7 +230,6 @@ p{
 }
 
 .heroPage{
-    /* background: $color-fondo; */
     margin-top: 4rem;
     padding: $padding-general;
     color: white;
@@ -231,7 +238,6 @@ p{
     flex-flow: column wrap;
     justify-content: start;
     align-items: start;
-    transition: 200ms;
     position: relative;
 
     h1{
@@ -268,7 +274,7 @@ p{
         background: transparent;
         cursor: pointer;
         perspective: 1000px;
-        transition: 200ms;
+        transition: 200ms !important; /*overrides aos transition*/
         
         &--inner{
             width: 100%;
@@ -356,6 +362,8 @@ p{
     }
 }
 
+/* sections */
+
 .sectionTitle{
     display: flex;
     justify-content: center;
@@ -396,11 +404,15 @@ section{
     color: $color-segundo;
 }
 
+/* section about */
+
 .about{
     background: linear-gradient(45deg, $color-primero 40%, $color-segundo);
     padding: $padding-general;
     min-height: calc(50vh - 2rem);
 }
+
+/* section skills */
 
 .skills{
     background: $color-fondo;
@@ -438,6 +450,8 @@ section{
         }
     }
 }
+
+/* section works */
 
 .works{
     padding: $padding-general;
@@ -495,6 +509,8 @@ section{
         }
     }
 }
+
+/* section contact */
 
 .contact{
     background: $color-fondo;
@@ -672,6 +688,8 @@ section{
         }
     }
 }
+
+/* footer */
 
 .footer{
     padding: $padding-general;
