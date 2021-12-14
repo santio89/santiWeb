@@ -1,0 +1,146 @@
+
+@media (min-width: 900px){
+    .header{      
+        &__burgerMenu{
+            display: none;
+            &:not(:checked) ~ .nav .nav__anchor{
+                animation: unset;
+                visibility: visible;
+            }
+        }
+
+        &__burgerMenu:checked ~ .nav{
+            height: unset;
+            transition: unset;
+        }
+    
+        &__burgerIcon{
+            display: none;
+        }
+    }
+    
+    .nav{
+        position: unset;
+        width: unset;
+        margin-left: auto;
+        display: flex;
+        justify-content: end;
+        align-items: end;
+        background: unset;
+        height: unset;
+        overflow: hidden;
+        box-shadow: unset;
+
+        &__ul{
+            display: flex;
+            flex-flow: row wrap;
+            gap: 1rem;
+            
+            &__li{
+                :hover, :focus{
+                    color: $color-segundo;               
+                }
+            }
+        }
+    }
+
+    .heroPage, .about, .skills, .works, .contact{
+        $padding-desktop: 8rem;
+        padding-left: $padding-desktop;
+        padding-right: $padding-desktop;
+    }
+
+    .heroPage{
+        &__profilePicWrapper{
+            right: calc(4rem + 8px);
+        }
+      
+    }
+
+    .header, .footer{
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+
+    .skills{
+        &__wrapper{
+            grid-template-columns: repeat(4, 1fr);
+            
+            &__skill{
+                max-width: 200px;
+            }
+        }
+    }
+
+    .contact{
+        &__form{
+            width: 44%;
+        }
+        &__info{
+            width: 44%;
+        }
+    }
+    
+}
+
+@media (min-width: 1800px){
+    .skills{
+        &__wrapper{
+            grid-template-columns: repeat(8, 1fr);
+
+            &__skill{
+                max-width: 400px;
+            }
+        }
+    }
+}
+
+@media (min-width: 2000px){
+    .heroPage, .about, .skills, .works, .contact{
+        $padding-desktop: 16rem;
+        padding-left: $padding-desktop;
+        padding-right: $padding-desktop;
+    }
+
+    .heroPage{
+        &__profilePicWrapper{
+            right: calc(8rem + 8px);
+        }
+      
+    }
+
+    .header, .footer{
+        padding-left: 8rem;
+        padding-right: 8rem;
+    }
+}
+
+@media (min-width: 3200px){
+    .heroPage, .about, .skills, .works, .contact{
+        $padding-desktop: 32rem;
+        padding-left: $padding-desktop;
+        padding-right: $padding-desktop;
+    }
+
+    .heroPage{
+        &__profilePicWrapper{
+            right: calc(16rem + 8px);
+        }
+      
+    }
+
+    .header, .footer{
+        padding-left: 16rem;
+        padding-right: 16rem;
+    }
+}
+
+
+@media all and (pointer: coarse){
+.heroPage__profilePicWrapper{
+    bottom: 12%;
+}
+.arrowBounce{
+    bottom: 10%;
+}
+}
