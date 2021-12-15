@@ -599,8 +599,15 @@ section{
             opacity: 0;
 
             &:focus + .contact__form__reset{
-                text-shadow: 0 0 .2rem red;
-                outline: 2px solid red;
+                text-shadow: 0 0 .2rem $color-cuarto;
+            }
+
+            &:focus + .contact__form__reset::before{
+                transform: scaleY(0);              
+            }
+
+            &:focus + .contact__form__reset::after{
+                transform: scaleX(0);              
             }
         }
 
@@ -611,7 +618,14 @@ section{
 
             &:focus + .contact__form__submit{
                 text-shadow: 0 0 .2rem $color-segundo;
-                outline: 2px solid $color-segundo;
+            }
+
+            &:focus + .contact__form__submit::before{
+                transform: scaleY(0);
+            }
+
+            &:focus + .contact__form__submit::after{
+                transform: scaleX(0);
             }
         }
 
@@ -622,15 +636,52 @@ section{
             font-size: 1.1em;
             color: $color-segundo;
             text-align: center;
-            border-radius: 1em;
+            position: relative;
+            outline: 2px solid $color-segundo; 
 
+            span{
+                position: relative;
+                z-index: 1;
+            }
+            
+            &::before{
+                content: '';
+                position: absolute;
+                top: 6px;
+                left: -10px;
+                width: calc(100% + 20px);
+                height: calc(100% - 12px);
+                background: $color-fondo;
+                transition: 400ms;
+                transform: scaleY(1);
+            }
+
+            &::after{
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: 6px;
+                width: calc(100% - 12px);
+                height: calc(100% + 20px);
+                background: $color-fondo;
+                transition: 400ms;
+                transform: scaleX(1);
+            }
+
+            &:hover::after{
+                transform: scaleX(0);  
+            }
+
+            &:hover::before{
+                transform: scaleY(0);        
+            }  
+            
             &:hover{
                 text-shadow: 0 0 .2rem $color-segundo;  
-                outline: 2px solid $color-segundo;
             }
 
             &:active{
-                box-shadow: 0 0 .5rem 0 $color-segundo;
+                box-shadow: 0 0 .4rem 0 $color-segundo;
             }  
         }
 
@@ -638,19 +689,57 @@ section{
             width: 25%;
             min-width: 90px;
             cursor: pointer;
-            color: red;
             font-size: 1.1em;
+            color: $color-cuarto;
             text-align: center;
-            border-radius: 1em;
+            position: relative;
+            outline: 2px solid $color-cuarto; 
 
+            span{
+                position: relative;
+                z-index: 1;
+            }
+            
+            &::before{
+                content: '';
+                position: absolute;
+                top: 6px;
+                left: -10px;
+                width: calc(100% + 20px);
+                height: calc(100% - 12px);
+                background: $color-fondo;
+                transition: 400ms;
+                transform: scaleY(1);
+            }
+
+            &::after{
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: 6px;
+                width: calc(100% - 12px);
+                height: calc(100% + 20px);
+                background: $color-fondo;
+                transition: 400ms;
+                transform: scaleX(1);
+            }
+
+            &:hover::after{
+                transform: scaleX(0);  
+            }
+
+            &:hover::before{
+                transform: scaleY(0);        
+            }  
+            
             &:hover{
-                text-shadow: 0 0 .2rem red;
-                outline: 2px solid red;             
+                color: $color-cuarto;
+                text-shadow: 0 0 .2rem $color-cuarto;  
             }
 
             &:active{
-                box-shadow: 0 0 .5rem 0 red;
-            }    
+                box-shadow: 0 0 .4rem 0 $color-cuarto;
+            }  
         }
 
         &__send{
@@ -658,6 +747,7 @@ section{
             flex-flow: row wrap;
             justify-content: end;
             align-items: center;
+            gap: 1em;
         }
         
     }

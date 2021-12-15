@@ -969,8 +969,17 @@ section:hover .hr__inside {
 }
 
 .contact__form__resetInput:focus + .contact__form__reset {
-  text-shadow: 0 0 .2rem red;
-  outline: 2px solid red;
+  text-shadow: 0 0 0.2rem red;
+}
+
+.contact__form__resetInput:focus + .contact__form__reset::before {
+  -webkit-transform: scaleY(0);
+          transform: scaleY(0);
+}
+
+.contact__form__resetInput:focus + .contact__form__reset::after {
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
 }
 
 .contact__form__submitInput {
@@ -981,7 +990,16 @@ section:hover .hr__inside {
 
 .contact__form__submitInput:focus + .contact__form__submit {
   text-shadow: 0 0 0.2rem #75ffba;
-  outline: 2px solid #75ffba;
+}
+
+.contact__form__submitInput:focus + .contact__form__submit::before {
+  -webkit-transform: scaleY(0);
+          transform: scaleY(0);
+}
+
+.contact__form__submitInput:focus + .contact__form__submit::after {
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
 }
 
 .contact__form__submit {
@@ -991,37 +1009,124 @@ section:hover .hr__inside {
   font-size: 1.1em;
   color: #75ffba;
   text-align: center;
-  border-radius: 1em;
+  position: relative;
+  outline: 2px solid #75ffba;
+}
+
+.contact__form__submit span {
+  position: relative;
+  z-index: 1;
+}
+
+.contact__form__submit::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% - 12px);
+  background: #1e1e1e;
+  -webkit-transition: 400ms;
+  transition: 400ms;
+  -webkit-transform: scaleY(1);
+          transform: scaleY(1);
+}
+
+.contact__form__submit::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% + 20px);
+  background: #1e1e1e;
+  -webkit-transition: 400ms;
+  transition: 400ms;
+  -webkit-transform: scaleX(1);
+          transform: scaleX(1);
+}
+
+.contact__form__submit:hover::after {
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
+}
+
+.contact__form__submit:hover::before {
+  -webkit-transform: scaleY(0);
+          transform: scaleY(0);
 }
 
 .contact__form__submit:hover {
   text-shadow: 0 0 0.2rem #75ffba;
-  outline: 2px solid #75ffba;
 }
 
 .contact__form__submit:active {
-  -webkit-box-shadow: 0 0 0.5rem 0 #75ffba;
-          box-shadow: 0 0 0.5rem 0 #75ffba;
+  -webkit-box-shadow: 0 0 0.4rem 0 #75ffba;
+          box-shadow: 0 0 0.4rem 0 #75ffba;
 }
 
 .contact__form__reset {
   width: 25%;
   min-width: 90px;
   cursor: pointer;
-  color: red;
   font-size: 1.1em;
+  color: red;
   text-align: center;
-  border-radius: 1em;
-}
-
-.contact__form__reset:hover {
-  text-shadow: 0 0 .2rem red;
+  position: relative;
   outline: 2px solid red;
 }
 
+.contact__form__reset span {
+  position: relative;
+  z-index: 1;
+}
+
+.contact__form__reset::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% - 12px);
+  background: #1e1e1e;
+  -webkit-transition: 400ms;
+  transition: 400ms;
+  -webkit-transform: scaleY(1);
+          transform: scaleY(1);
+}
+
+.contact__form__reset::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% + 20px);
+  background: #1e1e1e;
+  -webkit-transition: 400ms;
+  transition: 400ms;
+  -webkit-transform: scaleX(1);
+          transform: scaleX(1);
+}
+
+.contact__form__reset:hover::after {
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
+}
+
+.contact__form__reset:hover::before {
+  -webkit-transform: scaleY(0);
+          transform: scaleY(0);
+}
+
+.contact__form__reset:hover {
+  color: red;
+  text-shadow: 0 0 0.2rem red;
+}
+
 .contact__form__reset:active {
-  -webkit-box-shadow: 0 0 .5rem 0 red;
-          box-shadow: 0 0 .5rem 0 red;
+  -webkit-box-shadow: 0 0 0.4rem 0 red;
+          box-shadow: 0 0 0.4rem 0 red;
 }
 
 .contact__form__send {
@@ -1038,6 +1143,7 @@ section:hover .hr__inside {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  gap: 1em;
 }
 
 .contact__info {
