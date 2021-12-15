@@ -718,7 +718,7 @@ section{
             padding: .04em;
             border: 2px solid $color-cuarto;
             border-style: dashed;
-            
+
             span{
                 position: relative;
                 z-index: 1;
@@ -753,7 +753,7 @@ section{
             }
 
             &:hover::before{
-                transform: scaleY(0);        
+                transform: scaleY(0);       
             }  
             
             &:hover{
