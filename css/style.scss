@@ -524,11 +524,11 @@ section{
     
     &__wrapper{
         display: flex;
-        flex-flow: row wrap;
+        flex-flow: column wrap;
         justify-content: center;
-        align-items: start;
+        align-items: center;
         width: 100%;
-        gap: calc(1.2rem + .4vw + .4vh);
+        gap: calc(.8rem + .4vw + .4vh);
     }
 
     &__form{
@@ -541,8 +541,16 @@ section{
         margin-bottom: 2rem;
         font-size: calc(1rem + .2vw + .2vh);
         font-weight: 200;
-        gap: calc(.8rem + .2vw + .2vh);
+        gap: calc(.4rem + .4vw + .4vh);
         text-align: right;
+
+        &__fields{
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: calc(.2rem + .2vw + .2vh);
+        }
         
         &__title{
             text-align: center;
@@ -777,7 +785,7 @@ section{
         align-items: center;
         width: 90%;
         min-width: 200px;
-        gap: calc(.8rem + .2vw + .2vh);
+        gap: calc(.4rem + .4vw + .4vh);
         margin-bottom: 2rem;
         
         &__details{
@@ -785,7 +793,7 @@ section{
             flex-flow: column wrap;
             justify-content: center;
             align-items: stretch;
-            gap: calc(.8rem + .2vw + .2vh);
+            gap: calc(.2rem + .2vw + .2vh);
             
             p{
                 font-weight: 200;               

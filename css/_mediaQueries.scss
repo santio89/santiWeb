@@ -72,6 +72,13 @@
     }
 
     .contact{
+        &__wrapper{
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+            align-items: start;
+            gap: calc(1.2rem + .4vw + .4vh);
+        }
         &__form{
             width: 44%;
         }

@@ -848,18 +848,18 @@ section:hover .hr__inside {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-flow: row wrap;
-          flex-flow: row wrap;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 100%;
-  gap: calc(1.2rem + .4vw + .4vh);
+  gap: calc(.8rem + .4vw + .4vh);
 }
 
 .contact__form {
@@ -881,8 +881,25 @@ section:hover .hr__inside {
   margin-bottom: 2rem;
   font-size: calc(1rem + .2vw + .2vh);
   font-weight: 200;
-  gap: calc(.8rem + .2vw + .2vh);
+  gap: calc(.4rem + .4vw + .4vh);
   text-align: right;
+}
+
+.contact__form__fields {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  gap: calc(.2rem + .2vw + .2vh);
 }
 
 .contact__form__title {
@@ -1180,7 +1197,7 @@ section:hover .hr__inside {
           align-items: center;
   width: 90%;
   min-width: 200px;
-  gap: calc(.8rem + .2vw + .2vh);
+  gap: calc(.4rem + .4vw + .4vh);
   margin-bottom: 2rem;
 }
 
@@ -1198,7 +1215,7 @@ section:hover .hr__inside {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  gap: calc(.8rem + .2vw + .2vh);
+  gap: calc(.2rem + .2vw + .2vh);
 }
 
 .contact__info__details p {
@@ -1410,6 +1427,22 @@ section:hover .hr__inside {
   }
   .skills__wrapper__skill {
     max-width: 200px;
+  }
+  .contact__wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: start;
+    gap: calc(1.2rem + .4vw + .4vh);
   }
   .contact__form {
     width: 44%;
