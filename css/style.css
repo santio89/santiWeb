@@ -1053,8 +1053,8 @@ section:hover .hr__inside {
   width: calc(100% + 20px);
   height: calc(100% - 12px);
   background: #1e1e1e;
-  -webkit-transition: 400ms;
-  transition: 400ms;
+  -webkit-transition: 200ms;
+  transition: 200ms;
   -webkit-transform: scaleY(1);
           transform: scaleY(1);
 }
@@ -1067,8 +1067,8 @@ section:hover .hr__inside {
   width: calc(100% - 12px);
   height: calc(100% + 20px);
   background: #1e1e1e;
-  -webkit-transition: 400ms;
-  transition: 400ms;
+  -webkit-transition: 200ms;
+  transition: 200ms;
   -webkit-transform: scaleX(1);
           transform: scaleX(1);
 }
@@ -1117,8 +1117,8 @@ section:hover .hr__inside {
   width: calc(100% + 20px);
   height: calc(100% - 12px);
   background: #1e1e1e;
-  -webkit-transition: 400ms;
-  transition: 400ms;
+  -webkit-transition: 200ms;
+  transition: 200ms;
   -webkit-transform: scaleY(1);
           transform: scaleY(1);
 }
@@ -1131,8 +1131,8 @@ section:hover .hr__inside {
   width: calc(100% - 12px);
   height: calc(100% + 20px);
   background: #1e1e1e;
-  -webkit-transition: 400ms;
-  transition: 400ms;
+  -webkit-transition: 200ms;
+  transition: 200ms;
   -webkit-transform: scaleX(1);
           transform: scaleX(1);
 }

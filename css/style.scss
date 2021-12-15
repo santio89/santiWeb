@@ -670,7 +670,7 @@ section{
                 width: calc(100% + 20px);
                 height: calc(100% - 12px);
                 background: $color-fondo;
-                transition: 400ms;
+                transition: 200ms;
                 transform: scaleY(1);
             }
 
@@ -682,7 +682,7 @@ section{
                 width: calc(100% - 12px);
                 height: calc(100% + 20px);
                 background: $color-fondo;
-                transition: 400ms;
+                transition: 200ms;
                 transform: scaleX(1);
             }
 
@@ -727,7 +727,7 @@ section{
                 width: calc(100% + 20px);
                 height: calc(100% - 12px);
                 background: $color-fondo;
-                transition: 400ms;
+                transition: 200ms;
                 transform: scaleY(1);
             }
 
@@ -739,7 +739,7 @@ section{
                 width: calc(100% - 12px);
                 height: calc(100% + 20px);
                 background: $color-fondo;
-                transition: 400ms;
+                transition: 200ms;
                 transform: scaleX(1);
             }
 
