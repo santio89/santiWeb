@@ -1010,7 +1010,7 @@ section:hover .hr__inside {
   color: #75ffba;
   text-align: center;
   position: relative;
-  outline: 2px solid #75ffba;
+  border: 2px solid #75ffba;
 }
 
 .contact__form__submit span {
@@ -1073,7 +1073,7 @@ section:hover .hr__inside {
   color: red;
   text-align: center;
   position: relative;
-  outline: 2px solid red;
+  border: 2px solid red;
 }
 
 .contact__form__reset span {
