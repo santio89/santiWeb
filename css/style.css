@@ -986,11 +986,12 @@ section:hover .hr__inside {
 
 .contact__form__submit {
   width: 25%;
+  min-width: 80px;
   cursor: pointer;
   font-size: 1.1em;
   color: #75ffba;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 1em;
 }
 
 .contact__form__submit:hover {
@@ -1005,11 +1006,12 @@ section:hover .hr__inside {
 
 .contact__form__reset {
   width: 25%;
+  min-width: 80px;
   cursor: pointer;
   color: red;
-  text-align: center;
-  border-radius: 4px;
   font-size: 1.1em;
+  text-align: center;
+  border-radius: 1em;
 }
 
 .contact__form__reset:hover {
@@ -1148,9 +1150,10 @@ section:hover .hr__inside {
   -webkit-box-direction: normal;
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+  gap: .5em;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
