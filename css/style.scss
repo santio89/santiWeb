@@ -195,6 +195,8 @@ p{
 .main{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: relative;
     width: 100%;
 }
@@ -394,6 +396,7 @@ p{
 }
 
 section{
+    width: 100%;
     &:hover .hr__inside{
         width: calc(100% + 1px);
         transition: width 2000ms;
@@ -656,6 +659,7 @@ section{
             position: relative;
             padding: .04em;
             border: 2px solid $color-segundo; 
+            border-style: dashed;
 
             span{
                 position: relative;
@@ -712,7 +716,8 @@ section{
             text-align: center;
             position: relative;
             padding: .04em;
-            border: 2px solid $color-cuarto; 
+            border: 2px solid $color-cuarto;
+            border-style: dashed;
             
             span{
                 position: relative;

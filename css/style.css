@@ -431,6 +431,12 @@ p {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   position: relative;
   width: 100%;
 }
@@ -666,6 +672,10 @@ p {
 .sectionTitle .hr--backwards {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
+}
+
+section {
+  width: 100%;
 }
 
 section:hover .hr__inside {
@@ -1038,6 +1048,7 @@ section:hover .hr__inside {
   position: relative;
   padding: .04em;
   border: 2px solid #75ffba;
+  border-style: dashed;
 }
 
 .contact__form__submit span {
@@ -1102,6 +1113,7 @@ section:hover .hr__inside {
   position: relative;
   padding: .04em;
   border: 2px solid white;
+  border-style: dashed;
 }
 
 .contact__form__reset span {
