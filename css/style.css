@@ -886,6 +886,8 @@ section:hover .hr__inside {
 
 .contact__form__honeypot {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 0;
   height: 0;
   opacity: 0;
