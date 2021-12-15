@@ -54,7 +54,6 @@
         &__profilePicWrapper{
             right: calc(4rem + 8px);
         }
-      
     }
 
     .header, .footer{
@@ -106,7 +105,6 @@
         &__profilePicWrapper{
             right: calc(8rem + 8px);
         }
-      
     }
 
     .header, .footer{
@@ -117,21 +115,39 @@
 
 @media (min-width: 3200px){
     .heroPage, .about, .skills, .works, .contact{
-        $padding-desktop: 32rem;
+        $padding-desktop: 36rem;
         padding-left: $padding-desktop;
         padding-right: $padding-desktop;
     }
 
     .heroPage{
         &__profilePicWrapper{
-            right: calc(16rem + 8px);
+            right: calc(18rem + 8px);
         }
-      
     }
 
     .header, .footer{
-        padding-left: 16rem;
-        padding-right: 16rem;
+        padding-left: 18rem;
+        padding-right: 18rem;
+    }
+}
+
+@media (min-width: 4000px){
+    .heroPage, .about, .skills, .works, .contact{
+        $padding-desktop: 40rem;
+        padding-left: $padding-desktop;
+        padding-right: $padding-desktop;
+    }
+
+    .heroPage{
+        &__profilePicWrapper{
+            right: calc(20rem + 8px);
+        }
+    }
+
+    .header, .footer{
+        padding-left: 20rem;
+        padding-right: 20rem;
     }
 }
 

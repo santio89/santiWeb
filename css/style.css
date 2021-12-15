@@ -1445,15 +1445,29 @@ section:hover .hr__inside {
 
 @media (min-width: 3200px) {
   .heroPage, .about, .skills, .works, .contact {
-    padding-left: 32rem;
-    padding-right: 32rem;
+    padding-left: 36rem;
+    padding-right: 36rem;
   }
   .heroPage__profilePicWrapper {
-    right: calc(16rem + 8px);
+    right: calc(18rem + 8px);
   }
   .header, .footer {
-    padding-left: 16rem;
-    padding-right: 16rem;
+    padding-left: 18rem;
+    padding-right: 18rem;
+  }
+}
+
+@media (min-width: 4000px) {
+  .heroPage, .about, .skills, .works, .contact {
+    padding-left: 40rem;
+    padding-right: 40rem;
+  }
+  .heroPage__profilePicWrapper {
+    right: calc(20rem + 8px);
+  }
+  .header, .footer {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 }
 
