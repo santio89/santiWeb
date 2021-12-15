@@ -176,15 +176,6 @@
   }
 }
 
-/* @keyframes hueRotate{
-  0%{
-    filter: hue-rotate(0deg);
-  }
-
-  100%{
-    filter: hue-rotate(60deg)
-  }
-} */
 /* reset */
 *,
 *::before,
@@ -287,7 +278,6 @@ p {
   position: fixed;
   width: 100%;
   background: #1e1e1e;
-  font-size: 2rem;
   padding: .5rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -305,6 +295,7 @@ p {
   font-weight: 600;
   outline: none;
   font-style: italic;
+  font-size: 2rem;
 }
 
 .header__logo:hover, .header__logo:focus {
@@ -354,6 +345,10 @@ p {
   transition: transform 200ms;
   transition: transform 200ms, -webkit-transform 200ms;
   cursor: pointer;
+}
+
+.header__burgerIcon__icon {
+  font-size: 2rem;
 }
 
 .header__burgerIcon:hover, .header__burgerIcon:focus {
@@ -1393,7 +1388,7 @@ section:hover .hr__inside {
     -webkit-box-direction: normal;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
-    gap: 1rem;
+    gap: .7em;
   }
   .nav__ul__li :hover, .nav__ul__li :focus {
     color: #75ffba;

@@ -85,7 +85,6 @@ p{
     position: fixed;
     width: 100%;
     background: $color-fondo;
-    font-size: 2rem;
     padding: .5rem;
     padding-left: $padding-general;
     padding-right: $padding-general;
@@ -99,7 +98,8 @@ p{
         font-weight: 600;
         outline: none;
         font-style: italic;
-       
+        font-size: 2rem;
+
         &:hover, &:focus{
             color: $color-primero;
             transition: 200ms;
@@ -138,6 +138,10 @@ p{
         text-shadow: 0 0 .4rem $color-primero;
         transition: transform 200ms;
         cursor: pointer;
+
+        &__icon{
+            font-size: 2rem;
+        }
 
         &:hover, &:focus{
             color: $color-primero;
