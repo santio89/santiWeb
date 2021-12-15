@@ -986,7 +986,7 @@ section:hover .hr__inside {
 
 .contact__form__submit {
   width: 25%;
-  min-width: 80px;
+  min-width: 88px;
   cursor: pointer;
   font-size: 1.1em;
   color: #75ffba;
@@ -1006,7 +1006,7 @@ section:hover .hr__inside {
 
 .contact__form__reset {
   width: 25%;
-  min-width: 80px;
+  min-width: 88px;
   cursor: pointer;
   color: red;
   font-size: 1.1em;
