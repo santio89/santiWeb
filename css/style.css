@@ -417,25 +417,6 @@ p {
   transition: background-size 300ms;
 }
 
-/* main */
-.main {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  position: relative;
-  width: 100%;
-}
-
 /* hero page */
 .landingVid {
   position: absolute;
@@ -629,7 +610,36 @@ p {
           box-shadow: 0 0 0 4px black;
 }
 
+/* main */
+.main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  width: 100%;
+}
+
 /* sections */
+section {
+  width: 100%;
+}
+
+section:hover .hr__inside {
+  width: calc(100% + 1px);
+  -webkit-transition: width 2000ms;
+  transition: width 2000ms;
+}
+
 .sectionTitle {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -667,16 +677,6 @@ p {
 .sectionTitle .hr--backwards {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
-}
-
-section {
-  width: 100%;
-}
-
-section:hover .hr__inside {
-  width: calc(100% + 1px);
-  -webkit-transition: width 2000ms;
-  transition: width 2000ms;
 }
 
 .pointer {
