@@ -542,6 +542,13 @@ section{
             text-align: center;
         }
 
+        &__honeypot{
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
         &__name, &__email{
             width: 100%;
             border: none;
@@ -749,7 +756,6 @@ section{
                 box-shadow: 0 0 .4rem 0 $color-cuarto;
             }  
         }
-        
     }
 
     &__info{

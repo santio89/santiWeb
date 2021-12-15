@@ -884,6 +884,13 @@ section:hover .hr__inside {
   text-align: center;
 }
 
+.contact__form__honeypot {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
 .contact__form__name, .contact__form__email {
   width: 100%;
   border: none;
