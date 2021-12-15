@@ -1034,7 +1034,7 @@ section:hover .hr__inside {
   color: #75ffba;
   text-align: center;
   position: relative;
-  padding: .1em;
+  padding: .04em;
   border: 2px solid #75ffba;
 }
 
@@ -1098,7 +1098,7 @@ section:hover .hr__inside {
   color: white;
   text-align: center;
   position: relative;
-  padding: .1em;
+  padding: .04em;
   border: 2px solid white;
 }
 
