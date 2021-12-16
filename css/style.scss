@@ -896,12 +896,12 @@ section{
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: lighten($color-fondo,4%);
   }
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(95, 0, 185, .7), rgba(117, 255, 186, .7));
+    background: linear-gradient(180deg, rgba(95, 0, 185, .8), rgba(117, 255, 186, .8));
     border-radius: 10px;
   }
   
