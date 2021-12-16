@@ -418,6 +418,25 @@ p {
   transition: background-size 300ms;
 }
 
+/* main */
+.main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  width: 100%;
+}
+
 /* hero page */
 .landingVid {
   position: absolute;
@@ -425,6 +444,7 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
+  background: #1e1e1e;
   opacity: .18;
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
@@ -609,25 +629,6 @@ p {
   outline: 2px solid orange;
   -webkit-box-shadow: 0 0 0 4px black;
           box-shadow: 0 0 0 4px black;
-}
-
-/* main */
-.main {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  position: relative;
-  width: 100%;
 }
 
 /* sections */

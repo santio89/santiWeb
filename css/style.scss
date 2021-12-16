@@ -195,6 +195,19 @@ p{
     }
 }
 
+
+/* main */
+
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+
 /* hero page */
 
 .landingVid{
@@ -203,6 +216,7 @@ p{
     left: 0;
     width: 100vw;
     height: 100vh;
+    background: $color-fondo;
     opacity: .18;
     filter:grayscale(100%);
     /* animation: hueRotate 4000ms infinite linear alternate; */
@@ -357,16 +371,7 @@ p{
         box-shadow: 0 0 0 4px black;
     }
 }
-/* main */
 
-.main{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 100%;
-}
 
 /* sections */
 
