@@ -161,9 +161,11 @@
 @media (max-width: 220px){
     .header{
         justify-content: center;
+
         &__logo{
             display: none;
         }
+
         &__burgerIcon{
             margin: 0;
         }
