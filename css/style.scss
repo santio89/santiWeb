@@ -417,6 +417,21 @@ section{
     background: linear-gradient(45deg, $color-primero 40%, $color-segundo);
     padding: $padding-general;
     min-height: calc(50vh - 2rem);
+
+    &__info{
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: start;
+        
+        &__details{
+            column-count: auto;
+            column-width: clamp(290px, 20vw, 800px);    
+            column-gap: 2em;     
+            margin: auto;
+            text-align: left;
+        }
+    }
 }
 
 /* section skills */

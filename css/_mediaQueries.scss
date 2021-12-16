@@ -122,20 +122,20 @@
 
 @media (min-width: 3200px){
     .heroPage, .about, .skills, .works, .contact{
-        $padding-desktop: 36rem;
+        $padding-desktop: 32rem;
         padding-left: $padding-desktop;
         padding-right: $padding-desktop;
     }
 
     .heroPage{
         &__profilePicWrapper{
-            right: calc(18rem + 8px);
+            right: calc(16rem + 8px);
         }
     }
 
     .header, .footer{
-        padding-left: 18rem;
-        padding-right: 18rem;
+        padding-left: 16rem;
+        padding-right: 16rem;
     }
 }
 

@@ -691,6 +691,33 @@ section:hover .hr__inside {
   min-height: calc(50vh - 2rem);
 }
 
+.about__info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+
+.about__info__details {
+  -webkit-column-count: auto;
+          column-count: auto;
+  -webkit-column-width: clamp(290px, 20vw, 800px);
+          column-width: clamp(290px, 20vw, 800px);
+  -webkit-column-gap: 2em;
+          column-gap: 2em;
+  margin: auto;
+  text-align: left;
+}
+
 /* section skills */
 .skills {
   background: #1e1e1e;
@@ -1479,15 +1506,15 @@ section:hover .hr__inside {
 
 @media (min-width: 3200px) {
   .heroPage, .about, .skills, .works, .contact {
-    padding-left: 36rem;
-    padding-right: 36rem;
+    padding-left: 32rem;
+    padding-right: 32rem;
   }
   .heroPage__profilePicWrapper {
-    right: calc(18rem + 8px);
+    right: calc(16rem + 8px);
   }
   .header, .footer {
-    padding-left: 18rem;
-    padding-right: 18rem;
+    padding-left: 16rem;
+    padding-right: 16rem;
   }
 }
 
