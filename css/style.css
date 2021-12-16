@@ -277,8 +277,8 @@ p {
           align-items: center;
   position: fixed;
   width: 100%;
+  min-height: 60px;
   background: #1e1e1e;
-  padding: .5rem;
   padding-left: 1rem;
   padding-right: 1rem;
   -webkit-box-shadow: 0 0.1rem 0.1rem 0 #5f00b9;
@@ -348,7 +348,8 @@ p {
 }
 
 .header__burgerIcon__icon {
-  font-size: 2rem;
+  font-size: 2.6rem;
+  margin: auto;
 }
 
 .header__burgerIcon:hover, .header__burgerIcon:focus {
@@ -1504,6 +1505,21 @@ section:hover .hr__inside {
   }
 }
 
+@media (max-width: 220px) {
+  .header {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .header__logo {
+    display: none;
+  }
+  .header__burgerIcon {
+    margin: 0;
+  }
+}
+
+/* "fix/improvement" for mobile alignment (address bar spacing) */
 @media all and (pointer: coarse) {
   .heroPage__profilePicWrapper {
     bottom: 12%;

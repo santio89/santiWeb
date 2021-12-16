@@ -158,12 +158,24 @@
     }
 }
 
+@media (max-width: 220px){
+    .header{
+        justify-content: center;
+        &__logo{
+            display: none;
+        }
+        &__burgerIcon{
+            margin: 0;
+        }
+    }
+}
 
+/* "fix/improvement" for mobile alignment (address bar spacing) */
 @media all and (pointer: coarse){
-.heroPage__profilePicWrapper{
-    bottom: 12%;
-}
-.arrowBounce{
-    bottom: 10%;
-}
+    .heroPage__profilePicWrapper{
+        bottom: 12%;
+    }
+    .arrowBounce{
+        bottom: 10%;
+    }
 }
