@@ -11,6 +11,11 @@
   padding: 0;
 }
 
+:root{
+    --color-primero-rgb: 95, 0, 185;
+    --color-segundo-rgb: 117, 255, 186;
+}
+
 html{
     font-size: 100%;
     scroll-padding-top: 4rem;
@@ -50,8 +55,8 @@ ul{
 /* general */
 
 ::selection{
-    color: rgba(95, 0, 185, .8);;
-    background: rgba(117, 255, 186, .8);
+    color: rgba(var(--color-primero-rgb), .8);
+    background: rgba(var(--color-segundo-rgb), .8);
 }
 
 h1{
@@ -216,7 +221,7 @@ p{
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgb(30, 30, 30);
+    background: $color-fondo;
     filter:grayscale(100%);
 
     video{
@@ -919,13 +924,13 @@ section{
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(95, 0, 185, .8), rgba(117, 255, 186, .8));
+    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), .8), rgba(var(--color-segundo-rgb), .8));
     border-radius: 10px;
   }
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(95, 0, 185, 1), rgba(117, 255, 186, 1));
+    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1), rgba(var(--color-segundo-rgb), 1));
   }
 
   /* FIN SCROLLBAR */
