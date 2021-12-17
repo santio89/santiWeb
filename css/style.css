@@ -828,7 +828,7 @@ section:hover .hr__inside {
   width: 100%;
 }
 
-.works__wrapper__work__page {
+.works__wrapper__work__container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -844,21 +844,38 @@ section:hover .hr__inside {
           align-items: start;
 }
 
-.works__wrapper__work__page a {
+.works__wrapper__work__container__p {
+  margin-bottom: 1.8em;
+}
+
+.works__wrapper__work__container__p a {
   color: white;
 }
 
-.works__wrapper__work__page a:hover, .works__wrapper__work__page a:focus {
+.works__wrapper__work__container__p a:hover, .works__wrapper__work__container__p a:focus {
   color: #75ffba;
+}
+
+.works__wrapper__work__page {
+  position: relative;
+  background: #1e1e1e;
+  margin-bottom: 1.2em;
+}
+
+.works__wrapper__work__page::after {
+  content: "";
+  position: absolute;
+  inset: -28px;
+  background: url(/media/mobileFrame.png);
+  background-size: 94% 100%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }
 
 .works__wrapper__work iframe {
   width: 300px;
   height: 500px;
-  margin-top: calc(.4rem + .1vw + .1vh);
-  border-radius: .4rem;
-  -webkit-box-shadow: 0 0 0 2px #75ffba;
-          box-shadow: 0 0 0 2px #75ffba;
 }
 
 .works__wrapper__work img {
@@ -869,9 +886,8 @@ section:hover .hr__inside {
      object-fit: contain;
   background: #1e1e1e;
   margin-top: calc(.4rem + .1vw + .1vh);
-  border-radius: .4rem;
-  -webkit-box-shadow: 0 0 0 2px #75ffba;
-          box-shadow: 0 0 0 2px #75ffba;
+  /* border-radius: .4rem; */
+  /* box-shadow: 0 0 0 2px $color-segundo; */
 }
 
 /* section contact */
