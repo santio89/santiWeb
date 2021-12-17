@@ -342,7 +342,7 @@ p {
 }
 
 .header__burgerMenu:checked ~ .nav {
-  height: 135px;
+  height: 144px;
   -webkit-transition: height 200ms;
   transition: height 200ms;
 }
