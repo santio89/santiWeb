@@ -718,14 +718,11 @@ section:hover .hr__inside {
 }
 
 .about__info__details {
-  -webkit-column-count: auto;
-          column-count: auto;
-  -webkit-column-width: clamp(290px, 20vw, 800px);
-          column-width: clamp(290px, 20vw, 800px);
-  -webkit-column-gap: 2em;
-          column-gap: 2em;
   margin: auto;
-  text-align: left;
+  max-width: 100ch;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: .2em;
+  padding: 1em;
 }
 
 /* section skills */
