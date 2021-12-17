@@ -32,7 +32,7 @@ body{
     width: 100%;
     height:100%;
     overflow-x: hidden; 
-    line-height: 1.4;  
+    line-height: 1.5;  
     font-family: $font-primera;
     font-weight: 200;
     background: $color-fondo;
@@ -436,6 +436,7 @@ section{
             background: rgba(0, 0, 0, .2);
             border-radius: .2em;
             padding: 1em;
+            line-height: 1.8; 
         }
     }
 }
