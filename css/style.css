@@ -1188,7 +1188,7 @@ section:hover .hr__inside {
   padding: .04em;
   border: 2px solid white;
   border-style: dashed;
-  opacity: .8;
+  opacity: .75;
 }
 
 .contact__form__reset span {
@@ -1235,7 +1235,6 @@ section:hover .hr__inside {
 }
 
 .contact__form__reset:hover {
-  color: white;
   text-shadow: 0 0 0.2rem white;
 }
 
