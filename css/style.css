@@ -1487,8 +1487,8 @@ section:hover .hr__inside {
 }
 
 .color--c {
-  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #323232), color-stop(50%, #646464));
-  background: linear-gradient(90deg, #323232 50%, #646464 50%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, black), color-stop(50%, white));
+  background: linear-gradient(90deg, black 50%, white 50%);
 }
 
 .color--active {
@@ -1545,9 +1545,6 @@ section:hover .hr__inside {
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     gap: .7em;
-  }
-  .nav__ul__li :hover, .nav__ul__li :focus {
-    color: #75ffba;
   }
   .colorContainer {
     padding-left: .4rem;

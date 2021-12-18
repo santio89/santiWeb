@@ -34,13 +34,7 @@
         &__ul{
             display: flex;
             flex-flow: row wrap;
-            gap: .7em;
-            
-            &__li{
-                :hover, :focus{
-                    color: $color-segundo;               
-                }
-            }
+            gap: .7em;          
         }
     }
     

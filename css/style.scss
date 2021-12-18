@@ -224,7 +224,7 @@ p{
     width: 100vw;
     height: 100vh;
     background: $color-fondo;
-    filter:grayscale(60%);
+    filter: grayscale(60%);
 
     video{
         aspect-ratio: 16 / 9;
@@ -1006,7 +1006,7 @@ section{
         background: linear-gradient(90deg, rgb(124, 47, 0) 50%,rgb(87, 216, 255) 50%)
     }
     &--c{
-        background: linear-gradient(90deg, rgb(50, 50, 50) 50%,rgb(100, 100, 100) 50%)
+        background: linear-gradient(90deg, rgb(0, 0, 0) 50%,rgb(255, 255, 255) 50%)
     }
     &--active{
         border: 2px solid darkorange;
