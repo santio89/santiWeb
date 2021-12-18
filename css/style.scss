@@ -222,7 +222,7 @@ p{
     width: 100vw;
     height: 100vh;
     background: $color-fondo;
-    filter:grayscale(100%);
+    filter:grayscale(60%);
 
     video{
         aspect-ratio: 16 / 9;
@@ -239,7 +239,7 @@ p{
         left: 0; 
         width:100vw; 
         height: 100vh;  
-        opacity: .2;       
+        opacity: .6;       
     }
 }
 
@@ -970,7 +970,7 @@ section{
     position: absolute;
     z-index: 1;
     background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
-    background-size: 600%;
+    background-size: 500%;
   }
 /* fin particles js */
 
