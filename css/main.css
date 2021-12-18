@@ -768,6 +768,7 @@ section:hover .hr__inside {
   font-weight: 200;
   gap: calc(.4rem + .4vw + .4vh);
   text-align: right;
+  position: relative;
 }
 
 .contact__form__fields {
@@ -791,7 +792,7 @@ section:hover .hr__inside {
   text-align: center;
 }
 
-.contact__form__honeypot {
+.contact__form__bot {
   position: absolute;
   top: 0;
   left: 0;

@@ -589,7 +589,8 @@ section{
         font-weight: 200;
         gap: calc(.4rem + .4vw + .4vh);
         text-align: right;
-
+        position: relative;
+        
         &__fields{
             display: flex;
             flex-flow: column wrap;
@@ -602,7 +603,7 @@ section{
             text-align: center;
         }
 
-        &__honeypot{
+        &__bot{
             position: absolute;
             top:0;
             left: 0;

@@ -158,12 +158,15 @@
             </div>
 
             <div class="contact__wrapper">
-                <form action="" method="" class="contact__form">
+                <form method="POST" class="contact__form" name="contact" data-netlify="true" netlify-honeypot="bot-field">
                     <div class="contact__form__title">
                         <h3><span class="pointer">◖</span> Send a message</h3>
                     </div>
                     
                     <div class="contact__form__fields">
+                        <div class="contact__form__bot">
+                            <label>Fill this out if you're a robot: <input type="text" name="bot-field"/></label>
+                        </div>
                         <div>
                             <input type="text" name="nombre" id="name" placeholder="Name" autocomplete="off" required class="contact__form__name">
                         </div>
