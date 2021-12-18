@@ -1188,6 +1188,7 @@ section:hover .hr__inside {
   padding: .04em;
   border: 2px solid white;
   border-style: dashed;
+  opacity: .8;
 }
 
 .contact__form__reset span {
