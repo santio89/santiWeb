@@ -41,10 +41,18 @@
         <label for="header__burgerMenu" class="header__burgerIcon"><i class="bi bi-list header__burgerIcon__icon" id="header__burgerIcon__icon"></i></label>
         <nav class="nav" id="nav" aria-label="header nav">
             <ul class="nav__ul">
+                <li class="nav__ul__li colorPicker">
+                    <div class="colorContainer">
+                        <div class="color color--a color--active" id="colorA"></div>
+                        <div class="color color--b" id="colorB"></div>
+                        <div class="color color--c" id="colorC"></div>
+                    </div>
+                </li>
                 <li class="nav__ul__li"><a href="#about" class="nav__anchor">About</a></li>
                 <li class="nav__ul__li"><a href="#skills" class="nav__anchor">Skills</a></li>
                 <li class="nav__ul__li"><a href="#works" class="nav__anchor">Works</a></li>
                 <li class="nav__ul__li"><a href="#contact" class="nav__anchor">Contact</a></li>
+                
             </ul>   
         </nav>
     </header>
@@ -200,7 +208,7 @@
         </section>
     </main>
     
-    <footer class="footer">
+    <footer class="footer" id="footer">
         <nav class="footer__nav">
             <ul class="footer__nav__ul">
                 <li class="footer__nav__ul__li"><a href="#about" class="footer__nav__ul__li__a">About</a></li>
@@ -211,7 +219,7 @@
         </nav>
 
         <div class="sectionTitle">
-            <div class="footer__hr"></div>
+            <div class="footer__hr" id="footer__hr"></div>
             <div class="footer__santi">
                 <a href="https://www.linkedin.com/in/santiago-olais-829542b9/" target="_blank" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                 <a href="https://github.com/santio89" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a>

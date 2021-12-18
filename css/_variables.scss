@@ -1,18 +1,19 @@
 $color-fondo: rgb(30, 30, 30);
-$color-cero: #ffffff;
+$color-cero: rgb(255, 255, 255);
 $color-primero: rgb(95, 0, 185);
 $color-segundo: rgb(117, 255, 186);
 $color-tercero: darkorange;
 $padding-general: 1rem;
 $font-primera: 'Roboto', sans-serif;
 
-/* VARIABLES PARA MANIPULAR EN JS */
-/* $color-primero: #7C2F00;
-$color-segundo: #57d8ff;
 
-$color-primero: #354e5e;
-$color-segundo: #ffed4f;
+/* 
+variables manipuladas en js(nota: las variables sass las reemplaze en su mayoria por variables css custom para poder manipularlas en js; excepto las que usan la funcion darken (que no funciona con custom css variables), esas hay que manipularlas manualmente)
 
+$color-primero: rgb(124, 47, 0);
+$color-segundo: rgb(87, 216, 255);
+$color-primero: rgb(0, 0, 0);
+$color-segundo: rgb(255, 255, 255);
 
  */
 

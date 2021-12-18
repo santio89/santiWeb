@@ -14,6 +14,8 @@
 :root{
     --color-primero-rgb: 95, 0, 185;
     --color-segundo-rgb: 117, 255, 186;
+    --color-primero: rgb(95, 0, 185);
+    --color-segundo: rgb(117, 255, 186);
 }
 
 html{
@@ -93,12 +95,12 @@ p{
     background: $color-fondo;
     padding-left: $padding-general;
     padding-right: $padding-general;
-    box-shadow: 0 .1rem .1rem 0 $color-primero;
+    box-shadow: 0 .1rem .1rem 0 var(--color-primero);
     z-index: 3;
     transition: 200ms;
     
     &__logo{
-        text-shadow: 0 0 .4rem $color-primero;
+        text-shadow: 0 0 .4rem var(--color-primero);
         transition: 200ms;
         font-weight: 600;
         outline: none;
@@ -106,7 +108,7 @@ p{
         font-size: 2rem;
 
         &:hover, &:focus{
-            color: $color-primero;
+            color: var(--color-primero);
             transition: 200ms;
             animation: glow 1000ms linear alternate- infinite;
         }
@@ -123,24 +125,24 @@ p{
     }
     
     &__burgerMenu:checked + &__burgerIcon{
-        color: $color-primero;
+        color: var(--color-primero);
         transform:rotate(-90deg);
         transition: transform 200ms;
     }
 
     &__burgerMenu:checked ~ .nav{
-        height: 144px;
+        height: 182px;
         transition: height 200ms;
     }
 
     &__burgerMenu:focus + &__burgerIcon{
-        color: $color-primero;
+        color: var(--color-primero);
         
     }
 
     &__burgerIcon{
         margin-left: auto;
-        text-shadow: 0 0 .4rem $color-primero;
+        text-shadow: 0 0 .4rem var(--color-primero);
         transition: transform 200ms;
         cursor: pointer;
 
@@ -150,7 +152,7 @@ p{
         }
 
         &:hover, &:focus{
-            color: $color-primero;
+            color: var(--color-primero);
             transition: transform 200ms;
         }
     }
@@ -167,8 +169,8 @@ p{
     display: flex;
     justify-content: center;
     background: $color-fondo;
-    box-shadow: 0 .1rem .1rem 0 $color-segundo;
-    text-shadow: 0 0 .2rem $color-segundo;
+    box-shadow: 0 .1rem .1rem 0 var(--color-segundo);
+    text-shadow: 0 0 .2rem var(--color-segundo);
     overflow: hidden;
     height: 0;
     transition: height 200ms;
@@ -180,12 +182,12 @@ p{
         &__li{
             :hover, :focus{
                 outline: none;
-                color: $color-segundo;               
+                color: var(--color-segundo);               
             }
         }
     }
     &__anchor{
-        background: linear-gradient(270deg, $color-primero, $color-segundo);
+        background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
         background-size: 0% 2px;
         background-repeat: no-repeat;
         background-position: left bottom;
@@ -193,7 +195,7 @@ p{
 
         &:hover, &:focus{
             outline: none;
-            color: $color-segundo;  
+            color: var(--color-segundo);  
             background-size: 100% 2px;
             transition: background-size 300ms;
         }
@@ -239,7 +241,7 @@ p{
         left: 0; 
         width:100vw; 
         height: 100vh;  
-        opacity: .4;       
+        opacity: .6;       
     }
 }
 
@@ -263,8 +265,8 @@ p{
     }
 
     &__span{
-        color: $color-segundo;
-        text-shadow: 0 0 .2rem $color-segundo;
+        color: var(--color-segundo);
+        text-shadow: 0 0 .2rem var(--color-segundo);
         transition: 100ms;
         display: inline-block;
 
@@ -301,14 +303,14 @@ p{
             transition: transform 0.8s;
             transform-style: preserve-3d;  
             border-radius: 50%;
-            /* box-shadow: 0 0 0 3px $color-primero, 0 0 0 6px $color-segundo; "alt border"*/   
+            /* box-shadow: 0 0 0 3px var(--color-primero), 0 0 0 6px var(--color-segundo); "alt border"*/   
             position: relative;   
             
             &::after{
                 content: '';
                 position: absolute;
                 inset: -4px;
-                background: linear-gradient($color-primero 50%, $color-segundo 50%);
+                background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
                 z-index: -1;
                 border-radius: 50%;
                 animation: rotate 8000ms linear infinite;
@@ -318,7 +320,7 @@ p{
                 content: '';
                 position: absolute;
                 inset: -4px;
-                background: linear-gradient($color-primero 50%, $color-segundo 50%);
+                background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
                 z-index: -1;
                 border-radius: 50%;
                 animation: rotate 8000ms linear infinite;
@@ -364,18 +366,18 @@ p{
     left: $padding-general;
     font-size: 2.8rem;
     animation: bounce 2s infinite;
-    color: $color-primero;
+    color: var(--color-primero);
     opacity: 80%;
     transition: inset 200ms;
     z-index: 2;
     
     &:focus, &:hover{
-        color: $color-segundo;   
+        color: var(--color-segundo);   
     }
     
     &:focus{
-        outline: 2px solid $color-primero;
-        box-shadow: 0 0 0 4px $color-segundo;
+        outline: 2px solid var(--color-primero);
+        box-shadow: 0 0 0 4px var(--color-segundo);
     }
 }
 
@@ -397,7 +399,7 @@ section{
     margin-bottom: 2rem;
 
     .hr{
-        background: $color-primero;
+        background: var(--color-primero);
         width: 100%;
         height: 2px;
         border-radius: calc(1vw + 1vh);            
@@ -407,10 +409,10 @@ section{
         &__inside{
             position: absolute;
             inset: 0;
-            background: $color-segundo;
+            background: var(--color-segundo);
             width: 0%;
             border-radius: calc(1vw + 1vh);  
-            box-shadow: 0 0 .2rem 0 $color-segundo;
+            box-shadow: 0 0 .2rem 0 var(--color-segundo);
             transition: width 2000ms;
         }
         &--backwards{
@@ -420,13 +422,13 @@ section{
 }
 
 .pointer{
-    color: $color-segundo;
+    color: var(--color-segundo);
 }
 
 /* section about */
 
 .about{
-    background: linear-gradient(45deg, $color-primero 40%, $color-segundo);
+    background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
     padding: $padding-general;
     min-height: calc(50vh - 2rem);
 
@@ -490,7 +492,7 @@ section{
 
 .works{
     padding: $padding-general;
-    background: linear-gradient(45deg, $color-primero 40%, $color-segundo);
+    background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
     min-height: calc(50vh - 2rem);
 
     &__wrapper{
@@ -520,7 +522,7 @@ section{
                     a{
                         color: $color-cero;
                         &:hover, &:focus{
-                            color: $color-segundo;
+                            color: var(--color-segundo);
                         }
                     }
                 }
@@ -558,7 +560,7 @@ section{
                 background: $color-fondo;
                 margin-top: calc(.4rem + .1vw + .1vh);
                 /* border-radius: .4rem; */
-                /* box-shadow: 0 0 0 2px $color-segundo; */
+                /* box-shadow: 0 0 0 2px var(--color-segundo); */
             }
         }
     }
@@ -616,14 +618,14 @@ section{
         &__name, &__email{
             width: 100%;
             border: none;
-            background: linear-gradient(270deg, $color-primero, $color-segundo);
+            background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
             background-size: 0% 2px;
             background-repeat: no-repeat;
             background-position: left bottom;
             padding: calc(.8rem + .2vw + .2vh);
             color: $color-cero;   
             outline: none;
-            border-bottom: 1px solid $color-primero;
+            border-bottom: 1px solid var(--color-primero);
             font-weight: 300;
             font-size: 1em;
             transition: background-size 400ms;  
@@ -641,7 +643,7 @@ section{
         &__message{
             width: 100%;
             min-height: 15vh;
-            background: linear-gradient(270deg, $color-primero, $color-segundo);
+            background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
             background-size: 0% 2px;
             background-repeat: no-repeat;
             background-position: left bottom;
@@ -650,7 +652,7 @@ section{
             color: $color-cero;
             outline: none;
             border: none;
-            border-bottom: 1px solid $color-primero;
+            border-bottom: 1px solid var(--color-primero);
             font-weight: 300;
             font-size: .9em;
             transition: background-size 400ms;   
@@ -678,7 +680,7 @@ section{
             opacity: 0;
 
             &:focus + .contact__form__submit{
-                text-shadow: 0 0 .2rem $color-segundo;
+                text-shadow: 0 0 .2rem var(--color-segundo);
             }
 
             &:focus + .contact__form__submit::before{
@@ -713,11 +715,11 @@ section{
             min-width: 90px;
             cursor: pointer;
             font-size: 1.1em;
-            color: $color-segundo;
+            color: var(--color-segundo);
             text-align: center;
             position: relative;
             padding: .04em;
-            border: 2px solid $color-segundo; 
+            border: 2px solid var(--color-segundo); 
             border-style: dashed;
 
             span{
@@ -758,11 +760,11 @@ section{
             }  
             
             &:hover{
-                text-shadow: 0 0 .2rem $color-segundo;  
+                text-shadow: 0 0 .2rem var(--color-segundo);  
             }
 
             &:active{
-                box-shadow: 0 0 .4rem 0 $color-segundo;
+                box-shadow: 0 0 .4rem 0 var(--color-segundo);
             }  
         }
 
@@ -854,7 +856,7 @@ section{
 
                 a{
                     &:hover, &:focus{
-                        color: $color-segundo;                       
+                        color: var(--color-segundo);                       
                     }
                 }
             }
@@ -868,7 +870,7 @@ section{
     padding: $padding-general;
     padding-bottom: 0;
     background: linear-gradient(45deg, darken($color-primero, 20%) , darken($color-segundo, 20%));
-    background-size: 1000%;
+    background-size: 500%;
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
@@ -886,7 +888,7 @@ section{
             flex-flow: column wrap;
             &__li{
                 &__a{
-                    background: linear-gradient(270deg, $color-primero, $color-segundo);
+                    background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
                     background-size: 0% 3px;
                     background-repeat: no-repeat;
                     background-position: left bottom;
@@ -894,7 +896,7 @@ section{
 
                     &:hover, &:focus{
                         outline: none;
-                        color: $color-segundo;  
+                        color: var(--color-segundo);  
                         background-size: 100% 3px;
                         transition: background-size 300ms;
                     }
@@ -906,7 +908,7 @@ section{
     &__santi{
         font-weight: 200;
         font-size: calc(.8rem + .3vw + .3vh);
-        text-shadow: 0 0 .4rem $color-segundo;
+        text-shadow: 0 0 .4rem var(--color-segundo);
         outline: none;
         display: flex;
         flex-flow: row wrap;
@@ -973,6 +975,46 @@ section{
     background-size: 500%;
   }
 /* fin particles js */
+
+.colorPicker{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colorContainer{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+  .color{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background:darkorange;
+    cursor: pointer;
+
+    &--a{
+        background: linear-gradient(90deg, var(--color-primero) 50%, var(--color-segundo) 50%)
+    }
+    &--b{
+        background: linear-gradient(90deg, #7C2F00 50%,#57d8ff 50%)
+    }
+    &--c{
+        background: linear-gradient(90deg, rgb(50, 50, 50) 50%,rgb(100, 100, 100) 50%)
+    }
+    &--active{
+        border: 2px solid darkorange;
+    }
+    &:hover, &:focus{
+        box-shadow: 0 0 0 2px darkorange;
+    }
+}
 
 
   @import 'mediaQueries';

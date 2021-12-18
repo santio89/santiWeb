@@ -43,6 +43,11 @@
             }
         }
     }
+    
+    .colorContainer{
+        padding-left: .4rem;
+        padding-right: .4rem;
+    }
 
     .heroPage, .about, .skills, .works, .contact{
         $padding-desktop: 8rem;
