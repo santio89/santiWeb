@@ -12,6 +12,7 @@
     --color-segundo-rgb: 117, 255, 186;
     --color-primero: rgb(95, 0, 185);
     --color-segundo: rgb(117, 255, 186);
+    --color-tercero: darkorange;
 }
 
 html{
@@ -104,7 +105,8 @@ p{
         font-size: 2rem;
 
         &:hover, &:focus{
-            color: var(--color-primero);
+            color: var(--color-tercero);
+            text-shadow: 0 0 .4rem var(--color-tercero);
             transition: 200ms;
             animation: glow 1000ms linear alternate- infinite;
         }
@@ -267,8 +269,8 @@ p{
         display: inline-block;
 
         &:hover{
-            color: $color-tercero;
-            text-shadow: 0 0 .2rem $color-tercero;
+            color: var(--color-tercero);
+            text-shadow: 0 0 .2rem var(--color-tercero);
             transition: 100ms;
             animation: textWobble 300ms;
         }
@@ -914,8 +916,8 @@ section{
         align-items: center;
 
         :hover, :focus{
-            color: $color-tercero;
-            text-shadow: 0 0 .4rem $color-tercero;
+            color: var(--color-tercero);
+            text-shadow: 0 0 .4rem var(--color-tercero);
             animation: glowb 1000ms linear alternate infinite;             
         }
     }
@@ -993,7 +995,7 @@ section{
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background:darkorange;
+    background:var(--color-tercero);
     cursor: pointer;
 
     &--a{
@@ -1006,9 +1008,9 @@ section{
         background: linear-gradient(90deg, rgb(0, 0, 0) 50%,rgb(255, 255, 255) 50%)
     }
     &--active{
-        border: 2px solid darkorange;
+        border: 2px solid var(--color-tercero);
     }
     &:hover, &:focus{
-        box-shadow: 0 0 0 2px darkorange;
+        box-shadow: 0 0 0 2px var(--color-tercero);
     }
 }
