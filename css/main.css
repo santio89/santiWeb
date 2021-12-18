@@ -8,183 +8,6 @@ $color-primero: rgb(0, 0, 0);
 $color-segundo: rgb(255, 255, 255);
 
  */
-@-webkit-keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-  40% {
-    -webkit-transform: translateY(-30px);
-            transform: translateY(-30px);
-  }
-  60% {
-    -webkit-transform: translateY(-15px);
-            transform: translateY(-15px);
-  }
-}
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-  40% {
-    -webkit-transform: translateY(-30px);
-            transform: translateY(-30px);
-  }
-  60% {
-    -webkit-transform: translateY(-15px);
-            transform: translateY(-15px);
-  }
-}
-
-@-webkit-keyframes vis {
-  0% {
-    visibility: visible;
-  }
-  100% {
-    visibility: hidden;
-  }
-}
-
-@keyframes vis {
-  0% {
-    visibility: visible;
-  }
-  100% {
-    visibility: hidden;
-  }
-}
-
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 0.4rem #5f00b9;
-  }
-  to {
-    text-shadow: 0 0 0.8rem #5f00b9;
-  }
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 0 0 0.4rem #5f00b9;
-  }
-  to {
-    text-shadow: 0 0 0.8rem #5f00b9;
-  }
-}
-
-@-webkit-keyframes glowb {
-  from {
-    text-shadow: 0 0 0.4rem darkorange;
-  }
-  to {
-    text-shadow: 0 0 0.8rem darkorange;
-  }
-}
-
-@keyframes glowb {
-  from {
-    text-shadow: 0 0 0.4rem darkorange;
-  }
-  to {
-    text-shadow: 0 0 0.8rem darkorange;
-  }
-}
-
-@-webkit-keyframes textWobble {
-  0% {
-    -webkit-transform: skewX(0deg);
-            transform: skewX(0deg);
-  }
-  20% {
-    -webkit-transform: skewX(-15deg);
-            transform: skewX(-15deg);
-  }
-  40% {
-    -webkit-transform: skewX(15deg);
-            transform: skewX(15deg);
-  }
-  60% {
-    -webkit-transform: skewX(-15deg);
-            transform: skewX(-15deg);
-  }
-  80% {
-    -webkit-transform: skewX(15deg);
-            transform: skewX(15deg);
-  }
-  100% {
-    -webkit-transform: skewX(0deg);
-            transform: skewX(0deg);
-  }
-}
-
-@keyframes textWobble {
-  0% {
-    -webkit-transform: skewX(0deg);
-            transform: skewX(0deg);
-  }
-  20% {
-    -webkit-transform: skewX(-15deg);
-            transform: skewX(-15deg);
-  }
-  40% {
-    -webkit-transform: skewX(15deg);
-            transform: skewX(15deg);
-  }
-  60% {
-    -webkit-transform: skewX(-15deg);
-            transform: skewX(-15deg);
-  }
-  80% {
-    -webkit-transform: skewX(15deg);
-            transform: skewX(15deg);
-  }
-  100% {
-    -webkit-transform: skewX(0deg);
-            transform: skewX(0deg);
-  }
-}
-
-@-webkit-keyframes rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@keyframes rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@-webkit-keyframes gradiente__fondo {
-  0% {
-    background-position: 10 0%;
-  }
-  100% {
-    background-position: 60% 0%;
-  }
-}
-
-@keyframes gradiente__fondo {
-  0% {
-    background-position: 10 0%;
-  }
-  100% {
-    background-position: 60% 0%;
-  }
-}
-
 /* reset */
 *,
 *::before,
@@ -1500,6 +1323,184 @@ section:hover .hr__inside {
           box-shadow: 0 0 0 2px darkorange;
 }
 
+@-webkit-keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+  }
+}
+
+@-webkit-keyframes vis {
+  0% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+
+@keyframes vis {
+  0% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 0.4rem #5f00b9;
+  }
+  to {
+    text-shadow: 0 0 0.8rem #5f00b9;
+  }
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 0.4rem #5f00b9;
+  }
+  to {
+    text-shadow: 0 0 0.8rem #5f00b9;
+  }
+}
+
+@-webkit-keyframes glowb {
+  from {
+    text-shadow: 0 0 0.4rem darkorange;
+  }
+  to {
+    text-shadow: 0 0 0.8rem darkorange;
+  }
+}
+
+@keyframes glowb {
+  from {
+    text-shadow: 0 0 0.4rem darkorange;
+  }
+  to {
+    text-shadow: 0 0 0.8rem darkorange;
+  }
+}
+
+@-webkit-keyframes textWobble {
+  0% {
+    -webkit-transform: skewX(0deg);
+            transform: skewX(0deg);
+  }
+  20% {
+    -webkit-transform: skewX(-15deg);
+            transform: skewX(-15deg);
+  }
+  40% {
+    -webkit-transform: skewX(15deg);
+            transform: skewX(15deg);
+  }
+  60% {
+    -webkit-transform: skewX(-15deg);
+            transform: skewX(-15deg);
+  }
+  80% {
+    -webkit-transform: skewX(15deg);
+            transform: skewX(15deg);
+  }
+  100% {
+    -webkit-transform: skewX(0deg);
+            transform: skewX(0deg);
+  }
+}
+
+@keyframes textWobble {
+  0% {
+    -webkit-transform: skewX(0deg);
+            transform: skewX(0deg);
+  }
+  20% {
+    -webkit-transform: skewX(-15deg);
+            transform: skewX(-15deg);
+  }
+  40% {
+    -webkit-transform: skewX(15deg);
+            transform: skewX(15deg);
+  }
+  60% {
+    -webkit-transform: skewX(-15deg);
+            transform: skewX(-15deg);
+  }
+  80% {
+    -webkit-transform: skewX(15deg);
+            transform: skewX(15deg);
+  }
+  100% {
+    -webkit-transform: skewX(0deg);
+            transform: skewX(0deg);
+  }
+}
+
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes gradiente__fondo {
+  0% {
+    background-position: 10 0%;
+  }
+  100% {
+    background-position: 60% 0%;
+  }
+}
+
+@keyframes gradiente__fondo {
+  0% {
+    background-position: 10 0%;
+  }
+  100% {
+    background-position: 60% 0%;
+  }
+}
+
 @media (min-width: 900px) {
   .header__burgerMenu {
     display: none;
@@ -1667,4 +1668,4 @@ section:hover .hr__inside {
     bottom: 10%;
   }
 }
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=main.css.map */
