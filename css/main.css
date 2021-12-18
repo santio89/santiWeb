@@ -1137,8 +1137,8 @@ section:hover .hr__inside {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  -webkit-animation: footer__fondo 10s infinite linear alternate;
-          animation: footer__fondo 10s infinite linear alternate;
+  -webkit-animation: gradiente__fondo 10s infinite linear alternate;
+          animation: gradiente__fondo 10s infinite linear alternate;
   position: relative;
 }
 
