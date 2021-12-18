@@ -1477,13 +1477,13 @@ section:hover .hr__inside {
 }
 
 .color--a {
-  background: -webkit-gradient(linear, left top, right top, color-stop(50%, var(--color-primero)), color-stop(50%, var(--color-segundo)));
-  background: linear-gradient(90deg, var(--color-primero) 50%, var(--color-segundo) 50%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #5f00b9), color-stop(50%, #75ffba));
+  background: linear-gradient(90deg, #5f00b9 50%, #75ffba 50%);
 }
 
 .color--b {
-  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #7C2F00), color-stop(50%, #57d8ff));
-  background: linear-gradient(90deg, #7C2F00 50%, #57d8ff 50%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #7c2f00), color-stop(50%, #57d8ff));
+  background: linear-gradient(90deg, #7c2f00 50%, #57d8ff 50%);
 }
 
 .color--c {
