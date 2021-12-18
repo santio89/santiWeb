@@ -969,7 +969,8 @@ section{
     height: 100vh;
     position: absolute;
     z-index: 1;
-    background: linear-gradient(135deg,rgba(var(--color-primero-rgb), .8), rgba(var(--color-segundo-rgb), .8));
+    background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
+    background-size: 600%;
   }
 /* fin particles js */
 
