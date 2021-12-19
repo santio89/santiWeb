@@ -693,8 +693,8 @@ section:hover .hr__inside {
   position: relative;
   background: #1e1e1e;
   margin-bottom: 1.2em;
-  width: 300px;
-  height: 500px;
+  width: 320px;
+  height: 480px;
 }
 
 .works__wrapper__work__page::after {
