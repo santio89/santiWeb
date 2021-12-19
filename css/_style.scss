@@ -51,6 +51,68 @@ ul{
     list-style: none;
 }
 
+/* loader */
+.loaderWrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: $color-fondo;
+    z-index: 4;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader{
+    aspect-ratio: 1;
+    width: 25%;
+    min-width: 300px;
+    max-width: 800px;
+    height: auto;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;  
+    border-radius: 50%;
+    /* box-shadow: 0 0 0 3px var(--color-primero), 0 0 0 6px var(--color-segundo); "alt border"*/   
+    position: relative;   
+
+    
+    &::after{
+        content: '';
+        position: absolute;
+        inset: -4px;
+        background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
+        z-index: -1;
+        border-radius: 50%;
+        animation: rotate 4000ms linear infinite;
+    }
+
+    &::before{
+        content: '';
+        position: absolute;
+        inset: -4px;
+        background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
+        z-index: -1;
+        border-radius: 50%;
+        animation: rotate 4000ms linear infinite;
+        filter: blur(4px);
+    }
+
+    &__inner{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: $color-fondo;
+    }
+}
+/* fin loader */
+
 /* general */
 
 ::selection{

@@ -1,3 +1,13 @@
+/* inicio loader */
+let root = document.documentElement;
+root.style.setProperty("overflow", "hidden");
+window.onload = setTimeout(function(){
+  loader.style.setProperty("animation", "vis forwards");
+  root.style.setProperty("overflow-y", "scroll");
+}, 2000);
+
+/* fin loader */
+
 /* INICIO cerrar nav burger si hago click fuera del area */
 
 let nav__anchor = document.getElementsByClassName("nav__anchor");
@@ -53,8 +63,8 @@ let colorContainer = document.getElementById("colorContainer");
 let footer = document.getElementById("footer");
 let footer__hr = document.getElementById("footer__hr")
 let particles = document.getElementById("particles-js")
-let root = document.documentElement;
 let vid = document.getElementById("landingVid");
+let loader = document.getElementById("loaderWrapper");
 
 colorA.onclick = function(){
   colorC.classList.remove("color--active");
@@ -70,7 +80,6 @@ colorA.onclick = function(){
   footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
   particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
   particles.style.setProperty("background-size", "500%");
- /*  root.style.setProperty("filter", "none"); */
 }
 
 colorB.onclick = function(){
@@ -87,7 +96,6 @@ colorB.onclick = function(){
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
     particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
     particles.style.setProperty("background-size", "500%");
-    /* root.style.setProperty("filter", "none"); */
 }
 
 colorC.onclick = function(){
@@ -105,7 +113,7 @@ colorC.onclick = function(){
   particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
   particles.style.setProperty("background-size", "500%");
   landingVid.style.setProperty("filter", "grayscale(100%)");
-  
-/*   footer.style.setProperty("filter", "grayscale(100%)");
-  particles.style.setProperty("filter", "grayscale(100%)"); */
 }
+
+/* FIN COLOR PICKER */
+

@@ -17,6 +17,14 @@
   100% {
     visibility: hidden;
   }
+} 
+@keyframes visB{
+  0% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
 }
 
 @keyframes glow {
@@ -57,5 +65,15 @@
   }
   100%{
     background-position: 60% 0%;
+  }
+}
+
+@keyframes fadeOut{
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+    display: none;
   }
 }
