@@ -122,7 +122,7 @@ ul{
 }
 
 h1{
-    font-size: calc(1.8rem + 1vw + 1vh);
+    font-size: calc(1.8rem + 1.4vw + 1.4vh);
     font-weight: 500;
 }
 
@@ -319,10 +319,7 @@ p{
 
     &__title{
         z-index: 2;
-    }
-
-    &__h1{
-        margin-top: 8%;
+        margin-top: 7.8%;
     }
 
     &__span{
