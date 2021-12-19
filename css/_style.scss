@@ -342,7 +342,7 @@ p{
     
     &__profilePicWrapper{
         position: absolute;
-        bottom: calc(#{$padding-general} + 32px);
+        bottom: calc(#{$padding-general} + 16px);
         right: calc(#{$padding-general} + 8px);
         border-radius: 50%;
         aspect-ratio: 1;
@@ -592,7 +592,7 @@ section{
                 background: $color-fondo;
                 margin-bottom: 1.2em;
                 width: 300px;
-                height: 500px; 
+                height: 550px; 
 
                 &::after{
                     content: "";
