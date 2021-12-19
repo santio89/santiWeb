@@ -185,6 +185,11 @@ p{
         &:not(:checked) ~ .nav .nav__anchor{
             animation: vis 150ms forwards;
         }
+        &:not(:checked) ~ .nav .colorPicker
+        {
+            animation: vis 150ms forwards;
+            display: none;
+        }
     }
     
     &__burgerMenu:checked + &__burgerIcon{
