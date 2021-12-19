@@ -322,7 +322,7 @@ p{
     }
 
     &__h1{
-        margin-top: calc(4vw + 2vh);
+        margin-top: 8%;
     }
 
     &__span{
@@ -428,13 +428,13 @@ p{
     left: $padding-general;
     font-size: 2.8rem;
     animation: bounce 2s infinite;
-    color: var(--color-primero);
+    color: var(--color-segundo);
     opacity: 80%;
     transition: inset 200ms;
     z-index: 2;
     
     &:focus, &:hover{
-        color: var(--color-segundo);   
+        color: var(--color-tercero);   
     }
     
     &:focus{

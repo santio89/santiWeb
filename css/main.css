@@ -416,7 +416,7 @@ p {
 }
 
 .heroPage__h1 {
-  margin-top: calc(4vw + 2vh);
+  margin-top: 8%;
 }
 
 .heroPage__span {
@@ -538,7 +538,7 @@ p {
   font-size: 2.8rem;
   -webkit-animation: bounce 2s infinite;
           animation: bounce 2s infinite;
-  color: var(--color-primero);
+  color: var(--color-segundo);
   opacity: 80%;
   -webkit-transition: inset 200ms;
   transition: inset 200ms;
@@ -546,7 +546,7 @@ p {
 }
 
 .arrowBounce:focus, .arrowBounce:hover {
-  color: var(--color-segundo);
+  color: var(--color-tercero);
 }
 
 .arrowBounce:focus {
