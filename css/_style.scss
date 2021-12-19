@@ -966,11 +966,11 @@ section{
 
   /* particles js */
   #particles-js{
+    position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    position: absolute;
     z-index: 1;
     background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
     background-size: 500%;

@@ -1254,11 +1254,11 @@ section:hover .hr__inside {
 /* FIN SCROLLBAR */
 /* particles js */
 #particles-js {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  position: absolute;
   z-index: 1;
   background: linear-gradient(135deg, rgba(43, 0, 83, 0.8), rgba(15, 255, 135, 0.8));
   background-size: 500%;
