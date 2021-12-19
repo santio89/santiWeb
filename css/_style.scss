@@ -348,10 +348,11 @@ p{
         bottom: calc(#{$padding-general} + 32px);
         right: calc(#{$padding-general} + 8px);
         border-radius: 50%;
+        aspect-ratio: 1;
         width: 20%;
         max-width: 180px;
         min-width: 118px;
-        aspect-ratio: 1;
+        height: auto;
         background: transparent;
         cursor: pointer;
         perspective: 1000px;

@@ -445,10 +445,11 @@ p {
   bottom: calc(1rem + 32px);
   right: calc(1rem + 8px);
   border-radius: 50%;
+  aspect-ratio: 1;
   width: 20%;
   max-width: 180px;
   min-width: 118px;
-  aspect-ratio: 1;
+  height: auto;
   background: transparent;
   cursor: pointer;
   -webkit-perspective: 1000px;
