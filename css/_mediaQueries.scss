@@ -171,7 +171,7 @@
     }
 }
 
-/* "fix/improvement" for mobile alignment (address bar spacing). and an exception at 300px for the iframe showcase (on mobile) */
+/* "fix/improvement" for mobile alignment (address bar spacing). and an exception at 310px for the iframe showcase (on mobile) */
 @media all and (pointer: coarse) and (min-width: 310px){
     .heroPage__profilePicWrapper{
         bottom: 12.8%;
