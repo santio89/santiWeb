@@ -7,6 +7,7 @@
 /* v2.0.0
 /* ----------------------------------------------- */
 
+
 var pJS = function(tag_id, params){
 
   var canvas_el = document.querySelector('#'+tag_id+' > .particles-js-canvas-el');
@@ -1539,4 +1540,18 @@ window.particlesJS.load = function(tag_id, path_config_json, callback){
   xhr.send();
 
 };
+
+
+/* function color(){
+  let colorC = document.getElementById("colorC");
+
+  colorC.addEventListener("click", function(){
+    pJS.pJS.color.value = "#ffffff"
+  })
+
+} */
+
+
+
+
 

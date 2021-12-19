@@ -1067,10 +1067,10 @@ section{
     cursor: pointer;
 
     &--a{
-        background: linear-gradient(90deg, rgb(95, 0, 185) 50%, #75ffba 50%)
+        background: linear-gradient(90deg, rgb(95, 0, 185) 50%, rgb(117, 255, 186) 50%)
     }
     &--b{
-        background: linear-gradient(90deg, #7c2f00 50%,#57d8ff 50%)
+        background: linear-gradient(90deg, rgb(124, 47, 0) 50%,rgb(87, 216, 255) 50%)
     }
     &--c{
         background: linear-gradient(90deg, rgb(0, 0, 0) 50%,rgb(255, 255, 255) 50%)
