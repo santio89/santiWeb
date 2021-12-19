@@ -115,7 +115,7 @@ colorB.onclick = function(){
     particles.style.setProperty("background-size", "500%");
 }
 
-colorB.onkeydown = function(){
+colorB.onkeydown = function(e){
   if (e.keyCode === 13){
     colorA.classList.remove("color--active");
     colorC.classList.remove("color--active");
@@ -150,7 +150,7 @@ colorC.onclick = function(){
   landingVid.style.setProperty("filter", "grayscale(100%)");
 }
 
-colorC.onkeydown = function(){
+colorC.onkeydown = function(e){
   if (e.keyCode === 13){
     colorA.classList.remove("color--active");
     colorB.classList.remove("color--active");

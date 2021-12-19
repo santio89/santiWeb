@@ -188,7 +188,6 @@ p{
         &:not(:checked) ~ .nav .colorPicker
         {
             animation: vis 150ms forwards;
-            display: none;
         }
     }
     

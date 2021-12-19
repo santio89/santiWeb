@@ -240,6 +240,11 @@ p {
           animation: vis 150ms forwards;
 }
 
+.header__burgerMenu:not(:checked) ~ .nav .colorPicker {
+  -webkit-animation: vis 150ms forwards;
+          animation: vis 150ms forwards;
+}
+
 .header__burgerMenu:checked + .header__burgerIcon {
   color: var(--color-primero);
   -webkit-transform: rotate(-90deg);
@@ -1628,6 +1633,11 @@ section:hover .hr__inside {
     display: none;
   }
   .header__burgerMenu:not(:checked) ~ .nav .nav__anchor {
+    -webkit-animation: unset;
+            animation: unset;
+    visibility: visible;
+  }
+  .header__burgerMenu:not(:checked) ~ .nav .colorPicker {
     -webkit-animation: unset;
             animation: unset;
     visibility: visible;
