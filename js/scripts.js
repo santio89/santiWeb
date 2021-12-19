@@ -81,6 +81,22 @@ colorA.onclick = function(){
   particles.style.setProperty("background-size", "500%");
 }
 
+colorA.onkeydown = function(){
+  colorC.classList.remove("color--active");
+  colorB.classList.remove("color--active");
+  colorA.classList.add("color--active");
+  root.style.setProperty("--color-primero","rgb(95, 0, 185)");
+  root.style.setProperty("--color-segundo","rgb(117, 255, 186)");
+  root.style.setProperty("--color-primero-rgb","95, 0, 185");
+  root.style.setProperty("--color-segundo-rgb","117, 255, 186");
+  
+  footer.style.setProperty("background", "linear-gradient(45deg, #2b0053, #0fff87)");
+  footer.style.setProperty("background-size", "500%");
+  footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
+  particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
+  particles.style.setProperty("background-size", "500%");
+}
+
 colorB.onclick = function(){
     colorA.classList.remove("color--active");
     colorC.classList.remove("color--active");
@@ -97,7 +113,40 @@ colorB.onclick = function(){
     particles.style.setProperty("background-size", "500%");
 }
 
+colorB.onkeydown = function(){
+  colorA.classList.remove("color--active");
+  colorC.classList.remove("color--active");
+  colorB.classList.add("color--active");
+  root.style.setProperty("--color-primero","rgb(124, 47, 0)");
+  root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
+  root.style.setProperty("--color-primero-rgb","124, 47, 0");
+  root.style.setProperty("--color-segundo-rgb","87, 216, 255");
+  
+  footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
+  footer.style.setProperty("background-size", "500%");
+  footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
+  particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
+  particles.style.setProperty("background-size", "500%");
+}
+
 colorC.onclick = function(){
+  colorA.classList.remove("color--active");
+  colorB.classList.remove("color--active");
+  colorC.classList.add("color--active");
+  root.style.setProperty("--color-primero","rgb(0, 0, 0)");
+  root.style.setProperty("--color-segundo","rgb(255, 255, 255)");
+  root.style.setProperty("--color-primero-rgb","0, 0, 0");
+  root.style.setProperty("--color-segundo-rgb","255, 255, 255");
+
+  footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
+  footer.style.setProperty("background-size", "500%");
+  footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
+  particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
+  particles.style.setProperty("background-size", "500%");
+  landingVid.style.setProperty("filter", "grayscale(100%)");
+}
+
+colorC.onkeydown = function(){
   colorA.classList.remove("color--active");
   colorB.classList.remove("color--active");
   colorC.classList.add("color--active");
