@@ -4,7 +4,7 @@ root.style.setProperty("overflow", "hidden");
 window.onload = setTimeout(function(){
   loader.style.setProperty("animation", "vis forwards");
   root.style.setProperty("overflow-y", "scroll");
-}, 2000);
+}, 1000);
 /* fin loader */
 
 /* INICIO cerrar nav burger si hago click fuera del area */
