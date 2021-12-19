@@ -11,6 +11,7 @@ particlesJS.load('particles-js', 'particles.json', function() {
 
 /* Otherwise just put the config content (json): */
 
+
 particlesJS('particles-js',
   
   {
@@ -23,7 +24,7 @@ particlesJS('particles-js',
         }
       },
       "color": {
-        "value": "#5f00b9"
+        "value": "#75ffba"
       },
       "shape": {
         "type": "circle",
@@ -130,4 +131,5 @@ particlesJS('particles-js',
     }
   }
 
-);
+)
+
