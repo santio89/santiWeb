@@ -28,7 +28,7 @@ header__burgerButton.onclick=function(){
     nav.style.animation="none";
     nav.style.visibility="visible";
     nav.classList.add("nav--open");
-    header__burgerButton.style.setProperty("transform","rotate(-90deg)")
+    header__burgerButton.style.setProperty("transform","rotate(90deg)")
     header__burgerButton.style.setProperty("color","var(--color-primero)")
 
 /*     document.addEventListener( 'click', listener ); */
@@ -52,12 +52,12 @@ for (let i=0; i < nav__anchor.length; i++)
 
 
 /* agregar EventListener cuando el nav burger sea abierto */
-/* let header__burgerButton__icon = document.getElementById("header__burgerButton_icon"); */
+let header__burgerButton__icon = document.getElementById("header__burgerButton_icon");
 
 /* fin agregar EventListener cuando el nav burger sea abierto */
 
 /* cerrar nav si hago click fuera del nav o del icono burger */
-/* let listener = function( e ) {
+let listener = function( e ) {
 if( e.target != header__burgerButton && e.target != nav && e.target != header__burgerButton__icon) {
     nav.style.animation="vis 200ms forwards";
     nav.classList.remove("nav--open")
@@ -65,7 +65,7 @@ if( e.target != header__burgerButton && e.target != nav && e.target != header__b
     header__burgerButton.style.setProperty("color","var(--color-cero)")
     document.removeEventListener( 'click', listener );
 }
-}; */
+};
 /* fin cerrar nav si hago click fuera del nav o del icono burger */
 
 

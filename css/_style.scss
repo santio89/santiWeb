@@ -188,7 +188,7 @@ p{
         border: none;
         color: var(--color-cero);
         transition: transform 200ms;
-
+        
         &__icon{
             font-size: 2.66rem;
             margin: auto;
@@ -203,7 +203,7 @@ p{
 
 .nav{
     position: absolute;
-    left: 0;
+    right: 0;
     top: 100%;
     width: 100%;
     font-size: 1.5rem;
@@ -212,15 +212,16 @@ p{
     display: flex;
     justify-content: center;
     background: $color-fondo;
-    box-shadow: 0 .1rem 0rem 0 var(--color-segundo);
+    box-shadow: 0 .1rem 0rem 0 var(--color-segundo), -.1rem 0 0rem 0 var(--color-segundo);
     text-shadow: 0 0 .2rem var(--color-segundo);
+    border-radius: 0 0 0 .5em;
     overflow: hidden;
-    height: 0;
-    transition: height 200ms;
+    width: 0;
+    transition: width 200ms;
 
     &__ul{
         display: flex;
-        flex-flow: column wrap;      
+        flex-flow: column nowrap;      
         
         &__li{
             :hover, :focus{
@@ -246,7 +247,7 @@ p{
     }
 
     &--open{
-        height: 182px;
+        width: 175px;
         visibility: visible;
     }
 }
@@ -1033,7 +1034,7 @@ section{
 
 .colorContainer{
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
     gap: 1rem;
