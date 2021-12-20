@@ -10,13 +10,13 @@ window.onload = setTimeout(function(){
 /* fin loader */
 
 
-
 /* BURGER MENU */
+
 let header__burgerButton = document.getElementById("header__burgerButton");
 let nav = document.getElementById("nav");
 let nav__anchor = document.getElementsByClassName("nav__anchor");
 
-nav.style.visibility="hidden"; /* nav oculto en tamaños chicos (a menos que se active con el button. de esta forma es mejor la navegacion con teclado). se muestra normal luego en desktop*/
+nav.style.visibility="hidden"; /* nav oculto en tamaños chicos (a menos que se active con el button. de esta forma es mejor la navegacion con teclado (no se tabea a traves de items invisibles)). se muestra normal luego en tamaños mas grandes*/
 
 header__burgerButton.onclick=function(){
   if (nav.classList.contains("nav--open")){
@@ -30,13 +30,8 @@ header__burgerButton.onclick=function(){
     nav.classList.add("nav--open");
     header__burgerButton.style.setProperty("transform","rotate(90deg)")
     header__burgerButton.style.setProperty("color","var(--color-primero)")
-
-/*     document.addEventListener( 'click', listener ); */
   }
 }
-
-
-/* FIN BURGER MENU */
 
 /* cerrar nav burger al hacer click en un link (util para single page layouts) */
 for (let i=0; i < nav__anchor.length; i++)
@@ -50,24 +45,7 @@ for (let i=0; i < nav__anchor.length; i++)
 }
 /* fin cerrar nav burger al hacer click en un link (util para single page layouts) */
 
-
-/* agregar EventListener cuando el nav burger sea abierto */
-/* let header__burgerButton__icon = document.getElementById("header__burgerButton_icon"); */
-
-/* fin agregar EventListener cuando el nav burger sea abierto */
-
-/* cerrar nav si hago click fuera del nav o del icono burger */
-/* let listener = function( e ) {
-if( e.target != header__burgerButton && e.target != nav && e.target != header__burgerButton__icon) {
-    nav.style.animation="vis 200ms forwards";
-    nav.classList.remove("nav--open")
-    header__burgerButton.style.setProperty("transform","rotate(0deg)")
-    header__burgerButton.style.setProperty("color","var(--color-cero)")
-    document.removeEventListener( 'click', listener );
-}
-}; */
-/* fin cerrar nav si hago click fuera del nav o del icono burger */
-
+/* FIN BURGER MENU */
 
 
 /* INICIO COLOR PICKER */
