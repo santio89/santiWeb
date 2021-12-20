@@ -242,7 +242,6 @@ p {
   outline: none;
   border: none;
   color: var(--color-cero);
-  transition: transform 200ms;
 }
 
 .header__burgerButton__icon {
