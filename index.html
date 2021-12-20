@@ -169,22 +169,22 @@
                             <label>Don't fill this out if you're a human: <input type="text" name="bot-field"/></label>
                         </div>
                         <div>
-                            <input type="text" name="nombre" id="name" placeholder="Name" autocomplete="off" required class="contact__form__name">
+                            <input type="text" name="nombre" id="name" placeholder="Name" autocomplete="off" required class="contact__form__name" aria-label="Name">
                         </div>
         
                         <div>
-                            <input type="email" name="email" id="email" placeholder="E-Mail" autocomplete="off" required class="contact__form__email">
+                            <input type="email" name="email" id="email" placeholder="E-Mail" autocomplete="off" required class="contact__form__email" aria-label="E-Mail">
                         </div>
     
                         <div>
-                            <textarea name="mensaje" id="message" placeholder="Write a message" required class="contact__form__message"></textarea>
+                            <textarea name="mensaje" id="message" placeholder="Write a message" required class="contact__form__message" aria-label="Message"></textarea>
                         </div>
         
                         <div class="contact__form__send">
-                            <input type="reset" id="reset" class="contact__form__resetInput">
+                            <input type="reset" id="reset" class="contact__form__resetInput" value="Reset">
                             <label for="reset" class="contact__form__reset"><span>X</span></label>
         
-                            <input type="submit" id="submit" class="contact__form__submitInput">
+                            <input type="submit" id="submit" class="contact__form__submitInput" value="Submit">
                             <label for="submit" class="contact__form__submit"><span>Submit</span></label>
                         </div>
                     </div>                   
