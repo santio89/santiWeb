@@ -1,11 +1,14 @@
 /* inicio loader */
 let root = document.documentElement;
+let loader = document.getElementById("loaderWrapper");
+
 root.style.setProperty("overflow", "hidden");
 window.onload = setTimeout(function(){
   loader.style.setProperty("animation", "vis forwards");
   root.style.setProperty("overflow-y", "scroll");
-}, 2000);
+}, 1800);
 /* fin loader */
+
 
 /* INICIO cerrar nav burger si hago click fuera del area */
 
@@ -63,7 +66,6 @@ let footer = document.getElementById("footer");
 let footer__hr = document.getElementById("footer__hr")
 let particles = document.getElementById("particles-js")
 let vid = document.getElementById("landingVid");
-let loader = document.getElementById("loaderWrapper");
 
 colorA.onclick = function(){
   colorC.classList.remove("color--active");
@@ -72,8 +74,7 @@ colorA.onclick = function(){
   root.style.setProperty("--color-primero","rgb(95, 0, 185)");
   root.style.setProperty("--color-segundo","rgb(117, 255, 186)");
   root.style.setProperty("--color-primero-rgb","95, 0, 185");
-  root.style.setProperty("--color-segundo-rgb","117, 255, 186");
-  
+  root.style.setProperty("--color-segundo-rgb","117, 255, 186"); 
   footer.style.setProperty("background", "linear-gradient(45deg, #2b0053, #0fff87)");
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
@@ -89,8 +90,7 @@ colorA.onkeydown = function(e){
     root.style.setProperty("--color-primero","rgb(95, 0, 185)");
     root.style.setProperty("--color-segundo","rgb(117, 255, 186)");
     root.style.setProperty("--color-primero-rgb","95, 0, 185");
-    root.style.setProperty("--color-segundo-rgb","117, 255, 186");
-    
+    root.style.setProperty("--color-segundo-rgb","117, 255, 186");    
     footer.style.setProperty("background", "linear-gradient(45deg, #2b0053, #0fff87)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
@@ -107,7 +107,6 @@ colorB.onclick = function(){
     root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
     root.style.setProperty("--color-primero-rgb","124, 47, 0");
     root.style.setProperty("--color-segundo-rgb","87, 216, 255");
-    
     footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
@@ -124,7 +123,6 @@ colorB.onkeydown = function(e){
     root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
     root.style.setProperty("--color-primero-rgb","124, 47, 0");
     root.style.setProperty("--color-segundo-rgb","87, 216, 255");
-    
     footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
@@ -141,7 +139,6 @@ colorC.onclick = function(){
   root.style.setProperty("--color-segundo","rgb(255, 255, 255)");
   root.style.setProperty("--color-primero-rgb","0, 0, 0");
   root.style.setProperty("--color-segundo-rgb","255, 255, 255");
-
   footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
@@ -159,7 +156,6 @@ colorC.onkeydown = function(e){
     root.style.setProperty("--color-segundo","rgb(255, 255, 255)");
     root.style.setProperty("--color-primero-rgb","0, 0, 0");
     root.style.setProperty("--color-segundo-rgb","255, 255, 255");
-  
     footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");

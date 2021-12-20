@@ -451,8 +451,8 @@ p {
   border-radius: 50%;
   aspect-ratio: 1;
   width: 20%;
-  max-width: 180px;
-  min-width: 116px;
+  max-width: 150px;
+  min-width: 115px;
   height: auto;
   background: transparent;
   cursor: pointer;
@@ -1386,6 +1386,7 @@ section:hover .hr__inside {
   border-radius: 50%;
   background: var(--color-tercero);
   cursor: pointer;
+  border: none;
 }
 
 .color--a {
@@ -1401,10 +1402,6 @@ section:hover .hr__inside {
 .color--c {
   background: -webkit-gradient(linear, left top, right top, color-stop(50%, black), color-stop(50%, white));
   background: linear-gradient(90deg, black 50%, white 50%);
-}
-
-.color--active {
-  border: 2px solid var(--color-tercero);
 }
 
 .color:hover, .color:focus {
