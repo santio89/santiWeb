@@ -10,50 +10,72 @@ window.onload = setTimeout(function(){
 /* fin loader */
 
 
-/* INICIO cerrar nav burger si hago click fuera del area */
 
+/* BURGER MENU */
+let nav__button = document.getElementById("nav__burger__button");
+let nav = document.getElementById("nav");
 let nav__anchor = document.getElementsByClassName("nav__anchor");
-let header__burgerMenu = document.getElementById("header__burgerMenu");
+
+
+nav__button.onclick=function(){
+  if (nav.classList.contains("nav--open")){
+    nav.classList.remove("nav--open")
+    nav__button.style.setProperty("transform","rotate(0deg)")
+    nav__button.style.setProperty("color","rgb(255, 255, 255)")
+    /* setTimeout(function(){
+    }, 150) */
+  } else{
+    nav.classList.add("nav--open");
+    nav__button.style.setProperty("transform","rotate(-90deg)")
+    nav__button.style.setProperty("color","rgb(95, 0, 185)")
+   /*  document.addEventListener( 'click', listener )  */
+  }
+}
+
+/* FIN BURGER MENU */
 
 /* cerrar nav burger al hacer click en un link (util para single page layouts) */
 for (let i=0; i < nav__anchor.length; i++)
 {
     nav__anchor[i].addEventListener("click", function() {
-        header__burgerMenu.checked = false;
+      nav.classList.remove("nav--open")
     });
 }
 /* fin cerrar nav burger al hacer click en un link (util para single page layouts) */
 
-/* agregar EventListener cuando el nav burger sea abierto */
-let nav = document.getElementById("nav");
-let header__burgerIcon__icon = document.getElementById("header__burgerIcon__icon");
-
-header__burgerMenu.addEventListener( 'click', function(){
-    if( this.checked ) {
-      document.addEventListener( 'click', listener );
-    } 
-  });
-/* fin agregar EventListener cuando el nav burger sea abierto */
 
 /* cerrar nav si hago click fuera del nav o del icono burger */
-let listener = function( e ) {
-if( e.target != header__burgerMenu && e.target != nav && e.target != header__burgerIcon__icon) {
-    header__burgerMenu.checked = false;
-    document.removeEventListener( 'click', listener );
-}
-};
-/* fin cerrar nav si hago click fuera del nav o del icono burger */
 
-/* FIN cerrar nav burger si hago click fuera del area */
+/* let listener = function( e ) {
+  if( (e.target != nav__button) && (e.target != nav__anchor)){
+      nav.classList.remove("nav--open")
+      document.removeEventListener( 'click', listener )
+  }
+  }; */
+  
+  /* fin cerrar nav si hago click fuera del nav o del icono burger */
+
+
+/* INICIO cerrar nav burger si hago click fuera del area */
+
+
+
+
+
+
+
 
 /* INICIO cerrar burger nav si estaba abierto y hago resize hasta un tamaño en el que ya no existe */
-window.addEventListener('resize', function() {
+
+/* window.addEventListener('resize', function() {
   if (window.matchMedia('(min-width: 900px)').matches) {
-      document.getElementById('header__burgerMenu').checked = false;
+    nav.classList.remove("nav--open");
   }
-}, true);
+}, true); */
+
 /* FIN cerrar burger nav si estaba abierto y hago resize hasta un tamaño en el que ya no existe */
 
+/* FIN cerrar nav burger si hago click fuera del area */
 
 
 /* INICIO COLOR PICKER */
@@ -166,4 +188,3 @@ colorC.onkeydown = function(e){
 }
 
 /* FIN COLOR PICKER */
-

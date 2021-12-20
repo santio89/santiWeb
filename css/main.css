@@ -229,42 +229,6 @@ p {
           animation: glow 1000ms linear alternate- infinite;
 }
 
-.header__burgerMenu {
-  width: 0;
-  height: 0;
-  opacity: 0;
-}
-
-.header__burgerMenu:not(:checked) ~ .nav .nav__anchor {
-  -webkit-animation: vis 150ms forwards;
-          animation: vis 150ms forwards;
-}
-
-.header__burgerMenu:not(:checked) ~ .nav .colorPicker {
-  -webkit-animation: vis 150ms forwards;
-          animation: vis 150ms forwards;
-}
-
-.header__burgerMenu:checked + .header__burgerIcon {
-  color: var(--color-primero);
-  -webkit-transform: rotate(-90deg);
-          transform: rotate(-90deg);
-  -webkit-transition: -webkit-transform 200ms;
-  transition: -webkit-transform 200ms;
-  transition: transform 200ms;
-  transition: transform 200ms, -webkit-transform 200ms;
-}
-
-.header__burgerMenu:checked ~ .nav {
-  height: 182px;
-  -webkit-transition: height 200ms;
-  transition: height 200ms;
-}
-
-.header__burgerMenu:focus + .header__burgerIcon {
-  color: var(--color-primero);
-}
-
 .header__burgerIcon {
   margin-left: auto;
   text-shadow: 0 0 0.4rem var(--color-primero);
@@ -273,6 +237,10 @@ p {
   transition: transform 200ms;
   transition: transform 200ms, -webkit-transform 200ms;
   cursor: pointer;
+  background: none;
+  outline: none;
+  border: none;
+  color: white;
 }
 
 .header__burgerIcon__icon {
@@ -344,6 +312,10 @@ p {
   background-size: 100% 2px;
   -webkit-transition: background-size 300ms;
   transition: background-size 300ms;
+}
+
+.nav--open {
+  height: 182px;
 }
 
 /* main */
@@ -1631,24 +1603,6 @@ section:hover .hr__inside {
 }
 
 @media (min-width: 900px) {
-  .header__burgerMenu {
-    display: none;
-  }
-  .header__burgerMenu:not(:checked) ~ .nav .nav__anchor {
-    -webkit-animation: unset;
-            animation: unset;
-    visibility: visible;
-  }
-  .header__burgerMenu:not(:checked) ~ .nav .colorPicker {
-    -webkit-animation: unset;
-            animation: unset;
-    visibility: visible;
-  }
-  .header__burgerMenu:checked ~ .nav {
-    height: unset;
-    -webkit-transition: unset;
-    transition: unset;
-  }
   .header__burgerIcon {
     display: none;
   }
@@ -1670,6 +1624,7 @@ section:hover .hr__inside {
     overflow: hidden;
     -webkit-box-shadow: unset;
             box-shadow: unset;
+    visibility: visible;
   }
   .nav__ul {
     display: -webkit-box;

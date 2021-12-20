@@ -1,24 +1,6 @@
 
 @media (min-width: 900px){
     .header{      
-        &__burgerMenu{
-            display: none;
-            &:not(:checked) ~ .nav .nav__anchor{
-                animation: unset;
-                visibility: visible;
-            }
-            &:not(:checked) ~ .nav .colorPicker
-            {
-                animation: unset;
-                visibility: visible;
-            }
-        }
-
-        &__burgerMenu:checked ~ .nav{
-            height: unset;
-            transition: unset;
-        }
-    
         &__burgerIcon{
             display: none;
         }
@@ -35,7 +17,8 @@
         height: unset;
         overflow: hidden;
         box-shadow: unset;
-
+        visibility: visible;
+        
         &__ul{
             display: flex;
             flex-flow: row wrap;
