@@ -247,10 +247,6 @@ p {
 .header__burgerButton__icon {
   font-size: 2.66rem;
   margin: auto;
-  -webkit-transition: -webkit-transform 200ms;
-  transition: -webkit-transform 200ms;
-  transition: transform 200ms;
-  transition: transform 200ms, -webkit-transform 200ms;
 }
 
 .header__burgerButton:hover, .header__burgerButton:focus {
