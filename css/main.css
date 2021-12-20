@@ -1211,7 +1211,7 @@ section:hover .hr__inside {
   padding: 1rem;
   padding-bottom: 0;
   background: linear-gradient(45deg, #2b0053, #0fff87);
-  background-size: 500%;
+  background-size: 800%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1225,8 +1225,8 @@ section:hover .hr__inside {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  -webkit-animation: gradiente__fondo 10s infinite linear alternate;
-          animation: gradiente__fondo 10s infinite linear alternate;
+  -webkit-animation: gradiente__fondo 18s infinite linear alternate;
+          animation: gradiente__fondo 18s infinite linear alternate;
   position: relative;
 }
 
@@ -1402,6 +1402,11 @@ section:hover .hr__inside {
 .color--c {
   background: -webkit-gradient(linear, left top, right top, color-stop(50%, black), color-stop(50%, white));
   background: linear-gradient(90deg, black 50%, white 50%);
+}
+
+.color--active {
+  -webkit-box-shadow: 0 0 0 2px var(--color-tercero);
+          box-shadow: 0 0 0 2px var(--color-tercero);
 }
 
 .color:hover, .color:focus {
