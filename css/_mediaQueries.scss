@@ -1,7 +1,7 @@
 
 @media (min-width: 900px){
     .header{      
-        &__burgerIcon{
+        &__burgerButton{
             display: none;
         }
     }
@@ -17,7 +17,7 @@
         height: unset;
         overflow: hidden;
         box-shadow: unset;
-        visibility: visible;
+        visibility: visible !important;
         
         &__ul{
             display: flex;
@@ -153,7 +153,7 @@
             display: none;
         }
 
-        &__burgerIcon{
+        &__burgerButton{
             margin: 0;
         }
     }

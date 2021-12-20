@@ -24,6 +24,7 @@ $color-segundo: rgb(255, 255, 255);
   --color-primero: rgb(95, 0, 185);
   --color-segundo: rgb(117, 255, 186);
   --color-tercero: rgb(255, 140, 0);
+  --color-cero: rgb(255, 255, 255);
 }
 
 html {
@@ -46,7 +47,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: 200;
   background: #1e1e1e;
-  color: white;
+  color: var(--color-cero);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -62,7 +63,7 @@ body {
 
 a {
   text-decoration: none;
-  color: white;
+  color: var(--color-cero);
   outline: none;
 }
 
@@ -203,8 +204,8 @@ p {
   background: #1e1e1e;
   padding-left: 1rem;
   padding-right: 1rem;
-  -webkit-box-shadow: 0 0.1rem 0.1rem 0 var(--color-primero);
-          box-shadow: 0 0.1rem 0.1rem 0 var(--color-primero);
+  -webkit-box-shadow: 0 0.1rem 0rem 0 var(--color-primero);
+          box-shadow: 0 0.1rem 0rem 0 var(--color-primero);
   z-index: 3;
   -webkit-transition: 200ms;
   transition: 200ms;
@@ -229,7 +230,7 @@ p {
           animation: glow 1000ms linear alternate- infinite;
 }
 
-.header__burgerIcon {
+.header__burgerButton {
   margin-left: auto;
   text-shadow: 0 0 0.4rem var(--color-primero);
   -webkit-transition: -webkit-transform 200ms;
@@ -240,20 +241,21 @@ p {
   background: none;
   outline: none;
   border: none;
-  color: white;
+  color: var(--color-cero);
+  transition: transform 200ms;
 }
 
-.header__burgerIcon__icon {
+.header__burgerButton__icon {
   font-size: 2.66rem;
   margin: auto;
-}
-
-.header__burgerIcon:hover, .header__burgerIcon:focus {
-  color: var(--color-primero);
   -webkit-transition: -webkit-transform 200ms;
   transition: -webkit-transform 200ms;
   transition: transform 200ms;
   transition: transform 200ms, -webkit-transform 200ms;
+}
+
+.header__burgerButton:hover, .header__burgerButton:focus {
+  color: var(--color-primero) !important;
 }
 
 .nav {
@@ -272,8 +274,8 @@ p {
       -ms-flex-pack: center;
           justify-content: center;
   background: #1e1e1e;
-  -webkit-box-shadow: 0 0.1rem 0.1rem 0 var(--color-segundo);
-          box-shadow: 0 0.1rem 0.1rem 0 var(--color-segundo);
+  -webkit-box-shadow: 0 0.1rem 0rem 0 var(--color-segundo);
+          box-shadow: 0 0.1rem 0rem 0 var(--color-segundo);
   text-shadow: 0 0 0.2rem var(--color-segundo);
   overflow: hidden;
   height: 0;
@@ -316,6 +318,7 @@ p {
 
 .nav--open {
   height: 182px;
+  visibility: visible;
 }
 
 /* main */
@@ -371,7 +374,7 @@ p {
 .heroPage {
   margin-top: 4rem;
   padding: 1rem;
-  color: white;
+  color: var(--color-cero);
   height: calc(100vh - 4rem);
   display: -webkit-box;
   display: -ms-flexbox;
@@ -740,7 +743,7 @@ section:hover .hr__inside {
 }
 
 .works__wrapper__work__container__p a {
-  color: white;
+  color: var(--color-cero);
 }
 
 .works__wrapper__work__container__p a:hover, .works__wrapper__work__container__p a:focus {
@@ -870,7 +873,7 @@ section:hover .hr__inside {
   background-repeat: no-repeat;
   background-position: left bottom;
   padding: calc(.8rem + .2vw + .2vh);
-  color: white;
+  color: var(--color-cero);
   outline: none;
   border-bottom: 1px solid var(--color-primero);
   font-weight: 300;
@@ -909,7 +912,7 @@ section:hover .hr__inside {
   background-position: left bottom;
   resize: none;
   padding: calc(.8rem + .2vw + .2vh);
-  color: white;
+  color: var(--color-cero);
   outline: none;
   border: none;
   border-bottom: 1px solid var(--color-primero);
@@ -983,7 +986,7 @@ section:hover .hr__inside {
 }
 
 .contact__form__resetInput:focus + .contact__form__reset {
-  text-shadow: 0 0 0.2rem white;
+  text-shadow: 0 0 0.2rem var(--color-cero);
 }
 
 .contact__form__resetInput:focus + .contact__form__reset::before {
@@ -1066,11 +1069,11 @@ section:hover .hr__inside {
   min-width: 90px;
   cursor: pointer;
   font-size: 1.1em;
-  color: white;
+  color: var(--color-cero);
   text-align: center;
   position: relative;
   padding: .04em;
-  border: 2px solid white;
+  border: 2px solid var(--color-cero);
   border-style: dashed;
   opacity: .75;
 }
@@ -1119,12 +1122,12 @@ section:hover .hr__inside {
 }
 
 .contact__form__reset:hover {
-  text-shadow: 0 0 0.2rem white;
+  text-shadow: 0 0 0.2rem var(--color-cero);
 }
 
 .contact__form__reset:active {
-  -webkit-box-shadow: 0 0 0.4rem 0 white;
-          box-shadow: 0 0 0.4rem 0 white;
+  -webkit-box-shadow: 0 0 0.4rem 0 var(--color-cero);
+          box-shadow: 0 0 0.4rem 0 var(--color-cero);
 }
 
 .contact__info {
@@ -1603,7 +1606,7 @@ section:hover .hr__inside {
 }
 
 @media (min-width: 900px) {
-  .header__burgerIcon {
+  .header__burgerButton {
     display: none;
   }
   .nav {
@@ -1624,7 +1627,7 @@ section:hover .hr__inside {
     overflow: hidden;
     -webkit-box-shadow: unset;
             box-shadow: unset;
-    visibility: visible;
+    visibility: visible !important;
   }
   .nav__ul {
     display: -webkit-box;
@@ -1743,7 +1746,7 @@ section:hover .hr__inside {
   .header__logo {
     display: none;
   }
-  .header__burgerIcon {
+  .header__burgerButton {
     margin: 0;
   }
 }
