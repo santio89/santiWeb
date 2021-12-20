@@ -12,25 +12,26 @@ window.onload = setTimeout(function(){
 
 
 /* BURGER MENU */
-let nav__button = document.getElementById("header__burgerButton");
+let header__burgerButton = document.getElementById("header__burgerButton");
 let nav = document.getElementById("nav");
 let nav__anchor = document.getElementsByClassName("nav__anchor");
 
 nav.style.visibility="hidden"; /* nav oculto en tamaños chicos (a menos que se active con el button. de esta forma es mejor la navegacion con teclado). se muestra normal luego en desktop*/
 
-nav__button.onclick=function(){
+header__burgerButton.onclick=function(){
   if (nav.classList.contains("nav--open")){
     nav.style.animation="vis 200ms forwards";
     nav.classList.remove("nav--open")
-    nav__button.style.setProperty("transform","rotate(0deg)")
-    nav__button.style.setProperty("color","var(--color-cero)")
+    header__burgerButton.style.setProperty("transform","rotate(0deg)")
+    header__burgerButton.style.setProperty("color","var(--color-cero)")
   } else{
     nav.style.animation="none";
     nav.style.visibility="visible";
     nav.classList.add("nav--open");
-    nav__button.style.setProperty("transform","rotate(-90deg)")
-    nav__button.style.setProperty("color","var(--color-primero)")
-    document.addEventListener( 'click', listener ) 
+    header__burgerButton.style.setProperty("transform","rotate(-90deg)")
+    header__burgerButton.style.setProperty("color","var(--color-primero)")
+
+/*     document.addEventListener( 'click', listener ); */
   }
 }
 
@@ -42,34 +43,30 @@ for (let i=0; i < nav__anchor.length; i++)
 {
     nav__anchor[i].addEventListener("click", function() {
       nav.classList.remove("nav--open")
-      nav__button.style.setProperty("transform","rotate(0deg)")
-      nav__button.style.setProperty("color","var(--color-cero)")
-      nav.style.animation="vis 200ms forwards";
+      header__burgerButton.style.setProperty("transform","rotate(0deg)")
+      header__burgerButton.style.setProperty("color","var(--color-cero)")
+      nav.style.animation="vis 200ms forwards"
     });
 }
 /* fin cerrar nav burger al hacer click en un link (util para single page layouts) */
 
 
+/* agregar EventListener cuando el nav burger sea abierto */
+/* let header__burgerButton__icon = document.getElementById("header__burgerButton_icon"); */
+
+/* fin agregar EventListener cuando el nav burger sea abierto */
+
 /* cerrar nav si hago click fuera del nav o del icono burger */
-
-let listener = function( e ) {
-
-  for (let i=0; i < nav__anchor.length; i++)
-{
-  let anchor = nav__anchor[i]
-  if( (e.target != nav__button) && (e.target != anchor)){
+/* let listener = function( e ) {
+if( e.target != header__burgerButton && e.target != nav && e.target != header__burgerButton__icon) {
     nav.style.animation="vis 200ms forwards";
     nav.classList.remove("nav--open")
-    nav__button.style.setProperty("transform","rotate(0deg)")
-    nav__button.style.setProperty("color","var(--color-cero)")
-    document.removeEventListener( 'click', listener )
+    header__burgerButton.style.setProperty("transform","rotate(0deg)")
+    header__burgerButton.style.setProperty("color","var(--color-cero)")
+    document.removeEventListener( 'click', listener );
 }
-}
-
-  
-  };
-  
-  /* fin cerrar nav si hago click fuera del nav o del icono burger */
+}; */
+/* fin cerrar nav si hago click fuera del nav o del icono burger */
 
 
 
