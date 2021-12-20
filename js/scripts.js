@@ -52,12 +52,12 @@ for (let i=0; i < nav__anchor.length; i++)
 
 
 /* agregar EventListener cuando el nav burger sea abierto */
-let header__burgerButton__icon = document.getElementById("header__burgerButton_icon");
+/* let header__burgerButton__icon = document.getElementById("header__burgerButton_icon"); */
 
 /* fin agregar EventListener cuando el nav burger sea abierto */
 
 /* cerrar nav si hago click fuera del nav o del icono burger */
-let listener = function( e ) {
+/* let listener = function( e ) {
 if( e.target != header__burgerButton && e.target != nav && e.target != header__burgerButton__icon) {
     nav.style.animation="vis 200ms forwards";
     nav.classList.remove("nav--open")
@@ -65,20 +65,8 @@ if( e.target != header__burgerButton && e.target != nav && e.target != header__b
     header__burgerButton.style.setProperty("color","var(--color-cero)")
     document.removeEventListener( 'click', listener );
 }
-};
+}; */
 /* fin cerrar nav si hago click fuera del nav o del icono burger */
-
-
-
-/* INICIO cerrar burger nav si estaba abierto y hago resize hasta un tamaño en el que ya no existe */
-
-/* window.addEventListener('resize', function() {
-  if (window.matchMedia('(min-width: 900px)').matches) {
-    nav.classList.remove("nav--open");
-  }
-}, true); */
-
-/* FIN cerrar burger nav si estaba abierto y hago resize hasta un tamaño en el que ya no existe */
 
 
 
