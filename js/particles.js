@@ -1542,15 +1542,7 @@ window.particlesJS.load = function(tag_id, path_config_json, callback){
 };
 
 
-/* function color(){
-  let colorC = document.getElementById("colorC");
-
-  colorC.addEventListener("click", function(){
-    pJS.pJS.color.value = "#ffffff"
-  })
-
-} */
-
+  
 
 
 
