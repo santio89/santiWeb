@@ -593,6 +593,7 @@ section:hover .hr__inside {
   background-image: var(--background);
   background-attachment: fixed;
   background-size: cover;
+  background-position-x: 50%;
   background-position-y: 90%;
 }
 
@@ -689,6 +690,7 @@ section:hover .hr__inside {
   background-image: var(--background);
   background-attachment: fixed;
   background-size: cover;
+  background-position-x: 50%;
   background-position-y: 90%;
 }
 

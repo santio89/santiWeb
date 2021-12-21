@@ -485,6 +485,7 @@ section{
     background-image: var(--background);
     background-attachment: fixed;
     background-size: cover;
+    background-position-x: 50%;
     background-position-y: 90%;
 
     &__info{
@@ -555,6 +556,7 @@ section{
     background-image: var(--background);
     background-attachment: fixed;
     background-size: cover;
+    background-position-x: 50%;
     background-position-y: 90%;
 
     &__wrapper{
