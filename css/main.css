@@ -1,15 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-/* 
-variables manipuladas en js(nota: las variables sass las reemplaze en su mayoria por variables css custom para poder manipularlas en js; excepto las que usan la funcion darken (que no funciona con custom css variables), esas hay que manipularlas manualmente)
-
-B
-$color-primero: rgb(124, 47, 0);
+/* variables manipuladas en js(nota: las variables sass las reemplaze en su mayoria por variables css custom para poder manipularlas en js; excepto las que usan la funcion darken (que no funciona con custom css variables), esas hay que manipularlas manualmente) */
+/* $color-primero: #7c2f00;
 $color-segundo: #57d8ff;
 
-C
-$color-primero: rgb(0, 0, 0);
-$color-segundo: #ffffff;
 
+$color-primero: #000000;
+$color-segundo: #ffffff;
  */
 /* reset */
 *,
@@ -28,6 +24,7 @@ $color-segundo: #ffffff;
   --color-segundo: rgb(117, 255, 186);
   --color-tercero: rgb(255, 140, 0);
   --color-cero: rgb(255, 255, 255);
+  --background: url("/media/backgroundA.svg");
 }
 
 html {
@@ -589,9 +586,14 @@ section:hover .hr__inside {
 
 /* section about */
 .about {
-  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
   padding: 1rem;
   min-height: calc(50vh - 2rem);
+  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
+  background-color: #75FFBA;
+  background-image: var(--background);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-y: 90%;
 }
 
 .about__info {
@@ -681,8 +683,13 @@ section:hover .hr__inside {
 /* section works */
 .works {
   padding: 1rem;
-  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
   min-height: calc(50vh - 2rem);
+  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
+  background-color: #75FFBA;
+  background-image: var(--background);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-y: 90%;
 }
 
 .works__wrapper {
@@ -1456,37 +1463,37 @@ section:hover .hr__inside {
 
 @-webkit-keyframes glow {
   from {
-    text-shadow: 0 0 0.4rem darkorange;
+    text-shadow: 0 0 0.4rem #ff8c00;
   }
   to {
-    text-shadow: 0 0 0.8rem darkorange;
+    text-shadow: 0 0 0.8rem #ff8c00;
   }
 }
 
 @keyframes glow {
   from {
-    text-shadow: 0 0 0.4rem darkorange;
+    text-shadow: 0 0 0.4rem #ff8c00;
   }
   to {
-    text-shadow: 0 0 0.8rem darkorange;
+    text-shadow: 0 0 0.8rem #ff8c00;
   }
 }
 
 @-webkit-keyframes glowb {
   from {
-    text-shadow: 0 0 0.4rem darkorange;
+    text-shadow: 0 0 0.4rem #ff8c00;
   }
   to {
-    text-shadow: 0 0 0.8rem darkorange;
+    text-shadow: 0 0 0.8rem #ff8c00;
   }
 }
 
 @keyframes glowb {
   from {
-    text-shadow: 0 0 0.4rem darkorange;
+    text-shadow: 0 0 0.4rem #ff8c00;
   }
   to {
-    text-shadow: 0 0 0.8rem darkorange;
+    text-shadow: 0 0 0.8rem #ff8c00;
   }
 }
 

@@ -14,6 +14,7 @@
     --color-segundo: rgb(117, 255, 186);
     --color-tercero: rgb(255, 140, 0);
     --color-cero: rgb(255, 255, 255);
+    --background: url("/media/backgroundA.svg");
 }
 
 html{
@@ -475,9 +476,16 @@ section{
 /* section about */
 
 .about{
-    background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
     padding: $padding-general;
     min-height: calc(50vh - 2rem);
+
+    background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
+
+    background-color: #75FFBA;
+    background-image: var(--background);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position-y: 90%;
 
     &__info{
         display: flex;
@@ -539,8 +547,15 @@ section{
 
 .works{
     padding: $padding-general;
-    background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
     min-height: calc(50vh - 2rem);
+
+    background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
+
+    background-color: #75FFBA;
+    background-image: var(--background);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position-y: 90%;
 
     &__wrapper{
         display: flex;
