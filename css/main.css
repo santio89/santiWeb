@@ -579,8 +579,8 @@ section:hover .hr__inside {
 .about {
   padding: 1rem;
   min-height: calc(50vh - 2rem);
-  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
-  background-color: #75FFBA;
+  /*  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
+  background-color: #1e1e1e;
   background-image: var(--background);
   background-attachment: fixed;
   background-size: cover;
@@ -676,8 +676,8 @@ section:hover .hr__inside {
 .works {
   padding: 1rem;
   min-height: calc(50vh - 2rem);
-  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo));
-  background-color: #75FFBA;
+  /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
+  background-color: #1e1e1e;
   background-image: var(--background);
   background-attachment: fixed;
   background-size: cover;
