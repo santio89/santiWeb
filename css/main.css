@@ -234,6 +234,7 @@ p {
   outline-style: dashed;
   -webkit-transform: translateX(0);
           transform: translateX(0);
+  color: #1e1e1e;
 }
 
 .header__logo {
