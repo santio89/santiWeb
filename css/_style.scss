@@ -169,19 +169,19 @@ p{
         font-weight: 600;
         outline: none;
         font-style: italic;
-        font-size: 2rem;
-
+        font-size: 2.4rem;
+        user-select: none;
+        
         &:hover, &:focus{
             color: var(--color-tercero);
             text-shadow: 0 0 .4rem var(--color-tercero);
             transition: 200ms;
-            animation: glow 1000ms linear alternate- infinite;
         }
     }
 
     &__burgerButton{
         margin-left: auto;
-        text-shadow: 0 0 0 var(--color-segundo);
+        text-shadow: .4px .4px 0 var(--color-segundo), .8px .8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo);
         background: none;
         outline: none;
         border: none;
@@ -191,7 +191,7 @@ p{
         perspective: 1000px;
         
         &__icon{
-            font-size: 2.66rem;
+            font-size: 2.4rem;
             margin: auto;
         }
         
@@ -976,8 +976,7 @@ section{
 
         :hover, :focus{
             color: var(--color-tercero);
-            text-shadow: 0 0 .4rem var(--color-tercero);
-            animation: glowb 1000ms linear alternate infinite;             
+            text-shadow: 0 0 .4rem var(--color-tercero);         
         }
     }
 
