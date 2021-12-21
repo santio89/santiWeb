@@ -17,7 +17,7 @@ particlesJS('particles-js',
   {
     "particles": {
       "number": {
-        "value": 12,
+        "value": 8,
         "density": {
           "enable": true,
           "value_area": 800
@@ -46,31 +46,31 @@ particlesJS('particles-js',
         "random": false,
         "anim": {
           "enable": false,
-          "speed": 1,
+          "speed": 2,
           "opacity_min": 0.1,
           "sync": false
         }
       },
       "size": {
-        "value": 5,
+        "value": 6.4,
         "random": true,
         "anim": {
           "enable": false,
           "speed": 40,
-          "size_min": 0.1,
+          "size_min": 1,
           "sync": false
         }
       },
       "line_linked": {
         "enable": true,
         "distance": 150,
-        "color": "#ffffff",
+        "color": "#ff8c00",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.12
       },
       "move": {
         "enable": true,
-        "speed": 6,
+        "speed": 2,
         "direction": "none",
         "random": false,
         "straight": false,
@@ -113,7 +113,7 @@ particlesJS('particles-js',
           "distance": 200
         },
         "push": {
-          "particles_nb": 4
+          "particles_nb": 2
         },
         "remove": {
           "particles_nb": 2
@@ -144,7 +144,7 @@ colorA.addEventListener("click", function(){
   {
     "particles": {
       "number": {
-        "value": 12,
+        "value": 8,
         "density": {
           "enable": true,
           "value_area": 800
@@ -173,31 +173,31 @@ colorA.addEventListener("click", function(){
         "random": false,
         "anim": {
           "enable": false,
-          "speed": 1,
+          "speed": 2,
           "opacity_min": 0.1,
           "sync": false
         }
       },
       "size": {
-        "value": 5,
+        "value": 6.4,
         "random": true,
         "anim": {
           "enable": false,
           "speed": 40,
-          "size_min": 0.1,
+          "size_min": 1,
           "sync": false
         }
       },
       "line_linked": {
         "enable": true,
         "distance": 150,
-        "color": "#ffffff",
+        "color": "#ff8c00",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.12
       },
       "move": {
         "enable": true,
-        "speed": 6,
+        "speed": 2,
         "direction": "none",
         "random": false,
         "straight": false,
@@ -240,7 +240,7 @@ colorA.addEventListener("click", function(){
           "distance": 200
         },
         "push": {
-          "particles_nb": 4
+          "particles_nb": 2
         },
         "remove": {
           "particles_nb": 2
@@ -268,7 +268,7 @@ colorB.addEventListener("click", function(){
   {
     "particles": {
       "number": {
-        "value": 12,
+        "value": 8,
         "density": {
           "enable": true,
           "value_area": 800
@@ -297,31 +297,31 @@ colorB.addEventListener("click", function(){
         "random": false,
         "anim": {
           "enable": false,
-          "speed": 1,
+          "speed": 2,
           "opacity_min": 0.1,
           "sync": false
         }
       },
       "size": {
-        "value": 5,
+        "value": 6.4,
         "random": true,
         "anim": {
           "enable": false,
           "speed": 40,
-          "size_min": 0.1,
+          "size_min": 1,
           "sync": false
         }
       },
       "line_linked": {
         "enable": true,
         "distance": 150,
-        "color": "#ffffff",
+        "color": "#ff8c00",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.12
       },
       "move": {
         "enable": true,
-        "speed": 6,
+        "speed": 2,
         "direction": "none",
         "random": false,
         "straight": false,
@@ -364,7 +364,7 @@ colorB.addEventListener("click", function(){
           "distance": 200
         },
         "push": {
-          "particles_nb": 4
+          "particles_nb": 2
         },
         "remove": {
           "particles_nb": 2
@@ -392,7 +392,7 @@ colorC.addEventListener("click", function(){
   {
     "particles": {
       "number": {
-        "value": 12,
+        "value": 8,
         "density": {
           "enable": true,
           "value_area": 800
@@ -421,31 +421,31 @@ colorC.addEventListener("click", function(){
         "random": false,
         "anim": {
           "enable": false,
-          "speed": 1,
+          "speed": 2,
           "opacity_min": 0.1,
           "sync": false
         }
       },
       "size": {
-        "value": 5,
+        "value": 6.4,
         "random": true,
         "anim": {
           "enable": false,
           "speed": 40,
-          "size_min": 0.1,
+          "size_min": 1,
           "sync": false
         }
       },
       "line_linked": {
         "enable": true,
         "distance": 150,
-        "color": "#ffffff",
+        "color": "#ff8c00",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.12
       },
       "move": {
         "enable": true,
-        "speed": 6,
+        "speed": 2,
         "direction": "none",
         "random": false,
         "straight": false,
@@ -488,7 +488,7 @@ colorC.addEventListener("click", function(){
           "distance": 200
         },
         "push": {
-          "particles_nb": 4
+          "particles_nb": 2
         },
         "remove": {
           "particles_nb": 2
@@ -559,7 +559,7 @@ colorA.addEventListener("keydown", function(e){
           "anim": {
             "enable": false,
             "speed": 40,
-            "size_min": 0.1,
+            "size_min": 1,
             "sync": false
           }
         },
@@ -685,7 +685,7 @@ colorB.addEventListener("keydown", function(e){
           "anim": {
             "enable": false,
             "speed": 40,
-            "size_min": 0.1,
+            "size_min": 1,
             "sync": false
           }
         },
@@ -811,7 +811,7 @@ colorC.addEventListener("keydown", function(e){
           "anim": {
             "enable": false,
             "speed": 40,
-            "size_min": 0.1,
+            "size_min": 1,
             "sync": false
           }
         },
