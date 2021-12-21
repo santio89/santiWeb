@@ -67,14 +67,15 @@ h1{
 }
 
 h2{
-    font-size: calc(1.4rem + .5vw + .5vh);
+    font-size: calc(1.4rem + .8vw + .8vh);
     font-weight: 500;
+    text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
 }
 
 h3{
     font-size: calc(1.2rem + .4vw + .4vh);
     font-weight: 300;
-    margin-bottom: .8rem;
+    margin-bottom: 1rem;
 }
 
 p{
@@ -498,7 +499,7 @@ section{
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 80%;
+    background-position-y: 82%;
 
     &__info{
         display: flex;
@@ -509,7 +510,7 @@ section{
         &__details{
             margin: auto;
             max-width: 100ch;
-            background: rgba(0, 0, 0, .2);
+            background: rgba(0, 0, 0, .25);
             border-radius: .2em;
             padding: 1em;
             line-height: 1.8; 
@@ -569,7 +570,7 @@ section{
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 80%;
+    background-position-y: 82%;
 
     &__wrapper{
         display: flex;
@@ -593,12 +594,19 @@ section{
                 justify-content: center;
                 align-items: start;
 
-                &__p{
+                &__p{  
                     margin-bottom: 1.8em;
+
                     a{
+                        outline: 1px solid var(--color-segundo);
+                        background: rgba(0, 0, 0, .25);
+                        border-radius: .2em;
+                        padding: .2em;
                         color: var(--color-cero);
+
                         &:hover, &:focus{
                             color: var(--color-segundo);
+                            outline: 2px solid var(--color-segundo);
                         }
                     }
                 }
