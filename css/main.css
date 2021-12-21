@@ -232,16 +232,19 @@ p {
 
 .header__burgerButton {
   margin-left: auto;
-  text-shadow: 0 0 0.4rem var(--color-primero);
-  -webkit-transition: -webkit-transform 200ms;
-  transition: -webkit-transform 200ms;
-  transition: transform 200ms;
-  transition: transform 200ms, -webkit-transform 200ms;
-  cursor: pointer;
+  text-shadow: 0 0 0 var(--color-segundo);
   background: none;
   outline: none;
   border: none;
   color: var(--color-cero);
+  -webkit-transition: -webkit-transform 200ms linear;
+  transition: -webkit-transform 200ms linear;
+  transition: transform 200ms linear;
+  transition: transform 200ms linear, -webkit-transform 200ms linear;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-perspective: 1000px;
+          perspective: 1000px;
 }
 
 .header__burgerButton__icon {
@@ -275,8 +278,8 @@ p {
   border-radius: 0 0 0 .5em;
   overflow: hidden;
   width: 0;
-  -webkit-transition: width 200ms;
-  transition: width 200ms;
+  -webkit-transition: width 200ms linear;
+  transition: width 200ms linear;
 }
 
 .nav__ul {
@@ -1359,7 +1362,6 @@ section:hover .hr__inside {
   height: 22px;
   border-radius: 50%;
   background: var(--color-tercero);
-  cursor: pointer;
   border: none;
 }
 
