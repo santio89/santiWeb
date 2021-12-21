@@ -72,7 +72,8 @@ colorA.onclick = function(){
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
   particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
-  particles.style.setProperty("background-size", "500%");
+  particles.style.setProperty("background-size", "400%");
+  landingVid.style.setProperty("filter", "grayscale(80%)");
 }
 
 colorA.onkeydown = function(e){
@@ -89,7 +90,8 @@ colorA.onkeydown = function(e){
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
     particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
-    particles.style.setProperty("background-size", "500%");
+    particles.style.setProperty("background-size", "400%");
+    landingVid.style.setProperty("filter", "grayscale(80%)");
   }
 }
 
@@ -106,7 +108,8 @@ colorB.onclick = function(){
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
     particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
-    particles.style.setProperty("background-size", "500%");
+    particles.style.setProperty("background-size", "400%");
+    landingVid.style.setProperty("filter", "grayscale(80%)");
 }
 
 colorB.onkeydown = function(e){
@@ -123,7 +126,8 @@ colorB.onkeydown = function(e){
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
     particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
-    particles.style.setProperty("background-size", "500%");
+    particles.style.setProperty("background-size", "400%");
+    landingVid.style.setProperty("filter", "grayscale(80%)");
   }
 }
 
@@ -140,7 +144,7 @@ colorC.onclick = function(){
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
   particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
-  particles.style.setProperty("background-size", "500%");
+  particles.style.setProperty("background-size", "400%");
   landingVid.style.setProperty("filter", "grayscale(100%)");
 }
 
@@ -158,7 +162,7 @@ colorC.onkeydown = function(e){
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
     particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
-    particles.style.setProperty("background-size", "500%");
+    particles.style.setProperty("background-size", "400%");
     landingVid.style.setProperty("filter", "grayscale(100%)");
   }
 }

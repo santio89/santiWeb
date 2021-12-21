@@ -273,7 +273,7 @@ p{
     width: 100vw;
     height: 100vh;
     background: $color-fondo;
-    filter: grayscale(60%);
+    filter: grayscale(80%);
 
     img{
         position: absolute; 
@@ -1029,7 +1029,7 @@ section{
     height: 100vh;
     z-index: 1;
     background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
-    background-size: 500%;
+    background-size: 400%;
   }
 /* fin particles js */
 

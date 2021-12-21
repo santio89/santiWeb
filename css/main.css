@@ -344,8 +344,8 @@ p {
   width: 100vw;
   height: 100vh;
   background: #1e1e1e;
-  -webkit-filter: grayscale(60%);
-          filter: grayscale(60%);
+  -webkit-filter: grayscale(80%);
+          filter: grayscale(80%);
 }
 
 .landingVid img {
@@ -1319,7 +1319,7 @@ section:hover .hr__inside {
   height: 100vh;
   z-index: 1;
   background: linear-gradient(135deg, rgba(43, 0, 83, 0.8), rgba(15, 255, 135, 0.8));
-  background-size: 500%;
+  background-size: 400%;
 }
 
 /* fin particles js */
