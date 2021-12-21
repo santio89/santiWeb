@@ -211,6 +211,30 @@ p {
   transition: 200ms;
 }
 
+.header__skip {
+  position: absolute;
+  top: 110%;
+  left: -4%;
+  -webkit-transform: translateX(-110%);
+          transform: translateX(-110%);
+  color: #1e1e1e;
+  font-weight: 400;
+  background: var(--color-segundo);
+  margin-left: 4%;
+  padding: .4em;
+  -webkit-transition: -webkit-transform 200ms ease-out;
+  transition: -webkit-transform 200ms ease-out;
+  transition: transform 200ms ease-out;
+  transition: transform 200ms ease-out, -webkit-transform 200ms ease-out;
+}
+
+.header__skip:focus, .header__skip:hover {
+  outline: 2px solid var(--color-cero);
+  outline-style: dashed;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+}
+
 .header__logo {
   text-shadow: 0 0 0.4rem var(--color-primero);
   -webkit-transition: 200ms;
@@ -1684,7 +1708,7 @@ section:hover .hr__inside {
   }
 }
 
-@media (max-width: 220px) {
+@media (max-width: 240px) {
   .header {
     -webkit-box-pack: center;
         -ms-flex-pack: center;

@@ -162,6 +162,25 @@ p{
     box-shadow: 0 .1rem 0rem 0 var(--color-primero);
     z-index: 3;
     transition: 200ms;
+
+    &__skip{
+        position: absolute;
+        top: 110%;
+        left: -4%;
+        transform: translateX(-110%);
+        color: $color-fondo;
+        font-weight: 400;
+        background: var(--color-segundo);
+        margin-left: 4%;
+        padding: .4em;
+        transition: transform 200ms ease-out;
+
+        &:focus, &:hover{
+           outline: 2px solid var(--color-cero) ;
+           outline-style: dashed;
+           transform: translateX(0);
+        }
+    }
     
     &__logo{
         text-shadow: 0 0 .4rem var(--color-primero);
