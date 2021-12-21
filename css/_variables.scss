@@ -10,11 +10,13 @@ $font-primera: 'Roboto', sans-serif;
 /* 
 variables manipuladas en js(nota: las variables sass las reemplaze en su mayoria por variables css custom para poder manipularlas en js; excepto las que usan la funcion darken (que no funciona con custom css variables), esas hay que manipularlas manualmente)
 
+B
 $color-primero: rgb(124, 47, 0);
-$color-segundo: rgb(87, 216, 255);
+$color-segundo: #57d8ff;
+
+C
 $color-primero: rgb(0, 0, 0);
-$color-segundo: rgb(255, 255, 255);
+$color-segundo: #ffffff;
 
  */
-
 
