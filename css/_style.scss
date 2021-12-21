@@ -274,15 +274,6 @@ p{
     height: 100vh;
     background: $color-fondo;
     filter: grayscale(60%);
-    
-    video{
-        aspect-ratio: 16 / 9;
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        max-height: 100vh;
-        object-fit: cover;
-    }
 
     img{
         position: absolute; 
@@ -290,7 +281,8 @@ p{
         left: 0; 
         width:100vw; 
         height: 100vh;  
-        opacity: .6;       
+        aspect-ratio: 16 / 9;
+        opacity: .4;       
     }
 }
 
