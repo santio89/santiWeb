@@ -294,18 +294,14 @@ p{
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: $color-fondo;
-    filter: grayscale(80%);
-
-    img{
-        position: absolute; 
-        top: 0; 
-        left: 0; 
-        width:100vw; 
-        height: 100vh;  
-        aspect-ratio: 16 / 9;
-        opacity: .2;       
-    }
+    background-color: $color-fondo;
+    background-image: var(--background);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: 80%;
+    background-size: 120%;
+    opacity: .8;
 }
 
 .heroPage{
@@ -500,7 +496,8 @@ section{
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 82%;
+    background-position-y: 80%;
+    background-size: 120%;
 
     &__info{
         display: flex;
@@ -571,7 +568,8 @@ section{
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 82%;
+    background-position-y: 80%;
+    background-size: 120%;
 
     &__wrapper{
         display: flex;
@@ -956,12 +954,12 @@ section{
     padding: $padding-general;
     padding-bottom: 0;
     background: linear-gradient(45deg, darken($color-primero, 20%) , darken($color-segundo, 20%));
-    background-size: 800%;
+    background-size: 1000%;
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
     align-items: stretch;
-    animation: gradiente__fondo 18s infinite linear alternate;
+    animation: gradiente__fondo 14s infinite linear alternate;
     position: relative;
 
     &__nav{

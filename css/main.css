@@ -374,19 +374,14 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #1e1e1e;
-  -webkit-filter: grayscale(80%);
-          filter: grayscale(80%);
-}
-
-.landingVid img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  aspect-ratio: 16 / 9;
-  opacity: .2;
+  background-color: #1e1e1e;
+  background-image: var(--background);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-x: 50%;
+  background-position-y: 80%;
+  background-size: 120%;
+  opacity: .8;
 }
 
 .heroPage {
@@ -616,7 +611,8 @@ section:hover .hr__inside {
   background-attachment: fixed;
   background-size: cover;
   background-position-x: 50%;
-  background-position-y: 82%;
+  background-position-y: 80%;
+  background-size: 120%;
 }
 
 .about__info {
@@ -713,7 +709,8 @@ section:hover .hr__inside {
   background-attachment: fixed;
   background-size: cover;
   background-position-x: 50%;
-  background-position-y: 82%;
+  background-position-y: 80%;
+  background-size: 120%;
 }
 
 .works__wrapper {
@@ -1221,7 +1218,7 @@ section:hover .hr__inside {
   padding: 1rem;
   padding-bottom: 0;
   background: linear-gradient(45deg, #2b0053, #0fff87);
-  background-size: 800%;
+  background-size: 1000%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1235,8 +1232,8 @@ section:hover .hr__inside {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  -webkit-animation: gradiente__fondo 18s infinite linear alternate;
-          animation: gradiente__fondo 18s infinite linear alternate;
+  -webkit-animation: gradiente__fondo 14s infinite linear alternate;
+          animation: gradiente__fondo 14s infinite linear alternate;
   position: relative;
 }
 
