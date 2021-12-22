@@ -37,7 +37,6 @@ for (let i=0; i < nav__anchor.length; i++)
     nav__anchor[i].addEventListener("click", function() {
       nav.classList.remove("nav--open")
       header__burgerButton.style.setProperty("transform","rotate(0deg)")
-      header__burgerButton.style.setProperty("color","var(--color-cero)")
       nav.style.animation="vis 200ms forwards"
     });
 }
