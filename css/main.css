@@ -407,7 +407,7 @@ p {
 
 .heroPage__title {
   z-index: 2;
-  margin-top: 12%;
+  margin-top: calc(60px + 6%);
   background: transparent;
 }
 
