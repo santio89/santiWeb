@@ -299,8 +299,8 @@ p{
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 80%;
-    background-size: 120%;
+    background-position-y: 100%;
+    
     opacity: .8;
     filter: grayscale(100%);
 }
@@ -497,8 +497,7 @@ section{
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 80%;
-    background-size: 120%;
+    background-position-y: 100%;
 
     &__info{
         display: flex;
@@ -569,8 +568,7 @@ section{
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 80%;
-    background-size: 120%;
+    background-position-y: 100%;
 
     &__wrapper{
         display: flex;

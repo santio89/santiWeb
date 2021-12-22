@@ -379,8 +379,7 @@ p {
   background-attachment: fixed;
   background-size: cover;
   background-position-x: 50%;
-  background-position-y: 80%;
-  background-size: 120%;
+  background-position-y: 100%;
   opacity: .8;
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
@@ -613,8 +612,7 @@ section:hover .hr__inside {
   background-attachment: fixed;
   background-size: cover;
   background-position-x: 50%;
-  background-position-y: 80%;
-  background-size: 120%;
+  background-position-y: 100%;
 }
 
 .about__info {
@@ -711,8 +709,7 @@ section:hover .hr__inside {
   background-attachment: fixed;
   background-size: cover;
   background-position-x: 50%;
-  background-position-y: 80%;
-  background-size: 120%;
+  background-position-y: 100%;
 }
 
 .works__wrapper {
