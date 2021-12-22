@@ -375,13 +375,15 @@ p {
   width: 100vw;
   height: 100vh;
   background-color: #1e1e1e;
-  background-image: var(--background);
+  background-image: url(/media/backgroundA.svg);
   background-attachment: fixed;
   background-size: cover;
   background-position-x: 50%;
   background-position-y: 80%;
   background-size: 120%;
   opacity: .8;
+  -webkit-filter: grayscale(100%);
+          filter: grayscale(100%);
 }
 
 .heroPage {
