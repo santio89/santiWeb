@@ -75,7 +75,7 @@ h2{
 h3{
     font-size: calc(1.2rem + .4vw + .4vh);
     font-weight: 300;
-    margin-bottom: 1rem;
+    margin-bottom: 1.4rem;
 }
 
 p{
@@ -156,7 +156,7 @@ p{
     align-items: center;
     position: fixed;
     width: 100%;
-    min-height: 60px;
+    height: 60px;
     background: $color-fondo;
     padding-left: $padding-general;
     padding-right: $padding-general;
@@ -443,6 +443,10 @@ p{
 
 section{
     width: 100%;
+    min-height: calc(50vh - 30px);
+    padding: $padding-general;
+    padding-bottom: 2rem;
+    
     &:hover .hr__inside, &:focus-within .hr__inside{
         width: calc(100% + 1px);
         transition: width 2000ms;
@@ -485,9 +489,6 @@ section{
 /* section about */
 
 .about{
-    padding: $padding-general;
-    min-height: calc(50vh - 2rem);
-
    /*  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
 
     background-color: $color-fondo;
@@ -518,7 +519,6 @@ section{
 
 .skills{
     background: $color-fondo;
-    padding: $padding-general;
     
     &__info{
         display: flex;
@@ -555,8 +555,6 @@ section{
 /* section works */
 
 .works{
-    padding: $padding-general;
-
     /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
 
     background-color: $color-fondo;
@@ -572,14 +570,14 @@ section{
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin-bottom: 2rem;
+        
 
         &__work{
             display: flex;
             flex-flow: row wrap;
             justify-content: space-evenly;
             align-items: center;
-            gap: calc(2rem + .5vw + .5vh);
+            gap: calc(4rem + .4vw + .4vh);
             width: 100%;
 
             &__container{
@@ -587,9 +585,9 @@ section{
                 flex-flow: column wrap;
                 justify-content: center;
                 align-items: start;
-
+                gap: calc(2rem + .2vw + .2vh);
                 &__p{  
-                    margin-bottom: 1.8em;
+                    
 
                     a{
                         outline: 1px solid var(--color-segundo);
@@ -609,7 +607,7 @@ section{
             &__page{
                 position: relative;
                 background: $color-fondo;
-                margin-bottom: 1.2em;
+                margin-bottom: 2rem;
                 width: 300px;
                 height: 550px; 
 
@@ -648,7 +646,6 @@ section{
 
 .contact{
     background: $color-fondo;
-    padding: $padding-general;
     
     &__wrapper{
         display: flex;
@@ -656,7 +653,7 @@ section{
         justify-content: center;
         align-items: center;
         width: 100%;
-        gap: calc(.8rem + .4vw + .4vh);
+        gap: calc(4rem + .4vw + .4vh);
     }
 
     &__form{
@@ -666,7 +663,6 @@ section{
         align-items: stretch;
         width: 90%;
         min-width: 200px;
-        margin-bottom: 2rem;
         font-size: calc(1rem + .2vw + .2vh);
         font-weight: 200;
         gap: calc(.4rem + .4vw + .4vh);
@@ -914,7 +910,6 @@ section{
         width: 90%;
         min-width: 200px;
         gap: calc(.4rem + .4vw + .4vh);
-        margin-bottom: 2rem;
         
         &__details{
             display: flex;

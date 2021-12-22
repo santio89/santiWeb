@@ -95,7 +95,7 @@ h2 {
 h3 {
   font-size: calc(1.2rem + .4vw + .4vh);
   font-weight: 300;
-  margin-bottom: 1rem;
+  margin-bottom: 1.4rem;
 }
 
 p {
@@ -201,7 +201,7 @@ p {
           align-items: center;
   position: fixed;
   width: 100%;
-  min-height: 60px;
+  height: 60px;
   background: #1e1e1e;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -550,6 +550,9 @@ p {
 /* sections */
 section {
   width: 100%;
+  min-height: calc(50vh - 30px);
+  padding: 1rem;
+  padding-bottom: 2rem;
 }
 
 section:hover .hr__inside, section:focus-within .hr__inside {
@@ -603,8 +606,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 /* section about */
 .about {
-  padding: 1rem;
-  min-height: calc(50vh - 2rem);
   /*  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
   background-color: #1e1e1e;
   background-image: var(--background);
@@ -642,7 +643,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 /* section skills */
 .skills {
   background: #1e1e1e;
-  padding: 1rem;
 }
 
 .skills__info {
@@ -699,7 +699,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 /* section works */
 .works {
-  padding: 1rem;
   /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
   background-color: #1e1e1e;
   background-image: var(--background);
@@ -724,7 +723,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
-  margin-bottom: 2rem;
 }
 
 .works__wrapper__work {
@@ -741,7 +739,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  gap: calc(2rem + .5vw + .5vh);
+  gap: calc(4rem + .4vw + .4vh);
   width: 100%;
 }
 
@@ -759,10 +757,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: start;
-}
-
-.works__wrapper__work__container__p {
-  margin-bottom: 1.8em;
+  gap: calc(2rem + .2vw + .2vh);
 }
 
 .works__wrapper__work__container__p a {
@@ -781,7 +776,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 .works__wrapper__work__page {
   position: relative;
   background: #1e1e1e;
-  margin-bottom: 1.2em;
+  margin-bottom: 2rem;
   width: 300px;
   height: 550px;
 }
@@ -817,7 +812,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 /* section contact */
 .contact {
   background: #1e1e1e;
-  padding: 1rem;
 }
 
 .contact__wrapper {
@@ -835,7 +829,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
-  gap: calc(.8rem + .4vw + .4vh);
+  gap: calc(4rem + .4vw + .4vh);
 }
 
 .contact__form {
@@ -854,7 +848,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
           align-items: stretch;
   width: 90%;
   min-width: 200px;
-  margin-bottom: 2rem;
   font-size: calc(1rem + .2vw + .2vh);
   font-weight: 200;
   gap: calc(.4rem + .4vw + .4vh);
@@ -1175,7 +1168,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   width: 90%;
   min-width: 200px;
   gap: calc(.4rem + .4vw + .4vh);
-  margin-bottom: 2rem;
 }
 
 .contact__info__details {
@@ -1614,7 +1606,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     padding-left: .4rem;
     padding-right: .4rem;
   }
-  .heroPage, .about, .skills, .works, .contact {
+  .heroPage, section {
     padding-left: 8rem;
     padding-right: 8rem;
   }
