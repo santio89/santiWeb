@@ -385,10 +385,11 @@ p {
 }
 
 .heroPage {
+  margin-top: 60px;
   padding: 1rem;
   color: var(--color-cero);
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

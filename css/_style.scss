@@ -304,10 +304,11 @@ p{
 }
 
 .heroPage{
+    margin-top: 60px;
     padding: $padding-general;
     color: var(--color-cero);
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 60px);
     display: flex;
     flex-flow: column wrap;
     justify-content: start;
