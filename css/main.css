@@ -553,7 +553,7 @@ section {
   width: 100%;
 }
 
-section:hover .hr__inside {
+section:hover .hr__inside, section:focus-within .hr__inside {
   width: calc(100% + 1px);
   -webkit-transition: width 2000ms;
   transition: width 2000ms;

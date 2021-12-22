@@ -444,7 +444,7 @@ p{
 
 section{
     width: 100%;
-    &:hover .hr__inside{
+    &:hover .hr__inside, &:focus-within .hr__inside{
         width: calc(100% + 1px);
         transition: width 2000ms;
     }
