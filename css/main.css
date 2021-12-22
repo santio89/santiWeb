@@ -380,6 +380,7 @@ p {
   background-size: cover;
   background-position-x: 50%;
   background-position-y: 92%;
+  background-size: 400%;
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
 }
