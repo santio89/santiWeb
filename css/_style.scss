@@ -156,7 +156,7 @@ p{
     align-items: center;
     position: fixed;
     width: 100%;
-    min-height: 60px;
+    height: 60px;
     background: $color-fondo;
     padding-left: $padding-general;
     padding-right: $padding-general;
@@ -206,7 +206,7 @@ p{
         background: none;
         outline: none;
         border: none;
-        color: var(--color-cero);
+        color: var(--color-primero);
         transition: transform 200ms linear;
         transform-style: preserve-3d;  
         perspective: 1000px;
@@ -216,8 +216,8 @@ p{
             margin: auto;
         }
         
-        &:hover, &:focus{
-            color: var(--color-primero) !important;
+        &:focus{
+            outline: 2px dashed var(--color-tercero);
         }
     }
 }
@@ -300,16 +300,14 @@ p{
     background-size: cover;
     background-position-x: 50%;
     background-position-y: 100%;
-    
-    opacity: .8;
     filter: grayscale(100%);
 }
 
 .heroPage{
-    margin-top: 4rem;
     padding: $padding-general;
     color: var(--color-cero);
-    height: calc(100vh - 4rem);
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-flow: column wrap;
     justify-content: start;
@@ -521,7 +519,6 @@ section{
 .skills{
     background: $color-fondo;
     padding: $padding-general;
-    min-height: calc(50vh - 2rem);
     
     &__info{
         display: flex;
@@ -559,7 +556,6 @@ section{
 
 .works{
     padding: $padding-general;
-    min-height: calc(50vh - 2rem);
 
     /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
 
@@ -720,12 +716,11 @@ section{
             &::placeholder{
                 font-style: italic;
             }
-
         }
      
         &__message{
             width: 100%;
-            min-height: 15vh;
+            min-height: 14ch;
             background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
             background-size: 0% 2px;
             background-repeat: no-repeat;

@@ -23,13 +23,11 @@ header__burgerButton.onclick=function(){
     nav.style.animation="vis 200ms forwards";
     nav.classList.remove("nav--open")
     header__burgerButton.style.setProperty("transform","rotateY(0deg)")
-    header__burgerButton.style.setProperty("color","var(--color-cero)")
   } else{
     nav.style.animation="none";
     nav.style.visibility="visible";
     nav.classList.add("nav--open");
     header__burgerButton.style.setProperty("transform","rotateY(180deg)")
-    header__burgerButton.style.setProperty("color","var(--color-primero)")
   }
 }
 

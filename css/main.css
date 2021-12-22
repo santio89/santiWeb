@@ -201,7 +201,7 @@ p {
           align-items: center;
   position: fixed;
   width: 100%;
-  min-height: 60px;
+  height: 60px;
   background: #1e1e1e;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -264,7 +264,7 @@ p {
   background: none;
   outline: none;
   border: none;
-  color: var(--color-cero);
+  color: var(--color-primero);
   -webkit-transition: -webkit-transform 200ms linear;
   transition: -webkit-transform 200ms linear;
   transition: transform 200ms linear;
@@ -280,8 +280,8 @@ p {
   margin: auto;
 }
 
-.header__burgerButton:hover, .header__burgerButton:focus {
-  color: var(--color-primero) !important;
+.header__burgerButton:focus {
+  outline: 2px dashed var(--color-tercero);
 }
 
 .nav {
@@ -380,16 +380,15 @@ p {
   background-size: cover;
   background-position-x: 50%;
   background-position-y: 100%;
-  opacity: .8;
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
 }
 
 .heroPage {
-  margin-top: 4rem;
   padding: 1rem;
   color: var(--color-cero);
-  height: calc(100vh - 4rem);
+  width: 100vw;
+  height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -644,7 +643,6 @@ section:hover .hr__inside {
 .skills {
   background: #1e1e1e;
   padding: 1rem;
-  min-height: calc(50vh - 2rem);
 }
 
 .skills__info {
@@ -702,7 +700,6 @@ section:hover .hr__inside {
 /* section works */
 .works {
   padding: 1rem;
-  min-height: calc(50vh - 2rem);
   /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
   background-color: #1e1e1e;
   background-image: var(--background);
@@ -935,7 +932,7 @@ section:hover .hr__inside {
 
 .contact__form__message {
   width: 100%;
-  min-height: 15vh;
+  min-height: 14ch;
   background: -webkit-gradient(linear, right top, left top, from(var(--color-primero)), to(var(--color-segundo)));
   background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
   background-size: 0% 2px;
