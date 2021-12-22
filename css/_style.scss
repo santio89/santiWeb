@@ -947,13 +947,13 @@ section{
 .footer{
     padding: $padding-general;
     padding-bottom: 0;
-    background: linear-gradient(45deg, darken($color-primero, 20%) , darken($color-segundo, 20%));
-    background-size: 1000%;
+    background: linear-gradient(45deg, darken($color-primero, 20%), darken($color-segundo, 20%));
+    background-size: 2000%;
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
     align-items: stretch;
-    animation: gradiente__fondo 14s infinite linear alternate;
+    animation: gradiente__fondo 20s infinite linear alternate;
     position: relative;
 
     &__nav{
