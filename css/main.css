@@ -24,6 +24,7 @@ $color-segundo: #ffffff;
   --color-segundo: rgb(117, 255, 186);
   --color-tercero: rgb(255, 140, 0);
   --color-cero: rgb(255, 255, 255);
+  --color-ceroB: rgb(170, 170, 170);
   --background: url("/media/backgroundA.svg");
 }
 
@@ -1094,9 +1095,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   text-align: center;
   position: relative;
   padding: .04em;
-  border: 2px solid var(--color-cero);
+  border: 2px solid var(--color-ceroB);
   border-style: dashed;
-  opacity: .75;
 }
 
 .contact__form__reset span {
