@@ -433,13 +433,13 @@ p {
 
 .heroPage__profilePicWrapper {
   position: absolute;
-  bottom: calc(1rem + 16px);
+  bottom: calc(1rem + 8px);
   right: calc(1rem + 8px);
   border-radius: 50%;
   aspect-ratio: 1;
-  width: 20%;
-  max-width: 150px;
-  min-width: 115px;
+  width: 10%;
+  max-width: 200px;
+  min-width: 100px;
   height: auto;
   background: transparent;
   cursor: pointer;
@@ -773,7 +773,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   background: #1e1e1e;
   margin-bottom: 2rem;
   width: 300px;
-  height: 550px;
+  height: 450px;
 }
 
 .works__wrapper__work__page::after {

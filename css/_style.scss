@@ -341,13 +341,13 @@ p{
     
     &__profilePicWrapper{
         position: absolute;
-        bottom: calc(#{$padding-general} + 16px);
+        bottom: calc(#{$padding-general} + 8px);
         right: calc(#{$padding-general} + 8px);
         border-radius: 50%;
         aspect-ratio: 1;
-        width: 20%;
-        max-width: 150px;
-        min-width: 115px;
+        width: 10%;
+        max-width: 200px;
+        min-width: 100px;
         height: auto;
         background: transparent;
         cursor: pointer;
@@ -606,7 +606,7 @@ section{
                 background: $color-fondo;
                 margin-bottom: 2rem;
                 width: 300px;
-                height: 550px; 
+                height: 450px; 
 
                 &::after{
                     content: "";
