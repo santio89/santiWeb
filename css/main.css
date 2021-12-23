@@ -795,7 +795,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 .works__wrapper__work img {
   display: inline-block;
   width: 300px;
-  height: 550px;
+  height: 450px;
   -o-object-fit: contain;
      object-fit: contain;
   background: #1e1e1e;
