@@ -298,10 +298,10 @@ p{
     background-color: $color-fondo;
     background-image: var(--background);
     /* background-attachment: fixed; */
-    background-size: 300%;
+    background-size: 400%;
     background-position-x: 50%;
-    background-position-y: 90%;
-    filter:grayscale(10%);
+    background-position-y: 84%;
+    
 }
 
 .heroPage{
@@ -490,14 +490,15 @@ section{
 /* section about */
 
 .about{
-   /*  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
-
-    background-color: $color-fondo;
+/*  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
+/*  background-color: $color-fondo;
     background-image: var(--background);
     background-attachment: fixed;
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 90%;
+    background-position-y: 90%; */
+
+    background: transparent;
 
     &__info{
         display: flex;
@@ -558,12 +559,7 @@ section{
 .works{
     /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
 
-    background-color: $color-fondo;
-    background-image: var(--background);
-    background-attachment: fixed;
-    background-size: cover;
-    background-position-x: 50%;
-    background-position-y: 90%;
+    background:transparent;
 
     &__wrapper{
         display: flex;

@@ -378,11 +378,9 @@ p {
   background-color: #1e1e1e;
   background-image: var(--background);
   /* background-attachment: fixed; */
-  background-size: 300%;
+  background-size: 400%;
   background-position-x: 50%;
-  background-position-y: 90%;
-  -webkit-filter: grayscale(10%);
-          filter: grayscale(10%);
+  background-position-y: 84%;
 }
 
 .heroPage {
@@ -608,12 +606,13 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 /* section about */
 .about {
   /*  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
-  background-color: #1e1e1e;
-  background-image: var(--background);
-  background-attachment: fixed;
-  background-size: cover;
-  background-position-x: 50%;
-  background-position-y: 90%;
+  /*  background-color: $color-fondo;
+    background-image: var(--background);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: 90%; */
+  background: transparent;
 }
 
 .about__info {
@@ -701,12 +700,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 /* section works */
 .works {
   /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
-  background-color: #1e1e1e;
-  background-image: var(--background);
-  background-attachment: fixed;
-  background-size: cover;
-  background-position-x: 50%;
-  background-position-y: 90%;
+  background: transparent;
 }
 
 .works__wrapper {
