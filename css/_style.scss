@@ -289,19 +289,19 @@ p{
 /* hero page */
 
 .landingVid{
-    position: absolute;
+    position: fixed;
+    z-index: -2;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     background-color: $color-fondo;
-    background-image: url(/media/backgroundA.svg);
-    background-attachment: fixed;
+    background-image: var(--background);
+/*     background-attachment: fixed; */
     background-size: cover;
     background-position-x: 50%;
-    background-position-y: 92%;
-    background-size: 400%;
-    filter: grayscale(100%);
+    background-position-y: 90%;
+    background-size: 100%;
 }
 
 .heroPage{
@@ -492,12 +492,7 @@ section{
 .about{
    /*  background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
 
-    background-color: $color-fondo;
-    background-image: var(--background);
-    background-attachment: fixed;
-    background-size: cover;
-    background-position-x: 50%;
-    background-position-y: 92%;
+   background: transparent;
 
     &__info{
         display: flex;
@@ -558,12 +553,7 @@ section{
 .works{
     /* background: linear-gradient(45deg, var(--color-primero) 40%, var(--color-segundo)); */
 
-    background-color: $color-fondo;
-    background-image: var(--background);
-    background-attachment: fixed;
-    background-size: cover;
-    background-position-x: 50%;
-    background-position-y: 92%;
+    background: transparent;
 
     &__wrapper{
         display: flex;
