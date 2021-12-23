@@ -389,8 +389,8 @@ p {
   background-size: 400%;
   background-position-x: 50%;
   background-position-y: 88%;
-  -webkit-filter: brightness(1.1) contrast(1.1) saturate(1.1);
-          filter: brightness(1.1) contrast(1.1) saturate(1.1);
+  -webkit-filter: brightness(1.1) contrast(1.1) saturate(1.2);
+          filter: brightness(1.1) contrast(1.1) saturate(1.2);
 }
 
 .heroPage {
