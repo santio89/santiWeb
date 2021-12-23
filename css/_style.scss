@@ -71,6 +71,7 @@ h2{
     font-size: calc(1.4rem + .8vw + .8vh);
     font-weight: 500;
     text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
+    filter: drop-shadow(1px 1px 0 var(--color-primero));
 }
 
 h3{
@@ -545,9 +546,22 @@ section{
             align-items: center;
             max-width: 320px;
             margin: auto;
-            
-            &:hover{
-                filter: grayscale(100%);
+            width: 110%;
+            height: auto;
+            transform:scale(90%);
+
+            &:hover, &:focus{
+                transform:scale(100%);
+            }
+
+            img{
+                width: 100%;
+                filter: drop-shadow(2px 2px 0 var(--color-cero)) grayscale(20%);
+
+                &:hover, &:focus{
+                    filter: drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
+                   
+                }
             }
             
         }

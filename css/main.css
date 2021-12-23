@@ -91,6 +91,8 @@ h2 {
   font-size: calc(1.4rem + .8vw + .8vh);
   font-weight: 500;
   text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
+  -webkit-filter: drop-shadow(1px 1px 0 var(--color-primero));
+          filter: drop-shadow(1px 1px 0 var(--color-primero));
 }
 
 h3 {
@@ -697,11 +699,26 @@ section:hover .hr__inside, section:focus-within .hr__inside {
           align-items: center;
   max-width: 320px;
   margin: auto;
+  width: 110%;
+  height: auto;
+  -webkit-transform: scale(90%);
+          transform: scale(90%);
 }
 
-.skills__wrapper__skill:hover {
-  -webkit-filter: grayscale(100%);
-          filter: grayscale(100%);
+.skills__wrapper__skill:hover, .skills__wrapper__skill:focus {
+  -webkit-transform: scale(100%);
+          transform: scale(100%);
+}
+
+.skills__wrapper__skill img {
+  width: 100%;
+  -webkit-filter: drop-shadow(2px 2px 0 var(--color-cero)) grayscale(20%);
+          filter: drop-shadow(2px 2px 0 var(--color-cero)) grayscale(20%);
+}
+
+.skills__wrapper__skill img:hover, .skills__wrapper__skill img:focus {
+  -webkit-filter: drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
+          filter: drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
 }
 
 /* section works */
