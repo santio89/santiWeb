@@ -447,9 +447,8 @@ p{
 
 section{
     width: 100%;
-    min-height: calc(50vh - 30px);
     padding: $padding-general;
-    padding-bottom: 2rem;
+    padding-bottom: calc(2rem + .2vw + .2vh);
     
     &:hover .hr__inside, &:focus-within .hr__inside{
         width: calc(100% + 1px);
@@ -588,6 +587,7 @@ section{
             align-items: center;
             gap: calc(4rem + .4vw + .4vh);
             width: 100%;
+            margin-top: 2rem;
 
             &__container{
                 display: flex;
@@ -595,6 +595,7 @@ section{
                 justify-content: center;
                 align-items: start;
                 gap: calc(2rem + .2vw + .2vh);
+
                 &__p{  
                     
 

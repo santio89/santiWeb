@@ -559,9 +559,8 @@ p {
 /* sections */
 section {
   width: 100%;
-  min-height: calc(50vh - 30px);
   padding: 1rem;
-  padding-bottom: 2rem;
+  padding-bottom: calc(2rem + .2vw + .2vh);
 }
 
 section:hover .hr__inside, section:focus-within .hr__inside {
@@ -759,6 +758,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
           align-items: center;
   gap: calc(4rem + .4vw + .4vh);
   width: 100%;
+  margin-top: 2rem;
 }
 
 .works__wrapper__work__container {
