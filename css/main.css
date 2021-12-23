@@ -551,6 +551,7 @@ p {
 /* sections */
 section {
   width: 100%;
+  /* min-height: calc(50vh - 30px); */
   padding: 1rem;
   padding-bottom: 2rem;
 }
