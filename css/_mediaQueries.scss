@@ -9,15 +9,16 @@
     .nav{
         position: unset;
         width: unset;
+        background: unset;
+        height: unset;
+        transform: unset;
+        transition: unset;
         margin-left: auto;
         display: flex;
         justify-content: end;
         align-items: end;
-        background: unset;
-        height: unset;
-        overflow: hidden;
         box-shadow: unset;
-        visibility: visible !important;
+        visibility: visible !important;  
         
         &__ul{
             display: flex;

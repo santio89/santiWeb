@@ -216,8 +216,8 @@ p {
   position: absolute;
   top: 110%;
   left: -4%;
-  -webkit-transform: translateX(-110%);
-          transform: translateX(-110%);
+  -webkit-transform: translateX(-104%);
+          transform: translateX(-104%);
   color: #1e1e1e;
   font-weight: 400;
   background: var(--color-segundo);
@@ -273,6 +273,7 @@ p {
           transform-style: preserve-3d;
   -webkit-perspective: 1000px;
           perspective: 1000px;
+  will-change: transform;
 }
 
 .header__burgerButton__icon {
@@ -305,9 +306,13 @@ p {
   text-shadow: 0 0 0.2rem var(--color-segundo);
   border-radius: 0 0 0 .5em;
   overflow: hidden;
-  width: 0;
-  -webkit-transition: width 200ms linear;
-  transition: width 200ms linear;
+  width: 175px;
+  -webkit-transform: translateX(calc(104% + .1rem));
+          transform: translateX(calc(104% + .1rem));
+  -webkit-transition: -webkit-transform 200ms linear;
+  transition: -webkit-transform 200ms linear;
+  transition: transform 200ms linear;
+  transition: transform 200ms linear, -webkit-transform 200ms linear;
 }
 
 .nav__ul {
@@ -344,7 +349,8 @@ p {
 }
 
 .nav--open {
-  width: 175px;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
   visibility: visible;
 }
 
@@ -1570,6 +1576,12 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   .nav {
     position: unset;
     width: unset;
+    background: unset;
+    height: unset;
+    -webkit-transform: unset;
+            transform: unset;
+    -webkit-transition: unset;
+    transition: unset;
     margin-left: auto;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1580,9 +1592,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     -webkit-box-align: end;
         -ms-flex-align: end;
             align-items: end;
-    background: unset;
-    height: unset;
-    overflow: hidden;
     -webkit-box-shadow: unset;
             box-shadow: unset;
     visibility: visible !important;
