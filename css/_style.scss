@@ -548,9 +548,10 @@ section{
             width: 110%;
             height: auto;
             transform:scale(90%); 
-
+            
             img{
                 width: 100%;
+                transition: 100ms;
                 filter: drop-shadow(2px 2px 0 var(--color-cero)) grayscale(20%);
 
                 &:hover, &:focus{
