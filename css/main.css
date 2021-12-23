@@ -704,11 +704,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
           transform: scale(90%);
 }
 
-.skills__wrapper__skill:hover, .skills__wrapper__skill:focus {
-  -webkit-transform: scale(100%);
-          transform: scale(100%);
-}
-
 .skills__wrapper__skill img {
   width: 100%;
   -webkit-filter: drop-shadow(2px 2px 0 var(--color-cero)) grayscale(20%);
