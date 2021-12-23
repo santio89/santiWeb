@@ -508,7 +508,7 @@ section{
         &__details{
             margin: auto;
             max-width: 100ch;
-            background: rgba(0, 0, 0, .2);
+            background: rgba(0, 0, 0, .25);
             border-radius: .2em;
             padding: 1em;
             line-height: 1.8; 
@@ -585,7 +585,7 @@ section{
 
                     a{
                         outline: 1px solid var(--color-segundo);
-                        background: rgba(0, 0, 0, .2);
+                        background: rgba(0, 0, 0, .25);
                         border-radius: .2em;
                         padding: .2em;
                         color: var(--color-cero);
