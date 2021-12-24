@@ -713,8 +713,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 
 .skills__wrapper__skill img:hover, .skills__wrapper__skill img:focus {
-  -webkit-filter: drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
-          filter: drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
+  -webkit-filter: drop-shadow(2px 2px 0 var(--color-primero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
+          filter: drop-shadow(2px 2px 0 var(--color-primero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
 }
 
 /* section works */
