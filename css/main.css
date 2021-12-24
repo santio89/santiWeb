@@ -109,7 +109,7 @@ p {
 /* fin general */
 /* loader */
 .loaderWrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
