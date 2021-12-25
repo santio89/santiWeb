@@ -30,7 +30,7 @@ $color-segundo: #ffffff;
 
 html {
   font-size: 100%;
-  scroll-padding-top: 4rem;
+  scroll-padding-top: calc(60px + .1rem);
   overflow-x: hidden;
   overflow-y: scroll;
 }
