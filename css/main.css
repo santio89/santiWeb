@@ -247,11 +247,12 @@ p {
   font-weight: 600;
   outline: none;
   font-style: italic;
-  font-size: 2.4rem;
+  font-size: 2.8rem;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  line-height: 1;
 }
 
 .header__logo:hover, .header__logo:focus {
