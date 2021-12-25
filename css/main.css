@@ -213,9 +213,6 @@ p {
   z-index: 3;
   -webkit-transition: 200ms;
   transition: 200ms;
-  /*   &__border{
-        box-shadow: 0 .1rem 0rem 0 var(--color-primero);
-    } */
 }
 
 .header__skip {
