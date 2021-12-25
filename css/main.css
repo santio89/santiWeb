@@ -205,9 +205,9 @@ p {
   position: fixed;
   width: 100%;
   height: 60px;
-  background: #1e1e1e;
   padding-left: 1rem;
   padding-right: 1rem;
+  background: #1e1e1e;
   -webkit-box-shadow: 0 0.1rem 0rem 0 var(--color-primero);
           box-shadow: 0 0.1rem 0rem 0 var(--color-primero);
   z-index: 3;

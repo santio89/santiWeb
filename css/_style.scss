@@ -159,9 +159,9 @@ p{
     position: fixed;
     width: 100%;
     height: 60px;
-    background: $color-fondo;
     padding-left: $padding-general;
     padding-right: $padding-general;
+    background: $color-fondo;
     box-shadow: 0 .1rem 0rem 0 var(--color-primero);
     z-index: 3;
     transition: 200ms;
