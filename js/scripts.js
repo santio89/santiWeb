@@ -179,3 +179,18 @@ colorC.onkeydown = function(e){
 }
 
 /* FIN COLOR PICKER */
+
+
+/* HIDE NAV BORDER ON TOP */
+
+/* $(function () {
+  $(window).on("scroll", function () {
+    if ($(window).scrollTop() > 100) {
+      $(".header").addClass("header__border");
+    } else {
+      $(".header").removeClass("header__border");
+    }
+  });
+}); */
+
+/*FIN HIDE NAV BORDER ON TOP */
