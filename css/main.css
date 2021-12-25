@@ -305,10 +305,10 @@ p {
       -ms-flex-pack: center;
           justify-content: center;
   background: #1e1e1e;
-  -webkit-box-shadow: 0 0.1rem 0rem 0 var(--color-segundo), -0.1rem 0 0rem 0 var(--color-segundo);
-          box-shadow: 0 0.1rem 0rem 0 var(--color-segundo), -0.1rem 0 0rem 0 var(--color-segundo);
+  -webkit-box-shadow: 0 0.1rem 0rem 0 var(--color-segundo), -0.1rem 0 0rem 0 var(--color-segundo), 0 -0.1rem 0rem 0 var(--color-segundo);
+          box-shadow: 0 0.1rem 0rem 0 var(--color-segundo), -0.1rem 0 0rem 0 var(--color-segundo), 0 -0.1rem 0rem 0 var(--color-segundo);
   text-shadow: 0 0 0.2rem var(--color-segundo);
-  border-radius: 0 0 0 .5em;
+  border-radius: .25em 0 0 1em;
   overflow: hidden;
   width: 175px;
   -webkit-transform: translateX(calc(104% + .1rem));

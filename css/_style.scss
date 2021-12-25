@@ -229,7 +229,7 @@ p{
 .nav{
     position: absolute;
     right: 0;
-    top: 100%;
+    top: 100%; 
     width: 100%;
     font-size: 1.5rem;
     font-weight: 200;
@@ -237,9 +237,9 @@ p{
     display: flex;
     justify-content: center;
     background: $color-fondo;
-    box-shadow: 0 .1rem 0rem 0 var(--color-segundo), -.1rem 0 0rem 0 var(--color-segundo);
+    box-shadow: 0 .1rem 0rem 0 var(--color-segundo), -.1rem 0 0rem 0 var(--color-segundo), 0 -.1rem 0rem 0 var(--color-segundo);
     text-shadow: 0 0 .2rem var(--color-segundo);
-    border-radius: 0 0 0 .5em;
+    border-radius: .25em 0 0 1em;
     overflow: hidden;
     width: 175px;
     transform: translateX(calc(104% + .1rem));
