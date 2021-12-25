@@ -408,7 +408,7 @@ p {
   background-position-y: 90%;
   -webkit-filter: brightness(1.1) contrast(1.1) saturate(1.2);
           filter: brightness(1.1) contrast(1.1) saturate(1.2);
-  display: none;
+  opacity: 0;
 }
 
 .landingVidC {
@@ -425,7 +425,7 @@ p {
   background-position-y: 90%;
   -webkit-filter: brightness(1.1) contrast(1.1) saturate(1.2);
           filter: brightness(1.1) contrast(1.1) saturate(1.2);
-  display: none;
+  opacity: 0;
 }
 
 .heroPage {
