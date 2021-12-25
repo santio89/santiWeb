@@ -1718,7 +1718,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   }
 }
 
-@media (max-width: 240px) {
+@media (max-width: 150px) {
   .header {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
