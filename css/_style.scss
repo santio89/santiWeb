@@ -302,7 +302,7 @@ p{
     height: 100vh;
     background-color: $color-fondo;
     background-image: var(--background);
-    background-size: 100%;
+    background-size: cover;
     background-position-x: 50%;
     background-position-y: 92%;
     filter: brightness(1.1) contrast(1.1) saturate(1.2);
