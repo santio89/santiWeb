@@ -302,9 +302,9 @@ p{
     height: 100vh;
     background-color: $color-fondo;
     background-image: var(--background);
-    background-size: 400%;
+    background-size: 100%;
     background-position-x: 50%;
-    background-position-y: 88%;
+    background-position-y: 92%;
     filter: brightness(1.1) contrast(1.1) saturate(1.2);
 }
 
@@ -955,7 +955,7 @@ section{
     flex-flow: column wrap;
     justify-content: space-between;
     align-items: stretch;
-    animation: gradiente__fondo 20s infinite linear alternate;
+    animation: gradiente__fondo 18s infinite linear alternate;
     position: relative;
 
     &__nav{
@@ -1050,8 +1050,9 @@ section{
     width: 100vw;
     height: 100vh;
     z-index: 1;
-    background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
-    background-size: 400%;
+    /* background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
+    background-size: 400%; */
+    background: $color-fondo;
   }
 /* fin particles js */
 

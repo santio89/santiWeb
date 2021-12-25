@@ -387,9 +387,9 @@ p {
   height: 100vh;
   background-color: #1e1e1e;
   background-image: var(--background);
-  background-size: 400%;
+  background-size: 100%;
   background-position-x: 50%;
-  background-position-y: 88%;
+  background-position-y: 92%;
   -webkit-filter: brightness(1.1) contrast(1.1) saturate(1.2);
           filter: brightness(1.1) contrast(1.1) saturate(1.2);
 }
@@ -1235,8 +1235,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  -webkit-animation: gradiente__fondo 20s infinite linear alternate;
-          animation: gradiente__fondo 20s infinite linear alternate;
+  -webkit-animation: gradiente__fondo 18s infinite linear alternate;
+          animation: gradiente__fondo 18s infinite linear alternate;
   position: relative;
 }
 
@@ -1352,8 +1352,9 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  background: linear-gradient(135deg, rgba(43, 0, 83, 0.8), rgba(15, 255, 135, 0.8));
-  background-size: 400%;
+  /* background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
+    background-size: 400%; */
+  background: #1e1e1e;
 }
 
 /* fin particles js */
