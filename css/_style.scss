@@ -15,7 +15,7 @@
     --color-tercero: rgb(255, 140, 0);
     --color-cero: rgb(255, 255, 255);
     --color-ceroB: rgb(170, 170, 170);
-    --background: url("/media/backgroundA.svg");
+/*--background: url("/media/backgroundA.svg");*/
 }
 
 html{
@@ -293,7 +293,7 @@ p{
 
 /* hero page */
 
-.landingVid{
+.landingVidA{
     position: fixed;
     z-index: -2;
     top: 0;
@@ -301,11 +301,43 @@ p{
     width: 100vw;
     height: 100vh;
     background-color: $color-fondo;
-    background-image: var(--background);
+    background-image: url(/media/backgroundA.svg);
     background-size: cover;
     background-position-x: 50%;
     background-position-y: 90%;
     filter: brightness(1.1) contrast(1.1) saturate(1.2);
+}
+
+.landingVidB{
+    position: fixed;
+    z-index: -2;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-fondo;
+    background-image: url(/media/backgroundB.svg);
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: 90%;
+    filter: brightness(1.1) contrast(1.1) saturate(1.2);
+    display:none;
+}
+
+.landingVidC{
+    position: fixed;
+    z-index: -2;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-fondo;
+    background-image: url(/media/backgroundC.svg);
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: 90%;
+    filter: brightness(1.1) contrast(1.1) saturate(1.2);
+    display:none
 }
 
 .heroPage{

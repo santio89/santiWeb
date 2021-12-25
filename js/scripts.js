@@ -52,8 +52,11 @@ let colorB = document.getElementById("colorB");
 let colorC = document.getElementById("colorC");
 let colorContainer = document.getElementById("colorContainer");
 let footer = document.getElementById("footer");
-let footer__hr = document.getElementById("footer__hr")
-let particles = document.getElementById("particles-js")
+let footer__hr = document.getElementById("footer__hr");
+let particles = document.getElementById("particles-js");
+let landingVidA = document.getElementById("landingVidA");
+let landingVidB = document.getElementById("landingVidB");
+let landingVidC = document.getElementById("landingVidC");
 
 colorA.onclick = function(){
   colorC.classList.remove("color--active");
@@ -63,11 +66,14 @@ colorA.onclick = function(){
   root.style.setProperty("--color-segundo","rgb(117, 255, 186)");
   root.style.setProperty("--color-primero-rgb","95, 0, 185");
   root.style.setProperty("--color-segundo-rgb","117, 255, 186"); 
-  root.style.setProperty("--background","url('/media/backgroundA.svg')");
+  landingVidA.style.setProperty("display", "block");
+  landingVidB.style.setProperty("display", "none");
+  landingVidC.style.setProperty("display", "none");
   footer.style.setProperty("background", "linear-gradient(45deg, #2b0053, #0fff87)");
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
-/*   particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
+  /* root.style.setProperty("--background","url('/media/backgroundA.svg')"); */
+  /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
   particles.style.setProperty("background-size", "400%"); */
 }
 
@@ -80,10 +86,13 @@ colorA.onkeydown = function(e){
     root.style.setProperty("--color-segundo","rgb(117, 255, 186)");
     root.style.setProperty("--color-primero-rgb","95, 0, 185");
     root.style.setProperty("--color-segundo-rgb","117, 255, 186");  
-    root.style.setProperty("--background","url('/media/backgroundA.svg')");  
+    landingVidA.style.setProperty("display", "block");
+    landingVidB.style.setProperty("display", "none");
+    landingVidC.style.setProperty("display", "none");
     footer.style.setProperty("background", "linear-gradient(45deg, #2b0053, #0fff87)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
+    /* root.style.setProperty("--background","url('/media/backgroundA.svg')");   */
     /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
     particles.style.setProperty("background-size", "400%"); */
   }
@@ -97,10 +106,13 @@ colorB.onclick = function(){
     root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
     root.style.setProperty("--color-primero-rgb","124, 47, 0");
     root.style.setProperty("--color-segundo-rgb","87, 216, 255");
-    root.style.setProperty("--background","url('/media/backgroundB.svg')");
+    landingVidB.style.setProperty("display", "block");
+    landingVidA.style.setProperty("display", "none");
+    landingVidC.style.setProperty("display", "none");
     footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
+    /* root.style.setProperty("--background","url('/media/backgroundB.svg')"); */
     /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
     particles.style.setProperty("background-size", "400%"); */
 }
@@ -114,10 +126,13 @@ colorB.onkeydown = function(e){
     root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
     root.style.setProperty("--color-primero-rgb","124, 47, 0");
     root.style.setProperty("--color-segundo-rgb","87, 216, 255");
-    root.style.setProperty("--background","url('/media/backgroundB.svg')");
+    landingVidB.style.setProperty("display", "block");
+    landingVidA.style.setProperty("display", "none");
+    landingVidC.style.setProperty("display", "none");
     footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
+    /* root.style.setProperty("--background","url('/media/backgroundB.svg')"); */
     /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
     particles.style.setProperty("background-size", "400%"); */
   }
@@ -131,10 +146,13 @@ colorC.onclick = function(){
   root.style.setProperty("--color-segundo","rgb(255, 255, 255)");
   root.style.setProperty("--color-primero-rgb","0, 0, 0");
   root.style.setProperty("--color-segundo-rgb","255, 255, 255");
-  root.style.setProperty("--background","url('/media/backgroundC.svg')");
+  landingVidC.style.setProperty("display", "block");
+  landingVidA.style.setProperty("display", "none");
+  landingVidB.style.setProperty("display", "none"); 
   footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
+  /* root.style.setProperty("--background","url('/media/backgroundC.svg')"); */
   /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
   particles.style.setProperty("background-size", "400%"); */
 }
@@ -148,10 +166,13 @@ colorC.onkeydown = function(e){
     root.style.setProperty("--color-segundo","rgb(255, 255, 255)");
     root.style.setProperty("--color-primero-rgb","0, 0, 0");
     root.style.setProperty("--color-segundo-rgb","255, 255, 255");
-    root.style.setProperty("--background","url('/media/backgroundC.svg')");
+    landingVidC.style.setProperty("display", "block");
+    landingVidA.style.setProperty("display", "none");
+    landingVidB.style.setProperty("display", "none"); 
     footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
+    /* root.style.setProperty("--background","url('/media/backgroundC.svg')"); */
     /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
     particles.style.setProperty("background-size", "400%"); */
   }
