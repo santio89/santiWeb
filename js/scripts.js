@@ -183,14 +183,12 @@ colorC.onkeydown = function(e){
 
 /* HIDE NAV BORDER ON TOP */
 
-/* $(function () {
-  $(window).on("scroll", function () {
-    if ($(window).scrollTop() > 100) {
-      $(".header").addClass("header__border");
-    } else {
-      $(".header").removeClass("header__border");
-    }
-  });
-}); */
+/* let header = document.getElementById("header");
+if (document.body.scrollTop === 0){
+  header.style.setProperty("box-shadow","none");
+}
+else{
+  header.style.setProperty("box-shadow","0 .1rem 0rem 0 var(--color-primero)");
+} */
 
 /*FIN HIDE NAV BORDER ON TOP */
