@@ -89,6 +89,12 @@
     }
 }
 
+@media (min-width: 1920px){
+    .landingVidA, .landingVidB, .landingVidC{
+        background-size: cover;
+    }
+}
+
 @media (min-width: 2000px){
     .heroPage, .about, .skills, .works, .contact{
         $padding-desktop: 16rem;
