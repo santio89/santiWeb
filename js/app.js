@@ -66,7 +66,7 @@ particlesJS('particles-js',
         "distance": 150,
         "color": "#5f00b9",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.1
       },
       "move": {
         "enable": true,
@@ -193,7 +193,7 @@ colorA.addEventListener("click", function(){
         "distance": 150,
         "color": "#5f00b9",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.1
       },
       "move": {
         "enable": true,
@@ -316,7 +316,7 @@ colorB.addEventListener("click", function(){
         "distance": 150,
         "color": "#7c2f00",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.1
       },
       "move": {
         "enable": true,
@@ -439,7 +439,7 @@ colorC.addEventListener("click", function(){
         "distance": 150,
         "color": "#000000",
         "opacity": 0.5,
-        "width": 1
+        "width": 1.1
       },
       "move": {
         "enable": true,
