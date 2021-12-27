@@ -627,8 +627,6 @@ section{
                 gap: calc(2rem + .2vw + .2vh);
 
                 &__p{  
-                    
-
                     a{
                         outline: 1px solid var(--color-segundo);
                         background: rgba(0, 0, 0, .25);
@@ -637,6 +635,7 @@ section{
                         color: var(--color-cero);
 
                         &:hover, &:focus{
+                            background: rgba(0, 0, 0, .3);
                             color: var(--color-segundo);
                             outline: 2px solid var(--color-segundo);
                         }

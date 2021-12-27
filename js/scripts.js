@@ -143,9 +143,9 @@ colorC.onclick = function(){
   colorB.classList.remove("color--active");
   colorC.classList.add("color--active");
   root.style.setProperty("--color-primero","rgb(0, 0, 0)");
-  root.style.setProperty("--color-segundo","rgb(255, 255, 255)");
+  root.style.setProperty("--color-segundo","rgb(210, 210, 210)");
   root.style.setProperty("--color-primero-rgb","0, 0, 0");
-  root.style.setProperty("--color-segundo-rgb","255, 255, 255");
+  root.style.setProperty("--color-segundo-rgb","210, 210, 210");
   landingVidC.style.setProperty("opacity", "1");
   landingVidA.style.setProperty("opacity", "0");
   landingVidB.style.setProperty("opacity", "0"); 
@@ -163,9 +163,9 @@ colorC.onkeydown = function(e){
     colorB.classList.remove("color--active");
     colorC.classList.add("color--active");
     root.style.setProperty("--color-primero","rgb(0, 0, 0)");
-    root.style.setProperty("--color-segundo","rgb(255, 255, 255)");
+    root.style.setProperty("--color-segundo","rgb(200, 200, 200)");
     root.style.setProperty("--color-primero-rgb","0, 0, 0");
-    root.style.setProperty("--color-segundo-rgb","255, 255, 255");
+    root.style.setProperty("--color-segundo-rgb","200, 200, 200");
     landingVidC.style.setProperty("display", "block");
     landingVidA.style.setProperty("display", "none");
     landingVidB.style.setProperty("display", "none"); 
