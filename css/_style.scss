@@ -14,7 +14,6 @@
     --color-segundo: rgb(117, 255, 186);
     --color-tercero: rgb(255, 140, 0);
     --color-cero: rgb(255, 255, 255);
-    --color-ceroB: rgb(170, 170, 170);
 /*--background: url("/media/backgroundA.svg");*/
 }
 
@@ -886,11 +885,11 @@ section{
             min-width: 90px;
             cursor: pointer;
             font-size: 1.1em;
-            color: var(--color-cero);
+            color: rgb(180, 180, 180);
             text-align: center;
             position: relative;
             padding: .04em;
-            border: 2px solid var(--color-ceroB);
+            border: 2px solid rgb(180, 180, 180);
             border-style: dashed;
 
             span{
