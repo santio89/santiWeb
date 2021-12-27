@@ -1269,8 +1269,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  -webkit-animation: gradiente__fondo 18s infinite linear alternate;
-          animation: gradiente__fondo 18s infinite linear alternate;
+  -webkit-animation: gradiente__fondo 20s infinite linear alternate;
+          animation: gradiente__fondo 20s infinite linear alternate;
   position: relative;
 }
 
