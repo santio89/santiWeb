@@ -77,27 +77,6 @@ colorA.onclick = function(){
   particles.style.setProperty("background-size", "400%"); */
 }
 
-colorA.onkeydown = function(e){
-  if (e.keyCode === 13){
-    colorC.classList.remove("color--active");
-    colorB.classList.remove("color--active");
-    colorA.classList.add("color--active");
-    root.style.setProperty("--color-primero","rgb(95, 0, 185)");
-    root.style.setProperty("--color-segundo","rgb(117, 255, 186)");
-    root.style.setProperty("--color-primero-rgb","95, 0, 185");
-    root.style.setProperty("--color-segundo-rgb","117, 255, 186");  
-    landingVidA.style.setProperty("opacity", "1");
-    landingVidB.style.setProperty("opacity", "0");
-    landingVidC.style.setProperty("opacity", "0");
-    footer.style.setProperty("background", "linear-gradient(45deg, #2b0053, #0fff87)");
-    footer.style.setProperty("background-size", "500%");
-    footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
-    /* root.style.setProperty("--background","url('/media/backgroundA.svg')");   */
-    /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
-    particles.style.setProperty("background-size", "400%"); */
-  }
-}
-
 colorB.onclick = function(){
     colorA.classList.remove("color--active");
     colorC.classList.remove("color--active");
@@ -115,27 +94,6 @@ colorB.onclick = function(){
     /* root.style.setProperty("--background","url('/media/backgroundB.svg')"); */
     /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
     particles.style.setProperty("background-size", "400%"); */
-}
-
-colorB.onkeydown = function(e){
-  if (e.keyCode === 13){
-    colorA.classList.remove("color--active");
-    colorC.classList.remove("color--active");
-    colorB.classList.add("color--active");
-    root.style.setProperty("--color-primero","rgb(124, 47, 0)");
-    root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
-    root.style.setProperty("--color-primero-rgb","124, 47, 0");
-    root.style.setProperty("--color-segundo-rgb","87, 216, 255");
-    landingVidB.style.setProperty("opacity", "1");
-    landingVidA.style.setProperty("opacity", "0");
-    landingVidC.style.setProperty("opacity", "0");
-    footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
-    footer.style.setProperty("background-size", "500%");
-    footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
-    /* root.style.setProperty("--background","url('/media/backgroundB.svg')"); */
-    /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
-    particles.style.setProperty("background-size", "400%"); */
-  }
 }
 
 colorC.onclick = function(){
@@ -157,28 +115,9 @@ colorC.onclick = function(){
   particles.style.setProperty("background-size", "400%"); */
 }
 
-colorC.onkeydown = function(e){
-  if (e.keyCode === 13){
-    colorA.classList.remove("color--active");
-    colorB.classList.remove("color--active");
-    colorC.classList.add("color--active");
-    root.style.setProperty("--color-primero","rgb(0, 0, 0)");
-    root.style.setProperty("--color-segundo","rgb(200, 200, 200)");
-    root.style.setProperty("--color-primero-rgb","0, 0, 0");
-    root.style.setProperty("--color-segundo-rgb","200, 200, 200");
-    landingVidC.style.setProperty("display", "block");
-    landingVidA.style.setProperty("display", "none");
-    landingVidB.style.setProperty("display", "none"); 
-    footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
-    footer.style.setProperty("background-size", "500%");
-    footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
-    /* root.style.setProperty("--background","url('/media/backgroundC.svg')"); */
-    /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
-    particles.style.setProperty("background-size", "400%"); */
-  }
-}
-
 /* FIN COLOR PICKER */
+
+
 
 /* hide nav */
 /* let header = document.getElementById("header");

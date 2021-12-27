@@ -24,7 +24,7 @@ particlesJS('particles-js',
         }
       },
       "color": {
-        "value": "#75ffba"
+        "value": ["#75ffba", "#5f00b9"]
       },
       "shape": {
         "type": "circle",
@@ -66,7 +66,7 @@ particlesJS('particles-js',
         "distance": 150,
         "color": "#5f00b9",
         "opacity": 0.5,
-        "width": 1.12
+        "width": 1
       },
       "move": {
         "enable": true,
@@ -151,7 +151,7 @@ colorA.addEventListener("click", function(){
         }
       },
       "color": {
-        "value": "#75ffba"
+        "value": ["#75ffba", "#5f00b9"]
       },
       "shape": {
         "type": "circle",
@@ -193,7 +193,7 @@ colorA.addEventListener("click", function(){
         "distance": 150,
         "color": "#5f00b9",
         "opacity": 0.5,
-        "width": 1.12
+        "width": 1
       },
       "move": {
         "enable": true,
@@ -274,7 +274,7 @@ colorB.addEventListener("click", function(){
         }
       },
       "color": {
-        "value": "#57d8ff"
+        "value": ["#57d8ff", "#7c2f00"]
       },
       "shape": {
         "type": "circle",
@@ -316,7 +316,7 @@ colorB.addEventListener("click", function(){
         "distance": 150,
         "color": "#7c2f00",
         "opacity": 0.5,
-        "width": 1.12
+        "width": 1
       },
       "move": {
         "enable": true,
@@ -397,7 +397,7 @@ colorC.addEventListener("click", function(){
         }
       },
       "color": {
-        "value": "#ffffff"
+        "value": ["#ffffff", "#000000"]
       },
       "shape": {
         "type": "circle",
@@ -439,7 +439,7 @@ colorC.addEventListener("click", function(){
         "distance": 150,
         "color": "#000000",
         "opacity": 0.5,
-        "width": 1.12
+        "width": 1
       },
       "move": {
         "enable": true,
