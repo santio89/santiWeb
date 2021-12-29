@@ -584,7 +584,7 @@ section{
             img{
                 width: 100%;
                 transition: 100ms;
-                filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(40%);
+                filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(20%);
                 
                 
                 &:hover, &:focus{
