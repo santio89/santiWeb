@@ -1,5 +1,5 @@
 
-@media (min-width: 900px){
+@media (min-width: 880px){
     .header{      
         &__burgerButton{
             display: none;
@@ -54,7 +54,7 @@
             grid-template-columns: repeat(4, 1fr);
             
             &__skill{
-                max-width: 200px;
+                max-width: none;
             }
         }
     }
@@ -81,10 +81,6 @@
     .skills{
         &__wrapper{
             grid-template-columns: repeat(8, 1fr);
-
-            &__skill{
-                max-width: 400px;
-            }
         }
     }
 }
