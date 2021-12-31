@@ -54,7 +54,7 @@
             grid-template-columns: repeat(4, 1fr);
             
             &__skill{
-                max-width: none;
+                max-width: 200px;
             }
         }
     }
@@ -81,6 +81,10 @@
     .skills{
         &__wrapper{
             grid-template-columns: repeat(8, 1fr);
+
+            &__skill{
+                max-width: 400px;
+            }
         }
     }
 }
