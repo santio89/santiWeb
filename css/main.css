@@ -603,6 +603,11 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   transition: width 2000ms;
 }
 
+.section__container {
+  margin: 0 auto;
+  max-width: 1800px;
+}
+
 .sectionTitle {
   display: -webkit-box;
   display: -ms-flexbox;

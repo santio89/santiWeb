@@ -488,6 +488,11 @@ section{
     }
 }
 
+.section__container{
+    margin: 0 auto;
+    max-width: 1800px;
+}
+
 .sectionTitle{
     display: flex;
     justify-content: center;
