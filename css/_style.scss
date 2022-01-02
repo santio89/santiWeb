@@ -556,6 +556,11 @@ section{
 
 /* section skills */
 
+.img-fluid{
+    max-width: 100%;
+    height: auto;
+}
+
 .skills{
     background: $color-fondo;
     
