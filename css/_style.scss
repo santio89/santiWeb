@@ -664,6 +664,19 @@ section{
                     background-repeat: no-repeat;
                     pointer-events: none;
                 }
+                
+                &::before{
+                    content: "";
+                    position: absolute;                   
+                    inset: -24px;
+                    background: url(../media/mobileFrame.png);
+                    background-size: 94% 99.8%;
+                    background-position: 60% 100%;
+                    background-repeat: no-repeat;
+                    pointer-events: none;
+                    filter: drop-shadow(2px 2px 0 black) drop-shadow(2px 2px 0 var(--color-segundo)); 
+                    z-index: -1;
+                }
             }
 
             iframe{
