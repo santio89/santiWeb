@@ -32,6 +32,7 @@ html {
   scroll-padding-top: 60px;
   overflow-x: hidden;
   overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 ul, ol, li, a, h1, h2, h3, p, body, header, section, footer, .container, .container-fluid, .row, .col {
@@ -718,9 +719,9 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   width: 100%;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (minmax(150px, 1fr))[auto-fit];
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: calc(.4rem + 1vw + 1vh);
+  -ms-grid-columns: (minmax(MIN(150px, 45%), 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(MIN(150px, 45%), 1fr));
+  gap: calc(.2rem + 1vw + 1vh);
 }
 
 .skills__wrapper__skill {
@@ -1642,6 +1643,16 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   }
 }
 
+@media (min-width: 700px) {
+  .skills__wrapper {
+    -ms-grid-columns: (1fr)[4];
+        grid-template-columns: repeat(4, 1fr);
+  }
+  .skills__wrapper__skill {
+    max-width: 220px;
+  }
+}
+
 @media (min-width: 880px) {
   .header__burgerButton {
     display: none;
@@ -1694,13 +1705,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     padding-left: 4rem;
     padding-right: 4rem;
   }
-  .skills__wrapper {
-    -ms-grid-columns: (1fr)[4];
-        grid-template-columns: repeat(4, 1fr);
-  }
-  .skills__wrapper__skill {
-    max-width: 200px;
-  }
   .contact__wrapper {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1727,11 +1731,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 @media (min-width: 1800px) {
   .skills__wrapper {
-    -ms-grid-columns: (1fr)[8];
-        grid-template-columns: repeat(8, 1fr);
-  }
-  .skills__wrapper__skill {
-    max-width: 400px;
+    -ms-grid-columns: (1fr)[5];
+        grid-template-columns: repeat(5, 1fr);
   }
 }
 

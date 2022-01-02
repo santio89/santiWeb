@@ -1,3 +1,14 @@
+@media (min-width: 700px){
+        .skills{
+        &__wrapper{
+            grid-template-columns: repeat(4, 1fr);
+            
+            &__skill{
+                max-width: 220px;
+            }
+        }
+    }
+}
 
 @media (min-width: 880px){
     .header{      
@@ -49,16 +60,6 @@
         padding-right: 4rem;
     }
 
-    .skills{
-        &__wrapper{
-            grid-template-columns: repeat(4, 1fr);
-            
-            &__skill{
-                max-width: 200px;
-            }
-        }
-    }
-
     .contact{
         &__wrapper{
             display: flex;
@@ -80,11 +81,7 @@
 @media (min-width: 1800px){
     .skills{
         &__wrapper{
-            grid-template-columns: repeat(8, 1fr);
-
-            &__skill{
-                max-width: 400px;
-            }
+            grid-template-columns: repeat(5, 1fr);
         }
     }
 }

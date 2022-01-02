@@ -22,6 +22,7 @@ html{
     scroll-padding-top: 60px;
     overflow-x: hidden;
     overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 ul, ol, li, a, h1, h2, h3, p, body, header, section, footer, .container, .container-fluid, .row, .col{
@@ -575,8 +576,8 @@ section{
     &__wrapper{
         width: 100%;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: calc(.4rem + 1vw + 1vh);
+        grid-template-columns: repeat(auto-fit, minmax(MIN(150px, 45%), 1fr));
+        gap: calc(.2rem + 1vw + 1vh);
 
         &__skill{
             text-align: center;
