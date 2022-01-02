@@ -923,6 +923,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
           align-items: stretch;
   width: 90%;
   min-width: 200px;
+  font-family: "Roboto", sans-serif;
   font-size: calc(1rem + .2vw + .2vh);
   font-weight: 200;
   gap: calc(.4rem + .4vw + .4vh);
@@ -972,6 +973,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   color: var(--color-cero);
   outline: none;
   border-bottom: 1px solid var(--color-primero);
+  font-family: inherit;
   font-weight: 300;
   font-size: 1em;
   -webkit-transition: background-size 400ms;
@@ -1012,6 +1014,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   outline: none;
   border: none;
   border-bottom: 1px solid var(--color-primero);
+  font-family: inherit;
   font-weight: 300;
   font-size: .9em;
   -webkit-transition: background-size 400ms;
