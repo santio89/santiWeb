@@ -1135,6 +1135,7 @@ section{
     border-radius: 50%;
     background:var(--color-tercero);
     border: none;
+    cursor: pointer;
 
     &--a{
         background: linear-gradient(90deg, rgb(95, 0, 185) 50%, rgb(117, 255, 186) 50%)
