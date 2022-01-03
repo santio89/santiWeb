@@ -1098,6 +1098,7 @@ section{
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, rgba(var(--color-primero-rgb), .8), rgba(var(--color-segundo-rgb), .8));
+    border-radius: 10px;
   }
   
   /* Handle on hover */
