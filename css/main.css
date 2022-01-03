@@ -60,6 +60,7 @@ body {
       -ms-flex-pack: justify;
           justify-content: space-between;
   position: relative;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 a {
@@ -70,6 +71,19 @@ a {
 
 ul {
   list-style: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.container-fluid {
+  width: 100%;
 }
 
 /* general */
@@ -264,7 +278,6 @@ p {
 
 .header__burgerButton {
   margin-left: auto;
-  text-shadow: 0.4px 0.4px 0 var(--color-segundo), 0.8px 0.8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo);
   background: none;
   outline: none;
   border: none;
@@ -277,12 +290,12 @@ p {
           transform-style: preserve-3d;
   -webkit-perspective: 1000px;
           perspective: 1000px;
-  will-change: transform;
 }
 
 .header__burgerButton__icon {
   font-size: 2.4rem;
   margin: auto;
+  text-shadow: 0.4px 0.4px 0 var(--color-segundo), 0.8px 0.8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo);
 }
 
 .header__burgerButton:focus-visible {
@@ -689,11 +702,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 
 /* section skills */
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-}
-
 .skills {
   background: #1e1e1e;
 }
@@ -1457,8 +1465,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   border-radius: 50%;
   background: var(--color-tercero);
   border: none;
-  cursor: pointer;
-  outline: none;
 }
 
 .color--a {
@@ -1484,13 +1490,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 .color:hover, .color:focus {
   -webkit-box-shadow: 0 0 0 2px var(--color-tercero);
           box-shadow: 0 0 0 2px var(--color-tercero);
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  outline: none;
-  user-select: none;
-  border: none;
 }
 
 .color:active {

@@ -43,6 +43,7 @@ body{
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 a{
@@ -54,6 +55,20 @@ a{
 ul{
     list-style: none;
 }
+
+button{
+   cursor: pointer;
+}
+
+.img-fluid{
+    max-width: 100%;
+    height: auto;
+}
+
+.container-fluid{
+    width: 100%;
+}
+
 
 /* general */
 
@@ -205,7 +220,6 @@ p{
 
     &__burgerButton{
         margin-left: auto;
-        text-shadow: .4px .4px 0 var(--color-segundo), .8px .8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo);
         background: none;
         outline: none;
         border: none;
@@ -213,11 +227,11 @@ p{
         transition: transform 200ms linear;
         transform-style: preserve-3d;  
         perspective: 1000px;
-        will-change: transform;
 
         &__icon{
             font-size: 2.4rem;
             margin: auto;
+            text-shadow: .4px .4px 0 var(--color-segundo), .8px .8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo);
         }
         
         &:focus-visible{
@@ -556,11 +570,6 @@ section{
 }
 
 /* section skills */
-
-.img-fluid{
-    max-width: 100%;
-    height: auto;
-}
 
 .skills{
     background: $color-fondo;
@@ -1135,9 +1144,7 @@ section{
     border-radius: 50%;
     background:var(--color-tercero);
     border: none;
-    cursor: pointer;
-    outline: none;
-    
+
     &--a{
         background: linear-gradient(90deg, rgb(95, 0, 185) 50%, rgb(117, 255, 186) 50%)
     }
@@ -1154,11 +1161,6 @@ section{
   
     &:hover, &:focus{
         box-shadow: 0 0 0 2px var(--color-tercero);
-        user-select: none;
-
-        outline: none;
-        user-select: none;
-        border: none;
     }
 
     &:active{
