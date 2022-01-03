@@ -463,7 +463,7 @@ p {
 
 .heroPage__title {
   z-index: 2;
-  margin-top: calc(60px + 8% + .4vw + .4vh);
+  margin-top: calc(60px + 5vw + 5vh);
   background: transparent;
   line-height: 1.2;
 }
@@ -497,7 +497,7 @@ p {
   aspect-ratio: 1;
   width: 10%;
   max-width: 200px;
-  min-width: 90px;
+  min-width: 100px;
   height: auto;
   background: transparent;
   cursor: pointer;
