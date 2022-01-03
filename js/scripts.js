@@ -54,9 +54,9 @@ let colorContainer = document.getElementById("colorContainer");
 let footer = document.getElementById("footer");
 let footer__hr = document.getElementById("footer__hr");
 let particles = document.getElementById("particles-js");
-let landingVidA = document.getElementById("landingVidA");
-let landingVidB = document.getElementById("landingVidB");
-let landingVidC = document.getElementById("landingVidC");
+let landingImgA = document.getElementById("landingImgA");
+let landingImgB = document.getElementById("landingImgB");
+let landingImgC = document.getElementById("landingImgC");
 
 colorA.onclick = function(){
   colorC.classList.remove("color--active");
@@ -66,9 +66,9 @@ colorA.onclick = function(){
   root.style.setProperty("--color-segundo","rgb(117, 255, 186)");
   root.style.setProperty("--color-primero-rgb","95, 0, 185");
   root.style.setProperty("--color-segundo-rgb","117, 255, 186"); 
-  landingVidA.style.setProperty("opacity", "1");
-  landingVidB.style.setProperty("opacity", "0");
-  landingVidC.style.setProperty("opacity", "0");
+  landingImgA.style.setProperty("opacity", "1");
+  landingImgB.style.setProperty("opacity", "0");
+  landingImgC.style.setProperty("opacity", "0");
   footer.style.setProperty("background", "linear-gradient(45deg, #2b0053, #0fff87)");
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, #2b0053, #0fff87)");
@@ -85,9 +85,9 @@ colorB.onclick = function(){
     root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
     root.style.setProperty("--color-primero-rgb","124, 47, 0");
     root.style.setProperty("--color-segundo-rgb","87, 216, 255");
-    landingVidB.style.setProperty("opacity", "1");
-    landingVidA.style.setProperty("opacity", "0");
-    landingVidC.style.setProperty("opacity", "0");
+    landingImgB.style.setProperty("opacity", "1");
+    landingImgA.style.setProperty("opacity", "0");
+    landingImgC.style.setProperty("opacity", "0");
     footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
     footer.style.setProperty("background-size", "500%");
     footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
@@ -104,9 +104,9 @@ colorC.onclick = function(){
   root.style.setProperty("--color-segundo","rgb(200, 200, 200)");
   root.style.setProperty("--color-primero-rgb","0, 0, 0");
   root.style.setProperty("--color-segundo-rgb","200, 200, 200");
-  landingVidC.style.setProperty("opacity", "1");
-  landingVidA.style.setProperty("opacity", "0");
-  landingVidB.style.setProperty("opacity", "0"); 
+  landingImgC.style.setProperty("opacity", "1");
+  landingImgA.style.setProperty("opacity", "0");
+  landingImgB.style.setProperty("opacity", "0"); 
   footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
   footer.style.setProperty("background-size", "500%");
   footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
