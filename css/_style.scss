@@ -14,7 +14,6 @@
     --color-segundo: rgb(117, 255, 186);
     --color-tercero: rgb(255, 140, 0);
     --color-cero: rgb(255, 255, 255);
-/*--background: url("/media/backgroundA.svg");*/
 }
 
 html{
@@ -307,7 +306,7 @@ p{
 
 /* hero page */
 
-.landingVidA{
+.landingImgA{
     position: fixed;
     z-index: -2;
     top: 0;
@@ -322,7 +321,7 @@ p{
     filter: brightness(1.1) contrast(1.1) saturate(1.2);
 }
 
-.landingVidB{
+.landingImgB{
     position: fixed;
     z-index: -2;
     top: 0;
@@ -338,7 +337,7 @@ p{
     opacity: 0;
 }
 
-.landingVidC{
+.landingImgC{
     position: fixed;
     z-index: -2;
     top: 0;
