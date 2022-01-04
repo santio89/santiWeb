@@ -1416,17 +1416,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 
 /* FIN SCROLLBAR */
-/* particles js */
-/*   #particles-js{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;
-    background: transparent;
-  } */
-/* fin particles js */
 .colorPicker {
   display: -webkit-box;
   display: -ms-flexbox;
