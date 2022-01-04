@@ -254,23 +254,29 @@ p {
 }
 
 .header__logo {
+  color: var(--color-cero);
   text-shadow: 0 0 0.4rem var(--color-primero);
   -webkit-transition: 200ms;
   transition: 200ms;
   font-weight: 900;
   outline: none;
   font-style: italic;
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   line-height: 1;
+  text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
+  -webkit-filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
+          filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
 }
 
 .header__logo:hover, .header__logo:focus {
   color: var(--color-tercero);
-  text-shadow: 0 0 0.4rem var(--color-tercero);
+  text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
+  -webkit-filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-tercero));
+          filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-tercero));
   -webkit-transition: 200ms;
   transition: 200ms;
 }
