@@ -1,5 +1,5 @@
 /* inicio mouse trail */
-const LINE_DURATION = 1;
+const LINE_DURATION = 2;
 const LINE_WIDTH_START = 10;
 
 $(document).ready(function() {
@@ -65,7 +65,7 @@ function draw() {
 function animatePoints() {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-  var duration = lineDuration * 1000 / 30;
+  var duration = lineDuration * 1000 / 60;
   var point, lastPoint;
 
   for (var i = 0; i < points.length; i++) {
