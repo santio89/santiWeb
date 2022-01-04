@@ -1815,7 +1815,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 @media (max-width: 310px) {
   .heroPage__profilePicWrapper {
-    max-width: 150px;
+    max-width: 120px;
   }
 }
 
