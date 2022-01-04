@@ -65,7 +65,7 @@ function draw() {
 function animatePoints() {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-  var duration = lineDuration * 1000 / 60;
+  var duration = lineDuration * 1000 / 30;
   var point, lastPoint;
 
   for (var i = 0; i < points.length; i++) {
