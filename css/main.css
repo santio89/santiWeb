@@ -459,6 +459,7 @@ p {
       -ms-flex-align: start;
           align-items: start;
   position: relative;
+  background: #1e1e1e;
 }
 
 .heroPage__title {
@@ -466,6 +467,7 @@ p {
   margin-top: calc(60px + 6% + .4vw + .4vh);
   background: transparent;
   line-height: 1.2;
+  pointer-events: none;
 }
 
 .heroPage__span {
@@ -474,6 +476,7 @@ p {
   -webkit-transition: 100ms;
   transition: 100ms;
   display: inline-block;
+  pointer-events: auto;
 }
 
 .heroPage__span:hover {
@@ -1414,18 +1417,15 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 /* FIN SCROLLBAR */
 /* particles js */
-#particles-js {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-  /* background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
-    background-size: 400%; */
-  background: #1e1e1e;
-}
-
+/*   #particles-js{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    background: transparent;
+  } */
 /* fin particles js */
 .colorPicker {
   display: -webkit-box;
@@ -1498,6 +1498,13 @@ section:hover .hr__inside, section:focus-within .hr__inside {
       -ms-user-select: none;
           user-select: none;
   border: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: transparent;
 }
 
 @-webkit-keyframes rotate {

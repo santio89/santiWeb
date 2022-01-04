@@ -363,12 +363,14 @@ p{
     justify-content: start;
     align-items: start;
     position: relative;
+    background: $color-fondo;
 
     &__title{
         z-index: 2;
         margin-top: calc(60px + 6% + .4vw + .4vh);
         background: transparent;
         line-height: 1.2;
+        pointer-events: none;
     }
 
     &__span{
@@ -376,7 +378,8 @@ p{
         text-shadow: 0 0 .2rem var(--color-segundo);
         transition: 100ms;
         display: inline-block;
-
+        pointer-events: auto;
+        
         &:hover{
             color: var(--color-tercero);
             text-shadow: 0 0 .2rem var(--color-tercero);
@@ -1108,17 +1111,15 @@ section{
   /* FIN SCROLLBAR */
 
   /* particles js */
-  #particles-js{
+/*   #particles-js{
     position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     z-index: 1;
-    /* background: linear-gradient(135deg,darken(rgba(95, 0, 185, .8), 20%), darken(rgba(117, 255, 186, .8), 20%));
-    background-size: 400%; */
-    background: $color-fondo;
-  }
+    background: transparent;
+  } */
 /* fin particles js */
 
 .colorPicker{
@@ -1167,4 +1168,11 @@ section{
         user-select: none;
         border: none;
     }
+}
+
+.canvas{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: transparent;
 }
