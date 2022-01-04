@@ -468,11 +468,15 @@ p {
   background: transparent;
   line-height: 1.1;
   pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .heroPage__span {
   color: var(--color-segundo);
-  text-shadow: 0 0 0.2rem var(--color-segundo);
+  -webkit-filter: drop-shadow(0 0 0.1rem var(--color-segundo));
+          filter: drop-shadow(0 0 0.1rem var(--color-segundo));
   -webkit-transition: 100ms;
   transition: 100ms;
   display: inline-block;
@@ -481,7 +485,8 @@ p {
 
 .heroPage__span:hover {
   color: var(--color-tercero);
-  text-shadow: 0 0 0.2rem var(--color-tercero);
+  -webkit-filter: drop-shadow(0 0 0.1rem var(--color-tercero));
+          filter: drop-shadow(0 0 0.1rem var(--color-tercero));
   -webkit-transition: 100ms;
   transition: 100ms;
   -webkit-animation: textWobble 300ms;

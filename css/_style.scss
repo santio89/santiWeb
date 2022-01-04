@@ -371,18 +371,21 @@ p{
         background: transparent;
         line-height: 1.1;
         pointer-events: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility; 
     }
 
     &__span{
         color: var(--color-segundo);
-        text-shadow: 0 0 .2rem var(--color-segundo);
+        filter: drop-shadow(0 0 .1rem var(--color-segundo));
         transition: 100ms;
         display: inline-block;
         pointer-events: auto;
 
         &:hover{
             color: var(--color-tercero);
-            text-shadow: 0 0 .2rem var(--color-tercero);
+            filter: drop-shadow(0 0 .1rem var(--color-tercero));
             transition: 100ms;
             animation: textWobble 300ms;
         }
