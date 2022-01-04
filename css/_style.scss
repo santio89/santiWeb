@@ -378,16 +378,15 @@ p{
 
     &__span{
         color: var(--color-segundo);
-        filter: drop-shadow(0 0 .1rem var(--color-segundo));
         transition: 100ms;
         display: inline-block;
         text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
-        filter: drop-shadow(1px 1px 0 var(--color-primero));
+        filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
         pointer-events: auto;
 
         &:hover{
             color: var(--color-tercero);
-            filter: drop-shadow(0 0 .1rem var(--color-tercero));
+            filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-tercero));
             transition: 100ms;
             animation: textWobble 300ms;
         }
@@ -405,7 +404,7 @@ p{
             font-weight: 500;
             font-size: 2.5em;
             text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
-            filter: drop-shadow(1px 1px 0 var(--color-primero));
+            filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
         }
     }
     
