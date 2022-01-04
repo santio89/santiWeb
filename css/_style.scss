@@ -216,7 +216,7 @@ p{
         &:hover, &:focus{
             color: var(--color-tercero);
             text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
-        filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-tercero));
+            filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-tercero));
             transition: 200ms;
         }
     }
