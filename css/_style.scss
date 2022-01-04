@@ -1171,12 +1171,6 @@ section{
     &:hover, &:focus{
         box-shadow: 0 0 0 2px var(--color-tercero);
     }
-
-    &:active{
-        outline: none;
-        user-select: none;
-        border: none;
-    }
 }
 
 .canvas{
