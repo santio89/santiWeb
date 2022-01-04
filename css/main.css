@@ -72,6 +72,10 @@ ul {
   list-style: none;
 }
 
+button, input, textarea, select {
+  font: inherit;
+}
+
 button {
   cursor: pointer;
 }
