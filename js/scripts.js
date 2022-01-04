@@ -357,6 +357,3 @@ else{
   header.style.setProperty("box-shadow", "none")
 } */
 /* fin hide nav */
-
-
-
