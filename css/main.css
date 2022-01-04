@@ -501,13 +501,13 @@ p {
 }
 
 .heroPage__pError {
-  margin-top: 4%;
-  margin-bottom: 2%;
+  margin-top: calc(.4rem + 4%);
+  margin-bottom: calc(.8rem + 8%);
 }
 
 .heroPage__pError__back {
   font-weight: 500;
-  font-size: 2em;
+  font-size: 2.5em;
   text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
   -webkit-filter: drop-shadow(1px 1px 0 var(--color-primero));
           filter: drop-shadow(1px 1px 0 var(--color-primero));
