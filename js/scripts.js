@@ -1,224 +1,128 @@
 /* inicio mouse trail */
-const LINE_DURATION = 2;
-const LINE_WIDTH_START = 10;
 
-$(document).ready(function() {
-  enableDrawingCanvas();
-  resizeCanvas(window.innerWidth, window.innerHeight);
+//******************BUBBLES ON MOUSE TAIL*******************
+
+
+var canvas = document.querySelector('canvas');
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+c = canvas.getContext('2d');
+
+window.addEventListener('resize', function () {
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    initCanvas();
 });
-
-//////////////////////////
-// Variable definitions //
-//////////////////////////
-var active = true;
-
-var canvas;
-var context;
-
-var newWidth = 1000;
-var newHeight = 800;
-
-var spread = 2;
-
-var lineColor = 'rgb(117, 255, 186)';
-var lineDuration = LINE_DURATION;
-var lineFadeLinger = 1;
-var lineWidthStart = LINE_WIDTH_START;
-var fadeDuration = 50;
-var drawEveryFrame = 1; // Only adds a Point after these many 'mousemove' events
-
-var clickCount = 0;
-var frame = 0;
-
-var flipNext = true;
-
-var points = new Array();
-
-///////////////////////
-// Program functions //
-///////////////////////
-
-// Find canvas reference & enable listeners
-function enableDrawingCanvas() {
-  if (canvas === undefined) {
-    canvas = document.getElementById('myCanvas');
-    context = canvas.getContext('2d');
-    enableListeners();
-    init();
-  }
-}
-
-// Initialize animation start
-function init() {
-  draw();
-}
-
-// Draw current state
-function draw() {
-  if (active) {
-    animatePoints();
-    window.requestAnimFrame(draw);
-  }
-}
-
-// Update mouse positions
-function animatePoints() {
-  context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
-  var duration = lineDuration * 1000 / 60;
-  var point, lastPoint;
-
-  for (var i = 0; i < points.length; i++) {
-    point = points[i];
-
-    if (points[i - 1] !== undefined) {
-      lastPoint = points[i - 1];
-    } else {
-      lastPoint = points[i];
+if($(window).width() > 800) {
+var mouse = {
+    x: undefined,
+    y: undefined
+};
+window.addEventListener('mousemove',
+    function (event) {
+        mouse.x = event.x;
+        mouse.y = event.y;
+        drawCircles();
     }
-
-    point.lifetime += 1;
-
-    if (point.lifetime > duration) {
-      points.splice(i, 1);
-      continue;
+);
+window.addEventListener("touchmove",
+    function (event) {
+        let touch = event.touches[0];
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
+        drawCircles();
     }
+);
 
-    // Begin drawing stuff!
-    var inc = (point.lifetime / duration); // 0 to 1 over lineDuration
-    var dec = 1 - inc;
-
-    var spreadRate;
-    if (spread === 1) {
-      spreadRate = lineWidthStart / (point.lifetime * 2);
-    } // Lerp Decrease
-    if (spread === 2) {
-      spreadRate = lineWidthStart * (1 - inc);
-    } // Linear Decrease
-
-    var fadeRate = dec;
-
-    context.strokeStyle = lineColor;
-    context.lineJoin = "round";
-    context.lineWidth = spreadRate;
-
-    var distance = Point.distance(lastPoint, point);
-    var midpoint = Point.midPoint(lastPoint, point);
-    var angle = Point.angle(lastPoint, point);
-
-
-    context.beginPath();
-
-
-    context.moveTo(lastPoint.x, lastPoint.y);
-    context.lineTo(point.x, point.y);
-  
-      context.stroke();
-      context.closePath();
-
-  }
-
-  //if (points.length > 0) { console.log(spreadRate + "|" + points.length + " points alive."); }
-}
-
-function addPoint(x, y) {
-  flipNext = !flipNext;
-  var point = new Point(x, y, 0, flipNext);
-  points.push(point);
-}
-
-//////////////////////////////
-// Less Important functions //
-//////////////////////////////
-
-// RequestAnimFrame definition
-window.requestAnimFrame = (function(callback) {
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-    function(callback) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-})();
-
-// Update canvas dimensions based on input
-function resizeCanvas(w, h) {
-  if (context !== undefined) {
-    context.canvas.width = w;
-    context.canvas.height = h;
-
-    newWidth = w;
-    newHeight = h;
-  }
-}
-
-// Listeners for mouse and touch events
-function enableListeners() {
-
-  //********* Mouse Listeners *********//
-  $('#myCanvas').on('mousemove', function(e) {
-    if (frame === drawEveryFrame) {
-      addPoint(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-      frame = 0;
-    }
-    frame++;
-  });
-
-  $('#myCanvas').on('mouseover', function(e) {});
-  $('#myCanvas').on('mouseleave', function(e) {});
-
-  //********* Touch Listeners *********//
-  $('#myCanvas').on('touchstart', function(e) {
-    var touch = e.touches[0];
-  });
-  $('#myCanvas').on('touchmove', function(e) {
-    var touch = e.touches[0];
-  });
-  $('#myCanvas').on('touchend', function(e) {});
-}
-
-
-// POINT CLASS
-// Cartersian location of where mouse location
-// was previously at. 
-// Used to draw arcs between Points.
-var Point = class Point {
-
-  // Define class constructor
-  constructor(x, y, lifetime, flip) {
+function Circle(x, y, radius, vx, vy, rgb, opacity, birth, life) {
     this.x = x;
     this.y = y;
-    this.lifetime = lifetime;
-    this.flip = flip;
-  }
+    this.radius = radius;
+    this.minRadius = radius;
+    this.vx = vx;
+    this.vy = vy;
+    this.birth = birth;
+    this.life = life;
+    this.opacity = opacity;
 
-  // Get the distance between a & b
-  static distance(a, b) {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
+    this.draw = function () {
+        c.beginPath();
+        c.arc(this.x, this.y, this.radius, Math.PI * 2, false);
+        c.fillStyle = 'rgba(' + rgb + ',' + this.opacity + ')';
+        c.fill();
+    };
 
-    return Math.sqrt(dx * dx + dy * dy);
-  }
+    this.update = function () {
+        if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
+            this.vx = -this.vx;
+        }
 
-  // Get the mid point between a & b
-  static midPoint(a, b) {
-    const mx = a.x + (b.x - a.x) * 0.5;
-    const my = a.y + (b.y - a.y) * 0.5;
+        if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
+            this.vy = -this.vy;
+        }
 
-    return new Point(mx, my);
-  }
+        this.x += this.vx;
+        this.y += this.vy;
 
-  // Get the angle between a & b
-  static angle(a, b) {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
+        this.opacity = 1 - (((frame - this.birth) * 1) / this.life);
 
-    return Math.atan2(dy, dx);
-  }
+        if (frame > this.birth + this.life) {
+            for (let i = 0; i < circleArray.length; i++) {
+                if (this.birth == circleArray[i].birth && this.life == circleArray[i].life) {
+                    circleArray.splice(i, 1);
+                    break;
+                }
+            }
+        } else {
+            this.draw();
+        }
+    }
 
-  // Simple getter for printing
-  get pos() {
-    return this.x + "," + this.y;
-  }
 }
+
+var circleArray = [];
+
+function initCanvas() {
+    circleArray = [];
+}
+
+var colorArray = [
+    '117, 255, 186',
+    '95, 0, 185',
+    '117, 255, 186'
+]
+
+function drawCircles() {
+    for (let i = 0; i < 6; i++) {
+        let radius = Math.floor(Math.random() * 4) + 2;
+        let vx = (Math.random() * 2) - 1;
+        let vy = (Math.random() * 2) - 1;
+        let spawnFrame = frame;
+        let rgb = colorArray[Math.floor(Math.random() * colorArray.length)];
+        let life = 100;
+        circleArray.push(new Circle(mouse.x, mouse.y, radius, vx, vy, rgb, 1, spawnFrame, life));
+
+    }
+}
+
+var frame = 0;
+
+function animate() {
+    requestAnimationFrame(animate);
+    frame += 1;
+    c.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = 0; i < circleArray.length; i++) {
+        circleArray[i].update();
+    }
+
+}
+
+initCanvas();
+animate();
+
+}
+
 
 /* fin mouse trail */
 
@@ -300,27 +204,35 @@ colorA.onclick = function(){
   /* root.style.setProperty("--background","url('/media/backgroundA.svg')"); */
   /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(43, 0, 83, .8), rgba(15, 255, 135, .8))");
   particles.style.setProperty("background-size", "400%"); */
-  lineColor = 'rgb(117, 255, 186)';
+  colorArray = [
+    '117, 255, 186',
+    '95, 0, 185',
+    '117, 255, 186'
+  ]
 }
 
 colorB.onclick = function(){
-    colorA.classList.remove("color--active");
-    colorC.classList.remove("color--active");
-    colorB.classList.add("color--active");
-    root.style.setProperty("--color-primero","rgb(124, 47, 0)");
-    root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
-    root.style.setProperty("--color-primero-rgb","124, 47, 0");
-    root.style.setProperty("--color-segundo-rgb","87, 216, 255");
-    landingImgB.style.setProperty("opacity", "1");
-    landingImgA.style.setProperty("opacity", "0");
-    landingImgC.style.setProperty("opacity", "0");
-    footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
-    footer.style.setProperty("background-size", "500%");
-    footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
-    /* root.style.setProperty("--background","url('/media/backgroundB.svg')"); */
-    /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
-    particles.style.setProperty("background-size", "400%"); */
-    lineColor = 'rgb(87, 216, 255)';
+  colorA.classList.remove("color--active");
+  colorC.classList.remove("color--active");
+  colorB.classList.add("color--active");
+  root.style.setProperty("--color-primero","rgb(124, 47, 0)");
+  root.style.setProperty("--color-segundo","rgb(87, 216, 255)");
+  root.style.setProperty("--color-primero-rgb","124, 47, 0");
+  root.style.setProperty("--color-segundo-rgb","87, 216, 255");
+  landingImgB.style.setProperty("opacity", "1");
+  landingImgA.style.setProperty("opacity", "0");
+  landingImgC.style.setProperty("opacity", "0");
+  footer.style.setProperty("background", "linear-gradient(45deg, #160800, #00b8f0)");
+  footer.style.setProperty("background-size", "500%");
+  footer__hr.style.setProperty("background", "linear-gradient(270deg, #160800, #00b8f0)");
+  /* root.style.setProperty("--background","url('/media/backgroundB.svg')"); */
+  /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(22, 8, 0, .8), rgba(0, 184, 240, .8))")
+  particles.style.setProperty("background-size", "400%"); */
+  colorArray = [
+    '87, 216, 255',
+    '124, 47, 0',
+    '87, 216, 255'
+  ]
 }
 
 colorC.onclick = function(){
@@ -340,7 +252,11 @@ colorC.onclick = function(){
   /* root.style.setProperty("--background","url('/media/backgroundC.svg')"); */
   /* particles.style.setProperty("background", "linear-gradient(135deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .8))")
   particles.style.setProperty("background-size", "400%"); */
-    lineColor = 'rgb(200, 200, 200)';
+  colorArray = [
+    '200, 200, 200',
+    '0, 0, 0',
+    '200, 200, 200'
+  ]
 }
 
 /* FIN COLOR PICKER */
