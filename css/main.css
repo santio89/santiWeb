@@ -24,6 +24,8 @@ $color-segundo: #ffffff;
   --color-segundo: rgb(117, 255, 186);
   --color-tercero: rgb(255, 140, 0);
   --color-cero: rgb(255, 255, 255);
+  --color-fondo: rgb(30,30,30);
+  --color-fondo-rgb: 30, 30, 30;
 }
 
 html {
@@ -469,7 +471,7 @@ p {
       -ms-flex-align: start;
           align-items: start;
   position: relative;
-  background: #1e1e1e;
+  background: rgba(var(--color-fondo-rgb), 1);
 }
 
 .heroPage__title {
