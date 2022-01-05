@@ -353,8 +353,14 @@ p {
           flex-flow: column nowrap;
 }
 
+.nav__ul__li {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
 .nav__ul__li :hover, .nav__ul__li :focus {
-  outline: none;
   color: var(--color-segundo);
 }
 
@@ -369,7 +375,6 @@ p {
 }
 
 .nav__anchor:hover, .nav__anchor:focus {
-  outline: none;
   color: var(--color-segundo);
   background-size: 100% 2px;
   -webkit-transition: background-size 300ms;
@@ -479,7 +484,10 @@ p {
   margin-top: calc(60px + 6% + .4vw + .4vh);
   background: transparent;
   line-height: 1.1;
-  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -493,7 +501,6 @@ p {
   text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
   -webkit-filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
           filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
-  pointer-events: auto;
 }
 
 .heroPage__span:hover {
@@ -1365,7 +1372,14 @@ section:hover .hr__inside, section:focus-within .hr__inside {
           flex-flow: column wrap;
 }
 
-.footer__nav__ul__li__a {
+.footer__nav__ul__li {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.footer__nav__ul__li__anchor {
   background: -webkit-gradient(linear, right top, left top, from(var(--color-primero)), to(var(--color-segundo)));
   background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
   background-size: 0% 3px;
@@ -1375,8 +1389,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   transition: background-size 300ms;
 }
 
-.footer__nav__ul__li__a:hover, .footer__nav__ul__li__a:focus {
-  outline: none;
+.footer__nav__ul__li__anchor:hover, .footer__nav__ul__li__anchor:focus {
   color: var(--color-segundo);
   background-size: 100% 3px;
   -webkit-transition: background-size 300ms;
@@ -1402,6 +1415,10 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .footer__santi :hover, .footer__santi :focus {
@@ -1484,6 +1501,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   border-radius: 50%;
   background: var(--color-tercero);
   border: none;
+  outline: none;
 }
 
 .color--a {
@@ -1502,13 +1520,11 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 
 .color--active {
-  -webkit-box-shadow: 0 0 0 2px var(--color-tercero);
-          box-shadow: 0 0 0 2px var(--color-tercero);
+  outline: 2px solid var(--color-tercero);
 }
 
 .color:hover, .color:focus {
-  -webkit-box-shadow: 0 0 0 2px var(--color-tercero);
-          box-shadow: 0 0 0 2px var(--color-tercero);
+  outline: 2px solid var(--color-tercero);
 }
 
 .canvas {

@@ -273,8 +273,9 @@ p{
         flex-flow: column nowrap;      
         
         &__li{
+            user-select: none;
+            
             :hover, :focus{
-                outline: none;
                 color: var(--color-segundo);               
             }
         }
@@ -288,7 +289,6 @@ p{
         transition: background-size 300ms;
 
         &:hover, &:focus{
-            outline: none;
             color: var(--color-segundo);  
             background-size: 100% 2px;
             transition: background-size 300ms;
@@ -380,7 +380,7 @@ p{
         margin-top: calc(60px + 6% + .4vw + .4vh);
         background: transparent;
         line-height: 1.1;
-        pointer-events: none;
+        user-select: none;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility; 
@@ -392,7 +392,6 @@ p{
         display: inline-block;
         text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
         filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
-        pointer-events: auto;
 
         &:hover{
             color: var(--color-tercero);
@@ -1061,7 +1060,9 @@ section{
             display: flex;
             flex-flow: column wrap;
             &__li{
-                &__a{
+                user-select: none;
+                
+                &__anchor{
                     background: linear-gradient(270deg, var(--color-primero), var(--color-segundo));
                     background-size: 0% 3px;
                     background-repeat: no-repeat;
@@ -1069,7 +1070,6 @@ section{
                     transition: background-size 300ms;
 
                     &:hover, &:focus{
-                        outline: none;
                         color: var(--color-segundo);  
                         background-size: 100% 3px;
                         transition: background-size 300ms;
@@ -1089,6 +1089,7 @@ section{
         justify-content: end;
         gap: .5em;
         align-items: center;
+        user-select: none;
 
         :hover, :focus{
             color: var(--color-tercero);
@@ -1159,23 +1160,26 @@ section{
     border-radius: 50%;
     background:var(--color-tercero);
     border: none;
+    outline: none;
 
     &--a{
         background: linear-gradient(90deg, rgb(95, 0, 185) 50%, rgb(117, 255, 186) 50%)
     }
+
     &--b{
         background: linear-gradient(90deg, rgb(124, 47, 0) 50%,rgb(87, 216, 255) 50%)
     }
+    
     &--c{
         background: linear-gradient(90deg, rgb(0, 0, 0) 50%,rgb(255, 255, 255) 50%)
     }
 
     &--active{
-        box-shadow: 0 0 0 2px var(--color-tercero);
+        outline: 2px solid var(--color-tercero);
     }
   
     &:hover, &:focus{
-        box-shadow: 0 0 0 2px var(--color-tercero);
+        outline: 2px solid var(--color-tercero);
     }
 }
 
