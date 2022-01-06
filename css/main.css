@@ -791,10 +791,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
           align-items: center;
   max-width: 320px;
   margin: auto;
-  width: 110%;
+  width: 100%;
   height: auto;
-  -webkit-transform: scale(90%);
-          transform: scale(90%);
 }
 
 .skills__wrapper__skill img {
