@@ -926,11 +926,11 @@ section{
                 transform: scaleX(1);
             }
 
-            &:hover::after{
+            &:hover::after, &:focus::after{
                 transform: scaleX(0);  
             }
 
-            &:hover::before{
+            &:hover::before,  &:focus::before{
                 transform: scaleY(0);        
             }  
             
@@ -984,15 +984,15 @@ section{
                 transform: scaleX(1);
             }
 
-            &:hover::after{
+            &:hover::after, &:focus::after{
                 transform: scaleX(0);  
             }
 
-            &:hover::before{
+            &:hover::before, &:focus::before{
                 transform: scaleY(0);       
             }  
             
-            &:hover{
+            &:hover, &:focus{
                 text-shadow: 0 0 .2rem var(--color-cero);  
             }
 
