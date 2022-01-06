@@ -638,7 +638,7 @@ p {
   color: var(--color-tercero);
 }
 
-.arrowBounce:focus {
+.arrowBounce:focus-visible {
   outline: 2px solid var(--color-primero);
   -webkit-box-shadow: 0 0 0 4px var(--color-segundo);
           box-shadow: 0 0 0 4px var(--color-segundo);

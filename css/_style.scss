@@ -510,7 +510,7 @@ p{
         color: var(--color-tercero);   
     }
     
-    &:focus{
+    &:focus-visible{
         outline: 2px solid var(--color-primero);
         box-shadow: 0 0 0 4px var(--color-segundo);
     }
