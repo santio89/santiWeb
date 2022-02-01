@@ -1,6 +1,7 @@
 @media (min-width: 700px){
         .skills{
         &__wrapper{
+            max-width: 1400px;
             grid-template-columns: repeat(4, 1fr);
             
             &__skill{
@@ -78,13 +79,13 @@
     
 }
 
-@media (min-width: 1200px){
+/* @media (min-width: 1200px){
     .skills{
         &__wrapper{
             grid-template-columns: repeat(5, 1fr);
         }
     }
-}
+} */
 
 @media (min-width: 1920px){
     .landingImgA, .landingImgB, .landingImgC{

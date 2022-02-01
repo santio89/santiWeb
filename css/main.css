@@ -1694,6 +1694,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 @media (min-width: 700px) {
   .skills__wrapper {
+    max-width: 1400px;
     -ms-grid-columns: (1fr)[4];
         grid-template-columns: repeat(4, 1fr);
   }
@@ -1778,13 +1779,13 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   }
 }
 
-@media (min-width: 1200px) {
-  .skills__wrapper {
-    -ms-grid-columns: (1fr)[5];
-        grid-template-columns: repeat(5, 1fr);
-  }
-}
-
+/* @media (min-width: 1200px){
+    .skills{
+        &__wrapper{
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+} */
 @media (min-width: 1920px) {
   .landingImgA, .landingImgB, .landingImgC {
     background-size: cover;
