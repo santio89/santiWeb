@@ -269,7 +269,7 @@ colorC.onclick = function(){
 
 
 
-/* header title animation - usando jquery y css*/
+/* title animation - jquery y css*/
 $(document).ready(function () {
   let header__logo = $(".heroPage__span");
   header__logo.on("mouseenter", (e)=>e.target.classList.add("textWobble"));
