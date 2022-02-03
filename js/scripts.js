@@ -135,8 +135,14 @@ root.style.setProperty("overflow", "hidden");
 window.onload = setTimeout(function(){
   loader.style.setProperty("animation", "vis forwards");
   root.style.setProperty("overflow-y", "scroll");
-}, 1400);
+}, 1000);
 /* fin loader */
+
+/* run animation one time when it loads */
+window.onload = setTimeout(function(){
+  textWobbleOnce();
+}, 1100);
+/* fin run animation */
 
 
 /* BURGER MENU */
@@ -263,13 +269,15 @@ colorC.onclick = function(){
 
 
 
-/* hide nav */
-/* let header = document.getElementById("header");
+/* header title animation - usando jquery y css*/
+$(document).ready(function () {
+  let header__logo = $(".heroPage__span");
+  header__logo.on("mouseenter", (e)=>e.target.classList.add("textWobble"));
+  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("textWobble"));
+});
 
-if (window.scrollY>0){
-  header.style.setProperty("box-shadow", "0 .1rem 0rem 0 var(--color-primero)")
+function textWobbleOnce(){
+  let header__logo = $(".heroPage__span");
+  header__logo.addClass("textWobble");
+  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("textWobble"));
 }
-else{
-  header.style.setProperty("box-shadow", "none")
-} */
-/* fin hide nav */
