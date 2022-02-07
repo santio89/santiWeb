@@ -198,9 +198,8 @@ p{
         padding: .4em;
         transition: transform 200ms ease-out;
 
-        &:focus, &:hover{
-           outline: 2px solid var(--color-cero) ;
-           outline-style: dashed;
+        &:focus-visible, &:hover{
+           outline: 2px dashed var(--color-cero);
            transform: translateX(0);
            color: $color-fondo;
         }
@@ -275,7 +274,7 @@ p{
         &__li{
             user-select: none;
             
-            :hover, :focus{
+            &:not(:first-of-type):hover, &:not(:first-of-type):focus{
                 color: var(--color-segundo);               
             }
         }
@@ -1152,13 +1151,25 @@ section{
     justify-content: start;
     align-items: start;
     flex-flow: column wrap;
+
 }
 
 .langSelect{
     cursor: pointer;
 
     &--active{
-        color: var(--color-segundo);
+        color: var(--color-segundo) !important /* overrides default color with js */;
+    }
+
+    button{
+        border: none;
+        outline: none;
+        background: none;
+        color: var(--color-cero);
+
+        &:focus-visible{
+            outline: 2px dashed var(--color-tercero);
+        }
     }
 }
 

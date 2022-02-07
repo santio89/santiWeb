@@ -22,7 +22,7 @@ $('.langSelect').click(function() {
   document.documentElement.setAttribute("lang", "");
   $('[lang="es"]').toggle();
   $('[lang="en"]').toggle();
-  $('.langSelect span').toggleClass('langSelect--active');
+  $('.langSelect button').toggleClass('langSelect--active');
 
   let lang__es = document.querySelector(".langSelect--es")
   if (lang__es.classList.contains("langSelect--active")){

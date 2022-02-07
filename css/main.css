@@ -251,9 +251,8 @@ p {
   transition: transform 200ms ease-out, -webkit-transform 200ms ease-out;
 }
 
-.header__skip:focus, .header__skip:hover {
-  outline: 2px solid var(--color-cero);
-  outline-style: dashed;
+.header__skip:focus-visible, .header__skip:hover {
+  outline: 2px dashed var(--color-cero);
   -webkit-transform: translateX(0);
           transform: translateX(0);
   color: #1e1e1e;
@@ -360,7 +359,7 @@ p {
           user-select: none;
 }
 
-.nav__ul__li :hover, .nav__ul__li :focus {
+.nav__ul__li:not(:first-of-type):hover, .nav__ul__li:not(:first-of-type):focus {
   color: var(--color-segundo);
 }
 
@@ -1493,7 +1492,18 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 
 .langSelect--active {
-  color: var(--color-segundo);
+  color: var(--color-segundo) !important;
+}
+
+.langSelect button {
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--color-cero);
+}
+
+.langSelect button:focus-visible {
+  outline: 2px dashed var(--color-tercero);
 }
 
 .colorContainer {
