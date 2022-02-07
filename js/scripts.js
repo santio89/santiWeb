@@ -32,6 +32,8 @@ $('.langSelect').click(function() {
     document.documentElement.setAttribute("lang", "en");
     localStorage.setItem("language", "en");
   }
+
+  textWobbleOnce();
 });
 /* FIN CAMBIAR IDIOMA */
 
