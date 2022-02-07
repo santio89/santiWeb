@@ -1147,10 +1147,19 @@ section{
   /* FIN SCROLLBAR */
 
 
-.colorPicker{
+.color__lang{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
+    flex-flow: column wrap;
+}
+
+.langSelect{
+    cursor: pointer;
+
+    &--active{
+        color: var(--color-segundo);
+    }
 }
 
 .colorContainer{

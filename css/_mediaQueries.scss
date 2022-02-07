@@ -38,6 +38,17 @@
             gap: .7em;          
         }
     }
+
+    .langSelect{
+        position: fixed;
+        top: 0;
+        right: 0;
+        line-height: 1;
+        padding: .2em;
+        font-size: .78em;
+        border-radius: 0 0 0 .2em;
+        background: rgba(var(--color-primero-rgb), .8);
+    }
     
     .colorContainer{
         padding-left: .4rem;

@@ -1,3 +1,36 @@
+/* INICIO CAMBIAR IDIOMA */
+if (localStorage.getItem("language")){
+  if (localStorage.getItem("language") == "es"){
+    $('[lang="en"]').hide();
+    let lang__es = document.querySelector(".langSelect--es")
+    lang__es.classList.add("langSelect--active")
+  } else{
+    $('[lang="es"]').hide();
+    let lang__en = document.querySelector(".langSelect--en");
+    lang__en.classList.add("langSelect--active");
+  }
+} else{
+  $('[lang="es"]').hide();
+    let lang__en = document.querySelector(".langSelect--en");
+    lang__en.classList.add("langSelect--active");
+};
+
+$('.langSelect').click(function() {
+  $('[lang="es"]').toggle();
+  $('[lang="en"]').toggle();
+  $('.langSelect span').toggleClass('langSelect--active');
+
+  let lang__es = document.querySelector(".langSelect--es")
+  if (lang__es.classList.contains("langSelect--active")){
+    localStorage.setItem("language", "es");
+  } else{
+    localStorage.setItem("language", "en");
+  }
+});
+/* FIN CAMBIAR IDIOMA */
+
+
+
 /* inicio mouse trail */
 
 //******************BUBBLES ON MOUSE TAIL*******************
@@ -281,3 +314,4 @@ function textWobbleOnce(){
   header__logo.addClass("textWobble");
   header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("textWobble"));
 }
+

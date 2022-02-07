@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <!-- open graph -->
     <meta property="og:title" content="santiWeb - Web Developer">
@@ -39,22 +39,36 @@
     <div class="loaderWrapper" id="loaderWrapper"><div class="loader"><div class="loader__inner"></div></div></div>
     <header class="header" id="header">
         <a href="index.html" class="header__logo">SW</a>
-        <a href="#about" class="header__skip">Skip Navigation</a>
+        <a href="#about" class="header__skip" lang="en">Skip Navigation</a>
+        <a href="#about" class="header__skip" lang="es">Saltar Navegación</a>
         <button for="header__burgerMenu" class="header__burgerButton" id="header__burgerButton" aria-label="Navigation Menu"><i class="bi bi-arrow-bar-left header__burgerButton__icon"></i></button>
 
         <nav class="nav" id="nav" aria-label="header nav">
             <ul class="nav__ul">
-                <li class="nav__ul__li colorPicker">
+                <li class="nav__ul__li color__lang">
+                    <div class="langSelect" aria-label="Select Language"><span class="langSelect--en" aria-label="English">EN</span>/<span aria-label="Spanish" class="langSelect--es">ES</span></div>
                     <div class="colorContainer">
                         <button class="color color--a color--active" id="colorA" aria-label="Color Theme Picker A"></button>
                         <button class="color color--b" id="colorB" aria-label="Color Theme Picker B"></button>
                         <button class="color color--c" id="colorC" aria-label="Color Theme Picker C"></button>
                     </div>
                 </li>
-                <li class="nav__ul__li"><a href="#about" class="nav__anchor">About</a></li>
-                <li class="nav__ul__li"><a href="#skills" class="nav__anchor">Skills</a></li>
-                <li class="nav__ul__li"><a href="#works" class="nav__anchor">Works</a></li>
-                <li class="nav__ul__li"><a href="#contact" class="nav__anchor">Contact</a></li>               
+                <li class="nav__ul__li">
+                    <a href="#about" class="nav__anchor" lang="en">About</a>
+                    <a href="#about" class="nav__anchor" lang="es">Sobre</a>
+                </li>
+                <li class="nav__ul__li">
+                    <a href="#skills" class="nav__anchor" lang="en">Skills</a>
+                    <a href="#skills" class="nav__anchor" lang="es">Habilidades</a>
+                </li>
+                <li class="nav__ul__li">
+                    <a href="#works" class="nav__anchor" lang="en">Works</a>
+                    <a href="#works" class="nav__anchor" lang="es">Trabajos</a>
+                </li>
+                <li class="nav__ul__li">
+                    <a href="#contact" class="nav__anchor" lang="en">Contact</a>
+                    <a href="#contact" class="nav__anchor" lang="es">Contacto</a>
+                </li>               
             </ul>   
         </nav>
     </header>
@@ -65,7 +79,9 @@
         <div class="landingImgC" id="landingImgC"></div>
         <section class="heroPage" id="heroPage">               
             <div class="heroPage__title">
-                <h1><span class="heroPage__span">Hi!</span><br>My name is <span class="heroPage__span">Santi</span> <span class="heroPage__span__lineBreak">and I'm a <span class="heroPage__span">web developer</span></span> 
+                <h1 lang="en"><span class="heroPage__span">Hi!</span><br>My name is <span class="heroPage__span">Santi</span> <span class="heroPage__span__lineBreak">and I'm a <span class="heroPage__span">web developer</span></span> 
+                </h1>
+                <h1 lang="es"><span class="heroPage__span">Hola!</span><br>Mi nombre es <span class="heroPage__span">Santi</span> <span class="heroPage__span__lineBreak">y soy <span class="heroPage__span">desarrollador web</span></span> 
                 </h1>
             </div> 
 
@@ -91,7 +107,8 @@
                 </div>
                 
                 <div class="about__info" data-aos="fade-up">
-                    <p class="about__info__details">My name is Santiago and I am a web dev in the making located in Buenos Aires, Argentina.<br><br>Having worked in IT for many years, I found in web development a field where I can combine both my passion for technology and art. I enjoy building responsive websites and learning a lot in the process.<br><br>I am always interested in working and collaborating in different projects.</p>
+                    <p class="about__info__details" lang="en">My name is Santiago and I am a web dev in the making located in Buenos Aires, Argentina.<br><br>Having worked in IT for many years, I found in web development a field where I can combine both my passion for technology and art. I enjoy building responsive websites and learning a lot in the process.<br><br>I am always interested in working and collaborating in different projects.</p>
+                    <p class="about__info__details" lang="es">Mi nombre es Santiago y soy un desarrollador web viviendo en Buenos Aires, Argentina<br><br>Habiendo trabajo en IT varios años, encontré en el desarrollo web un campo donde combinar mis gustos por la tecnología y el arte. Disfruto construir sitios web responsive y aprender en el proceso.<br><br>Estoy siempre interesado en trabajar y colaborar en diferentes proyectos.</p>
                 </div>   
             </div>
         </section>
@@ -100,11 +117,13 @@
             <div class="section__container">
                 <div class="sectionTitle">
                     <div class="hr hr--backwards"><div class="hr__inside"></div></div>
-                    <h2>&nbsp;Skills&nbsp;</h2>
+                    <h2 lang="en">&nbsp;Skills&nbsp;</h2>
+                    <h2 lang="es">&nbsp;Habilidades&nbsp;</h2>
                     <div class="hr"><div class="hr__inside"></div></div>
                 </div>
                 <div class="skills__info">
-                    <h3 data-aos="fade-right"><span class="pointer">◖</span> Technologies I use</h3>
+                    <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Technologies I use</h3>
+                    <h3 data-aos="fade-right" lang="es"><span class="pointer">◖</span> Tecnologías que uso</h3>
                     <div class="skills__wrapper" data-aos="fade-up">
                         <div class="skills__wrapper__skill"><p>HTML</p><img class="img-fluid" alt="html" src="media/skills/html.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
                         <div class="skills__wrapper__skill"><p>CSS</p><img class="img-fluid" alt="css" src="media/skills/css.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
@@ -125,11 +144,13 @@
             <div class="section__container">
                 <div class="sectionTitle">
                     <div class="hr hr--backwards"><div class="hr__inside"></div></div>
-                    <h2>&nbsp;Works&nbsp;</h2>
+                    <h2 lang="en">&nbsp;Works&nbsp;</h2>
+                    <h2 lang="es">&nbsp;Trabajos&nbsp;</h2>
                     <div class="hr"><div class="hr__inside"></div></div>
                 </div>
                 <div class="works__wrapper">
-                    <h3  data-aos="fade-right"><span class="pointer">◖</span> Stuff I've done</h3>
+                    <h3 data-aos="fade-right"><span class="pointer" lang="en">◖</span> Projects I've done</h3>
+                    <h3 data-aos="fade-right"><span class="pointer" lang="es">◖</span> Proyectos que he realizado</h3>
                     <div class="works__wrapper__work" data-aos="fade-up">
                         <div class="works__wrapper__work__container">
                             <p class="works__wrapper__work__container__p"><a href="https://santio89.github.io/blackFriday/" target="_blank">Black Friday Bebidas</a></p>
@@ -170,19 +191,22 @@
             <div class="section__container">
                 <div class="sectionTitle">
                     <div class="hr hr--backwards"><div class="hr__inside"></div></div>
-                    <h2>&nbsp;Contact&nbsp;</h2>
+                    <h2 lang="en">&nbsp;Contact&nbsp;</h2>
+                    <h2 lang="es">&nbsp;Contacto&nbsp;</h2>
                     <div class="hr"><div class="hr__inside"></div></div>
                 </div>
 
                 <div class="contact__wrapper">
                     <form method="POST" class="contact__form" name="contact" data-netlify="true" netlify-honeypot="bot-field">
                         <div class="contact__form__title">
-                            <h3 data-aos="fade-right"><span class="pointer">◖</span> Send a message</h3>
+                            <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Send a message</h3>
+                            <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Envía un mensaje</h3>
                         </div>
                         
                         <div class="contact__form__fields" data-aos="fade-up">
                             <div class="contact__form__bot">
-                                <label>Don't fill this out if you're a human: <input type="text" name="bot-field"/></label>
+                                <label lang="en">Don't fill this out if you're a human: <input type="text" name="bot-field"/></label>
+                                <label lang="es">No llenar si eres humano: <input type="text" name="bot-field"/></label>
                             </div>
                             <div>
                                 <input type="text" name="nombre" id="name" placeholder="Name" autocomplete="off" required class="contact__form__name" aria-label="Name">
@@ -201,20 +225,23 @@
                                 <label for="reset" class="contact__form__reset"><span>X</span></label>
             
                                 <input type="submit" id="submit" class="contact__form__submitInput" value="Submit">
-                                <label for="submit" class="contact__form__submit"><span>Submit</span></label>
+                                <label for="submit" class="contact__form__submit" lang="en"><span>Submit</span></label>
+                                <label for="submit" class="contact__form__submit" lang="es"><span>Enviar</span></label>
                             </div>
                         </div>                   
                     </form>
         
                     <div class="contact__info">
                         <div class="contact__form__title">
-                            <h3 data-aos="fade-right"><span class="pointer">◖</span> Contact Info</h3>
+                            <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Contact Info</h3>
+                            <h3 data-aos="fade-right" lang="es"><span class="pointer">◖</span> Información de Contacto</h3>
                         </div>
 
                         <div class="contact__info__details" data-aos="fade-up">
                             <p><span class="pointer">·</span> E-Mail: <span><a href="mailto:santiolais1989@gmail.com">santiolais1989@gmail.com</a></span></p>
 
-                            <p><span class="pointer">·</span> Phone: <span><a href="https://wa.me//542804379057" target="_blank">(+54) 0280-154379057</a></span></p>
+                            <p lang="en"><span class="pointer">·</span> Phone: <span><a href="https://wa.me//542804379057" target="_blank">(+54) 0280-154379057</a></span></p>
+                            <p lang="es"><span class="pointer">·</span> Teléfono: <span><a href="https://wa.me//542804379057" target="_blank">(+54) 0280-154379057</a></span></p>
 
                             <p><span class="pointer">·</span> <a href="https://www.linkedin.com/in/santiago-olais-829542b9/" target="_blank">LinkedIn</a></p> 
 
@@ -229,10 +256,22 @@
     <footer class="footer" id="footer">
         <nav class="footer__nav">
             <ul class="footer__nav__ul">
-                <li class="footer__nav__ul__li"><a href="#about" class="footer__nav__ul__li__anchor">About</a></li>
-                <li class="footer__nav__ul__li"><a href="#skills" class="footer__nav__ul__li__anchor">Skills</a></li>
-                <li class="footer__nav__ul__li"><a href="#works" class="footer__nav__ul__li__anchor">Works</a></li>
-                <li class="footer__nav__ul__li"><a href="#contact" class="footer__nav__ul__li__anchor">Contact</a></li>
+                <li class="footer__nav__ul__li">
+                    <a href="#about" class="footer__nav__ul__li__anchor" lang="en">About</a>
+                    <a href="#about" class="footer__nav__ul__li__anchor" lang="es">Sobre</a>
+                </li>
+                <li class="footer__nav__ul__li">
+                    <a href="#skills" class="footer__nav__ul__li__anchor" lang="en">Skills</a>
+                    <a href="#skills" class="footer__nav__ul__li__anchor" lang="es">Habilidades</a>
+                </li>
+                <li class="footer__nav__ul__li">
+                    <a href="#works" class="footer__nav__ul__li__anchor" lang="en">Works</a>
+                    <a href="#works" class="footer__nav__ul__li__anchor" lang="es">Trabajos</a>
+                </li>
+                <li class="footer__nav__ul__li">
+                    <a href="#contact" class="footer__nav__ul__li__anchor" lang="en">Contact</a>
+                    <a href="#contact" class="footer__nav__ul__li__anchor" lang="es">Contacto</a>
+                </li>
             </ul>   
         </nav>
 

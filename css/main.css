@@ -1472,16 +1472,28 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 
 /* FIN SCROLLBAR */
-.colorPicker {
+.color__lang {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+}
+
+.langSelect {
+  cursor: pointer;
+}
+
+.langSelect--active {
+  color: var(--color-segundo);
 }
 
 .colorContainer {
@@ -1751,6 +1763,16 @@ section:hover .hr__inside, section:focus-within .hr__inside {
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     gap: .7em;
+  }
+  .langSelect {
+    position: fixed;
+    top: 0;
+    right: 0;
+    line-height: 1;
+    padding: .2em;
+    font-size: .78em;
+    border-radius: 0 0 0 .2em;
+    background: rgba(var(--color-primero-rgb), 0.8);
   }
   .colorContainer {
     padding-left: .4rem;
