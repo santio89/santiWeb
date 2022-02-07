@@ -2,28 +2,34 @@
 if (localStorage.getItem("language")){
   if (localStorage.getItem("language") == "es"){
     $('[lang="en"]').hide();
+    document.documentElement.setAttribute("lang", "es");
     let lang__es = document.querySelector(".langSelect--es")
     lang__es.classList.add("langSelect--active")
   } else{
     $('[lang="es"]').hide();
+    document.documentElement.setAttribute("lang", "en");
     let lang__en = document.querySelector(".langSelect--en");
     lang__en.classList.add("langSelect--active");
   }
 } else{
+  document.documentElement.setAttribute("lang", "en");
   $('[lang="es"]').hide();
     let lang__en = document.querySelector(".langSelect--en");
     lang__en.classList.add("langSelect--active");
 };
 
 $('.langSelect').click(function() {
+  document.documentElement.setAttribute("lang", "");
   $('[lang="es"]').toggle();
   $('[lang="en"]').toggle();
   $('.langSelect span').toggleClass('langSelect--active');
 
   let lang__es = document.querySelector(".langSelect--es")
   if (lang__es.classList.contains("langSelect--active")){
+    document.documentElement.setAttribute("lang", "es");
     localStorage.setItem("language", "es");
   } else{
+    document.documentElement.setAttribute("lang", "en");
     localStorage.setItem("language", "en");
   }
 });
