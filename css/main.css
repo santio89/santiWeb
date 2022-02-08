@@ -34,8 +34,36 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  /* scrollbar standard (mas abajo scrollbar para webkit) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primero) var(--color-fondo);
 }
 
+/* INICIO SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #282828;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(var(--color-primero-rgb), 0.8)), to(rgba(var(--color-segundo-rgb), 0.8)));
+  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 0.8), rgba(var(--color-segundo-rgb), 0.8));
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(var(--color-primero-rgb), 1)), to(rgba(var(--color-segundo-rgb), 1)));
+  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1), rgba(var(--color-segundo-rgb), 1));
+}
+
+/* FIN SCROLLBAR */
 ul, ol, li, a, h1, h2, h3, p, body, header, section, footer, .container, .container-fluid, .row, .col {
   margin: 0;
   padding: 0;
@@ -1446,31 +1474,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   margin-bottom: 0;
 }
 
-/* INICIO SCROLLBAR */
-/* width */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #282828;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(var(--color-primero-rgb), 0.8)), to(rgba(var(--color-segundo-rgb), 0.8)));
-  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 0.8), rgba(var(--color-segundo-rgb), 0.8));
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(var(--color-primero-rgb), 1)), to(rgba(var(--color-segundo-rgb), 1)));
-  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1), rgba(var(--color-segundo-rgb), 1));
-}
-
-/* FIN SCROLLBAR */
 .color__lang {
   display: -webkit-box;
   display: -ms-flexbox;

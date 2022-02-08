@@ -24,7 +24,36 @@ html{
     overflow-x: hidden;
     overflow-y: scroll;
     scroll-behavior: smooth;
+
+    /* scrollbar standard (mas abajo scrollbar para webkit) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primero) var(--color-fondo);
 }
+
+/* INICIO SCROLLBAR */
+
+/* width */
+::-webkit-scrollbar {
+width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+background: lighten($color-fondo,4%);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: linear-gradient(180deg, rgba(var(--color-primero-rgb), .8), rgba(var(--color-segundo-rgb), .8));
+border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1), rgba(var(--color-segundo-rgb), 1));
+}
+
+/* FIN SCROLLBAR */
 
 ul, ol, li, a, h1, h2, h3, p, body, header, section, footer, .container, .container-fluid, .row, .col{
     margin: 0;
@@ -1116,33 +1145,6 @@ section{
         margin-bottom: 0;
     }
 }
-
-
-
-/* INICIO SCROLLBAR */
-
-/* width */
-::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: lighten($color-fondo,4%);
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), .8), rgba(var(--color-segundo-rgb), .8));
-    border-radius: 10px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1), rgba(var(--color-segundo-rgb), 1));
-  }
-
-  /* FIN SCROLLBAR */
 
 
 .color__lang{
