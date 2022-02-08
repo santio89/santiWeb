@@ -20,6 +20,8 @@ if (localStorage.getItem("colorTheme")){
   } else if (localStorage.getItem("colorTheme") == "C"){
     colorPickerC();
   }
+} else{
+  colorPickerA();
 }
 
 colorA.onclick = colorPickerA;
