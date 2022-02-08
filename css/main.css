@@ -952,19 +952,22 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   z-index: -1;
 }
 
-.works__wrapper__work iframe {
-  width: 100%;
-  height: 100%;
-}
-
-.works__wrapper__work img {
+.works__wrapper__work__page__githubImg {
   display: inline-block;
   width: 300px;
   height: 460px;
   -o-object-fit: contain;
      object-fit: contain;
-  background: #1e1e1e;
+  -o-object-position: 46% 38%;
+     object-position: 46% 38%;
   margin-top: calc(.4rem + .1vw + .1vh);
+  -webkit-filter: invert(1);
+          filter: invert(1);
+}
+
+.works__wrapper__work iframe {
+  width: 100%;
+  height: 100%;
 }
 
 /* section contact */
