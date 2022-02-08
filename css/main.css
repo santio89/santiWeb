@@ -20,8 +20,8 @@ $color-segundo: #ffffff;
 :root {
   --color-primero-rgb: 95, 0, 185;
   --color-segundo-rgb: 117, 255, 186;
-  --color-primero: rgb(95, 0, 185);
-  --color-segundo: rgb(117, 255, 186);
+  --color-primero: /* rgb(95, 0, 185) */;
+  --color-segundo: /* rgb(117, 255, 186) */;
   --color-tercero: rgb(255, 140, 0);
   --color-cero: rgb(255, 255, 255);
   --color-fondo: rgb(30,30,30);
@@ -164,7 +164,6 @@ p {
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
   border-radius: 50%;
-  /* box-shadow: 0 0 0 3px var(--color-primero), 0 0 0 6px var(--color-segundo); "alt border"*/
   position: relative;
 }
 
