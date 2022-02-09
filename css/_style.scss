@@ -765,7 +765,7 @@ section{
                     object-fit: contain;
                     object-position: 50% 38%;
                     margin-top: calc(.4rem + .1vw + .1vh);
-                    filter: invert(1) drop-shadow(2px 2px 0 var(--color-primero)) drop-shadow(2px 2px 0 var(--color-segundo));
+                    filter: invert(1) drop-shadow(3px 3px 0 var(--color-primero)) drop-shadow(1px 1px 0 var(--color-segundo));
                 }
             }
 

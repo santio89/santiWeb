@@ -961,8 +961,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   -o-object-position: 50% 38%;
      object-position: 50% 38%;
   margin-top: calc(.4rem + .1vw + .1vh);
-  -webkit-filter: invert(1) drop-shadow(2px 2px 0 var(--color-primero)) drop-shadow(2px 2px 0 var(--color-segundo));
-          filter: invert(1) drop-shadow(2px 2px 0 var(--color-primero)) drop-shadow(2px 2px 0 var(--color-segundo));
+  -webkit-filter: invert(1) drop-shadow(3px 3px 0 var(--color-primero)) drop-shadow(1px 1px 0 var(--color-segundo));
+          filter: invert(1) drop-shadow(3px 3px 0 var(--color-primero)) drop-shadow(1px 1px 0 var(--color-segundo));
 }
 
 .works__wrapper__work iframe {
