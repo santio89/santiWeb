@@ -111,7 +111,9 @@ if (localStorage.getItem("language")){
     $('[lang="es"]').hide();
     document.documentElement.setAttribute("lang", "en");
     let lang__en = document.querySelector(".langSelect--en");
-    lang__en.classList.add("langSelect--active");
+    if(lang__en){
+      lang__en.classList.add("langSelect--active");
+    }
   }
 } else{
   document.documentElement.setAttribute("lang", "en");

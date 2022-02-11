@@ -38,23 +38,36 @@
     <canvas class="canvas"></canvas>
     <div class="loaderWrapper" id="loaderWrapper"><div class="loader"><div class="loader__inner"></div></div></div>
     <header class="header" id="header">
-        <a href="index.html" class="header__logo">SW</a>
+        <a href="https://santiweb.netlify.app/" class="header__logo">SW</a>
         <a href="#footer" class="header__skip">Skip Navigation</a>
         <button for="header__burgerMenu" class="header__burgerButton" id="header__burgerButton" aria-label="Navigation Menu"><i class="bi bi-arrow-bar-left header__burgerButton__icon"></i></button>
 
         <nav class="nav" id="nav" aria-label="header nav">
             <ul class="nav__ul">
-                <li class="nav__ul__li colorPicker">
+                <li class="nav__ul__li color__lang">
+                    <div class="langSelect" aria-label="Select Language"><button class="langSelect--en" aria-label="English">EN</button>/<button aria-label="Spanish" class="langSelect--es">ES</button></div>
                     <div class="colorContainer">
-                        <div class="color color--a color--active" id="colorA"></div>
-                        <div class="color color--b" id="colorB"></div>
-                        <div class="color color--c" id="colorC"></div>
+                        <button class="color color--a color--active" id="colorA" aria-label="Color Theme Picker A"></button>
+                        <button class="color color--b" id="colorB" aria-label="Color Theme Picker B"></button>
+                        <button class="color color--c" id="colorC" aria-label="Color Theme Picker C"></button>
                     </div>
                 </li>
-                <li class="nav__ul__li"><a href="index.html#about" class="nav__anchor">About</a></li>
-                <li class="nav__ul__li"><a href="index.html#skills" class="nav__anchor">Skills</a></li>
-                <li class="nav__ul__li"><a href="index.html#works" class="nav__anchor">Works</a></li>
-                <li class="nav__ul__li"><a href="index.html#contact" class="nav__anchor">Contact</a></li>
+                <li class="nav__ul__li">
+                    <a href="https://santiweb.netlify.app//#about" class="nav__anchor" lang="en">About</a>
+                    <a href="https://santiweb.netlify.app//#about" class="nav__anchor" lang="es">Sobre</a>
+                </li>
+                <li class="nav__ul__li">
+                    <a href="https://santiweb.netlify.app/#skills" class="nav__anchor" lang="en">Skills</a>
+                    <a href="https://santiweb.netlify.app/#skills" class="nav__anchor" lang="es">Habilidades</a>
+                </li>
+                <li class="nav__ul__li">
+                    <a href="https://santiweb.netlify.app/#works" class="nav__anchor" lang="en">Works</a>
+                    <a href="https://santiweb.netlify.app/#works" class="nav__anchor" lang="es">Trabajos</a>
+                </li>
+                <li class="nav__ul__li">
+                    <a href="https://santiweb.netlify.app/#contact" class="nav__anchor" lang="en">Contact</a>
+                    <a href="https://santiweb.netlify.app/#contact" class="nav__anchor" lang="es">Contacto</a>
+                </li>               
             </ul>   
         </nav>
     </header>
@@ -67,10 +80,14 @@
         </div>
         <section class="heroPage" id="heroPage">
             <div class="heroPage__title">
-                <h1 class="heroPage__h1"><span class="heroPage__span">Error 404</span><br>Page not found
+                <h1 class="heroPage__h1" lang="en"><span class="heroPage__span">Error 404</span><br>Page not found
                 </h1>
-                <p class="heroPage__pError" >The page you're trying to access is unavailable or doesn't exist. </p>
-                <a href="index.html" class="heroPage__span heroPage__pError__back">Back to home?</a>
+                <h1 class="heroPage__h1" lang="es"><span class="heroPage__span">Error 404</span><br>Página no encontrada
+                </h1>
+                <p class="heroPage__pError" lang="en">The page you're trying to access is unavailable or doesn't exist.</p>
+                <p class="heroPage__pError" lang="es">La página que intentas acceder no está disponible o no existe.</p>
+                <a href="https://santiweb.netlify.app/" class="heroPage__span heroPage__pError__back" lang="en">Back to home?</a>
+                <a href="https://santiweb.netlify.app/" class="heroPage__span heroPage__pError__back" lang="es">Volver al inicio?</a>
             </div>        
             
             <div class="heroPage__profilePicWrapper" tabindex="0">
@@ -91,10 +108,22 @@
     <footer class="footer" id="footer">
         <nav class="footer__nav">
             <ul class="footer__nav__ul">
-                <li class="footer__nav__ul__li"><a href="#about" class="footer__nav__ul__li__anchor">About</a></li>
-                <li class="footer__nav__ul__li"><a href="#skills" class="footer__nav__ul__li__anchor">Skills</a></li>
-                <li class="footer__nav__ul__li"><a href="#works" class="footer__nav__ul__li__anchor">Works</a></li>
-                <li class="footer__nav__ul__li"><a href="#contact" class="footer__nav__ul__li__anchor">Contact</a></li>
+                <li class="footer__nav__ul__li">
+                    <a href="https://santiweb.netlify.app/#about" class="footer__nav__ul__li__anchor" lang="en">About</a>
+                    <a href="https://santiweb.netlify.app/#about" class="footer__nav__ul__li__anchor" lang="es">Sobre</a>
+                </li>
+                <li class="footer__nav__ul__li">
+                    <a href="https://santiweb.netlify.app/#skills" class="footer__nav__ul__li__anchor" lang="en">Skills</a>
+                    <a href="https://santiweb.netlify.app/#skills" class="footer__nav__ul__li__anchor" lang="es">Habilidades</a>
+                </li>
+                <li class="footer__nav__ul__li">
+                    <a href="https://santiweb.netlify.app/#works" class="footer__nav__ul__li__anchor" lang="en">Works</a>
+                    <a href="https://santiweb.netlify.app/#works" class="footer__nav__ul__li__anchor" lang="es">Trabajos</a>
+                </li>
+                <li class="footer__nav__ul__li">
+                    <a href="https://santiweb.netlify.app/#contact" class="footer__nav__ul__li__anchor" lang="en">Contact</a>
+                    <a href="https://santiweb.netlify.app/#contact" class="footer__nav__ul__li__anchor" lang="es">Contacto</a>
+                </li>
             </ul>   
         </nav>
 
