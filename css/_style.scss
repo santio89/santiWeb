@@ -519,12 +519,12 @@ p{
         position: absolute;
 
         &__front{            
-            background-image: url('../media/thecoon.jpg');
+            background-image: url('../media/earth.jpg');
             background-size: 140%;
         }
 
         &__back{
-            background-image: url('../media/earth.jpg');
+            background-image: url('../media/thecoon.jpg');
             background-size: 140%;
             transform: rotateY(180deg);
         }

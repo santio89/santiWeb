@@ -508,11 +508,11 @@ p {
   position: absolute;
 }
 .heroPage__profilePic__front {
-  background-image: url("../media/thecoon.jpg");
+  background-image: url("../media/earth.jpg");
   background-size: 140%;
 }
 .heroPage__profilePic__back {
-  background-image: url("../media/earth.jpg");
+  background-image: url("../media/thecoon.jpg");
   background-size: 140%;
   transform: rotateY(180deg);
 }
@@ -924,11 +924,11 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   min-width: 90px;
   cursor: pointer;
   font-size: 1.1em;
-  color: #b4b4b4;
+  color: rgb(180, 180, 180);
   text-align: center;
   position: relative;
   padding: 0.04em;
-  border: 2px solid #b4b4b4;
+  border: 2px solid rgb(180, 180, 180);
   border-style: dashed;
 }
 .contact__form__reset span {
@@ -1111,13 +1111,13 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   outline: none;
 }
 .color--a {
-  background: linear-gradient(90deg, #5f00b9 50%, #75ffba 50%);
+  background: linear-gradient(90deg, rgb(95, 0, 185) 50%, rgb(117, 255, 186) 50%);
 }
 .color--b {
-  background: linear-gradient(90deg, #7c2f00 50%, #57d8ff 50%);
+  background: linear-gradient(90deg, rgb(124, 47, 0) 50%, rgb(87, 216, 255) 50%);
 }
 .color--c {
-  background: linear-gradient(90deg, black 50%, white 50%);
+  background: linear-gradient(90deg, rgb(0, 0, 0) 50%, rgb(255, 255, 255) 50%);
 }
 .color--active {
   outline: 2px solid var(--color-tercero);
