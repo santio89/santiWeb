@@ -212,8 +212,8 @@ p {
   position: fixed;
   width: 100%;
   height: 60px;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 1.4rem;
+  padding-right: 1.4rem;
   background: #1e1e1e;
   box-shadow: 0 0.1rem 0rem 0 var(--color-primero);
   z-index: 3;
@@ -390,7 +390,7 @@ p {
 }
 
 .heroPage {
-  padding: 1rem;
+  padding: 1.4rem;
   color: var(--color-cero);
   width: 100vw;
   height: 100vh;
@@ -449,8 +449,8 @@ p {
 }
 .heroPage__profilePicWrapper {
   position: absolute;
-  bottom: calc(1rem + 8px);
-  right: calc(1rem + 8px);
+  bottom: calc(1.4rem + 8px);
+  right: calc(1.4rem + 8px);
   border-radius: 50%;
   aspect-ratio: 1;
   width: 10%;
@@ -520,8 +520,8 @@ p {
 .arrowBounce {
   display: inline-block;
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: 1.4rem;
+  left: 1.4rem;
   font-size: 2.8rem;
   -webkit-animation: bounce 2s infinite;
           animation: bounce 2s infinite;
@@ -541,8 +541,8 @@ p {
 /* sections */
 section {
   width: 100%;
-  padding: 1rem;
-  padding-bottom: calc(2rem + 0.2vw + 0.2vh);
+  padding: 1.4rem;
+  padding-bottom: 2.8rem;
 }
 section:hover .hr__inside, section:focus-within .hr__inside {
   width: calc(100% + 1px);
@@ -658,6 +658,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   justify-content: center;
   align-items: center;
   width: 100%;
+  max-width: 1400px;
+  margin: auto;
 }
 .works__wrapper__work {
   display: flex;
@@ -999,7 +1001,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 /* footer */
 .footer {
-  padding: 1rem;
+  padding: 1.4rem;
   padding-bottom: 0;
   background: linear-gradient(45deg, #2b0053, #0fff87);
   background-size: 2000%;

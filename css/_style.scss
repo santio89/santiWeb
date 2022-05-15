@@ -560,7 +560,7 @@ p{
 section{
     width: 100%;
     padding: $padding-general;
-    padding-bottom: calc(2rem + .2vw + .2vh);
+    padding-bottom: $padding-general*2;    
     
     &:hover .hr__inside, &:focus-within .hr__inside{
         width: calc(100% + 1px);
@@ -691,8 +691,9 @@ section{
         flex-flow: column wrap;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        
+        width: 100%;    
+        max-width: 1400px;
+        margin: auto;
 
         &__work{
             display: flex;
