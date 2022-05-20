@@ -19,11 +19,13 @@ $color-segundo: #ffffff;
 :root {
   --color-primero-rgb: 95, 0, 185;
   --color-segundo-rgb: 117, 255, 186;
-  --color-primero: /* rgb(95, 0, 185) */;
-  --color-segundo: /* rgb(117, 255, 186) */;
+  --color-primero:
+      /* rgb(95, 0, 185) */ ;
+  --color-segundo:
+      /* rgb(117, 255, 186) */ ;
   --color-tercero: rgb(255, 140, 0);
   --color-cero: rgb(255, 255, 255);
-  --color-fondo: rgb(30,30,30);
+  --color-fondo: rgb(30, 30, 30);
   --color-fondo-rgb: 30, 30, 30;
 }
 
@@ -61,7 +63,22 @@ html {
 }
 
 /* FIN SCROLLBAR */
-ul, ol, li, a, h1, h2, h3, p, body, header, section, footer, .container, .container-fluid, .row, .col {
+ul,
+ol,
+li,
+a,
+h1,
+h2,
+h3,
+p,
+body,
+header,
+section,
+footer,
+.container,
+.container-fluid,
+.row,
+.col {
   margin: 0;
   padding: 0;
 }
@@ -92,7 +109,10 @@ ul {
   list-style: none;
 }
 
-button, input, textarea, select {
+button,
+input,
+textarea,
+select {
   font: inherit;
 }
 
@@ -588,11 +608,11 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 /* section about */
 .about {
   /* background-color: $color-fondo;
-     background-image: var(--background);
-     background-attachment: fixed;
-     background-size: cover;
-     background-position-x: 50%;
-     background-position-y: 90%; */
+  background-image: var(--background);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-x: 50%;
+  background-position-y: 90%; */
   background: transparent;
 }
 .about__info {
@@ -1056,7 +1076,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
       -ms-user-select: none;
           user-select: none;
 }
-.footer__santi :hover, .footer__santi :focus {
+.footer__santi :hover,
+.footer__santi :focus {
   color: var(--color-tercero);
   text-shadow: 0 0 0.4rem var(--color-tercero);
 }
@@ -1314,7 +1335,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     padding-right: 0.4rem;
   }
 
-  .heroPage, section {
+  .heroPage,
+section {
     padding-left: 8rem;
     padding-right: 8rem;
   }
@@ -1323,7 +1345,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     right: calc(4rem + 8px);
   }
 
-  .header, .footer {
+  .header,
+.footer {
     padding-left: 4rem;
     padding-right: 4rem;
   }
@@ -1348,12 +1371,18 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   }
 }
 @media (min-width: 1920px) {
-  .landingImgA, .landingImgB, .landingImgC {
+  .landingImgA,
+.landingImgB,
+.landingImgC {
     background-size: cover;
   }
 }
 @media (min-width: 2000px) {
-  .heroPage, .about, .skills, .works, .contact {
+  .heroPage,
+.about,
+.skills,
+.works,
+.contact {
     padding-left: 16rem;
     padding-right: 16rem;
   }
@@ -1362,13 +1391,18 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     right: calc(8rem + 8px);
   }
 
-  .header, .footer {
+  .header,
+.footer {
     padding-left: 8rem;
     padding-right: 8rem;
   }
 }
 @media (min-width: 3200px) {
-  .heroPage, .about, .skills, .works, .contact {
+  .heroPage,
+.about,
+.skills,
+.works,
+.contact {
     padding-left: 32rem;
     padding-right: 32rem;
   }
@@ -1377,13 +1411,18 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     right: calc(16rem + 8px);
   }
 
-  .header, .footer {
+  .header,
+.footer {
     padding-left: 16rem;
     padding-right: 16rem;
   }
 }
 @media (min-width: 4000px) {
-  .heroPage, .about, .skills, .works, .contact {
+  .heroPage,
+.about,
+.skills,
+.works,
+.contact {
     padding-left: 40rem;
     padding-right: 40rem;
   }
@@ -1392,7 +1431,8 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     right: calc(20rem + 8px);
   }
 
-  .header, .footer {
+  .header,
+.footer {
     padding-left: 20rem;
     padding-right: 20rem;
   }

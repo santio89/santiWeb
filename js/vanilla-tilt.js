@@ -6,12 +6,6 @@ var classCallCheck = function (instance, Constructor) {
   }
 };
 
-/**
- * Created by Sergiu Șandor (micku7zu) on 1/27/2017.
- * Original idea: https://github.com/gijsroge/tilt.js
- * MIT License.
- * Version 1.7.2
- */
 
 var VanillaTilt = function () {
   function VanillaTilt(element) {
@@ -274,7 +268,7 @@ var VanillaTilt = function () {
 
   VanillaTilt.prototype.getValues = function getValues() {
     var x = void 0,
-        y = void 0;
+      y = void 0;
 
     if (this.fullPageListening) {
       x = this.event.clientX / this.clientWidth;

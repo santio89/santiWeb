@@ -1,24 +1,24 @@
-@media (min-width: 700px){
-        .skills{
-        &__wrapper{
+@media (min-width: 700px) {
+    .skills {
+        &__wrapper {
             max-width: 1400px;
             grid-template-columns: repeat(4, 1fr);
-            
-            &__skill{
+
+            &__skill {
                 max-width: 220px;
             }
         }
     }
 }
 
-@media (min-width: 880px){
-    .header{      
-        &__burgerButton{
+@media (min-width: 880px) {
+    .header {
+        &__burgerButton {
             display: none;
         }
     }
-    
-    .nav{
+
+    .nav {
         position: unset;
         width: unset;
         background: unset;
@@ -30,16 +30,16 @@
         justify-content: end;
         align-items: end;
         box-shadow: unset;
-        visibility: visible !important;  
-        
-        &__ul{
+        visibility: visible !important;
+
+        &__ul {
             display: flex;
             flex-flow: row wrap;
-            gap: .7em;          
+            gap: .7em;
         }
     }
 
-    .langSelect{
+    .langSelect {
         position: fixed;
         top: 0;
         right: 0;
@@ -49,145 +49,171 @@
         border-radius: 0 0 0 .2em;
         background: rgba(var(--color-primero-rgb), .8);
     }
-    
-    .colorContainer{
+
+    .colorContainer {
         padding-left: .4rem;
         padding-right: .4rem;
     }
 
-    .heroPage, section{
+    .heroPage,
+    section {
         $padding-desktop: 8rem;
         padding-left: $padding-desktop;
         padding-right: $padding-desktop;
     }
 
-    .heroPage{
-        &__profilePicWrapper{
+    .heroPage {
+        &__profilePicWrapper {
             right: calc(4rem + 8px);
         }
     }
 
-    .header, .footer{
+    .header,
+    .footer {
         padding-left: 4rem;
         padding-right: 4rem;
     }
 
-    .contact{
-        &__wrapper{
+    .contact {
+        &__wrapper {
             display: flex;
             flex-flow: row wrap;
             justify-content: center;
             align-items: start;
             gap: calc(1.2rem + .4vw + .4vh);
         }
-        &__form{
+
+        &__form {
             width: 44%;
         }
-        &__info{
+
+        &__info {
             width: 44%;
         }
     }
-    
+
 }
 
-@media (min-width: 1200px){
-    .skills{
-        &__wrapper{
+@media (min-width: 1200px) {
+    .skills {
+        &__wrapper {
             grid-template-columns: repeat(5, 1fr);
         }
     }
 }
 
-@media (min-width: 1920px){
-    .landingImgA, .landingImgB, .landingImgC{
+@media (min-width: 1920px) {
+
+    .landingImgA,
+    .landingImgB,
+    .landingImgC {
         background-size: cover;
     }
 }
 
-@media (min-width: 2000px){
-    .heroPage, .about, .skills, .works, .contact{
+@media (min-width: 2000px) {
+
+    .heroPage,
+    .about,
+    .skills,
+    .works,
+    .contact {
         $padding-desktop: 16rem;
         padding-left: $padding-desktop;
         padding-right: $padding-desktop;
     }
 
-    .heroPage{
-        &__profilePicWrapper{
+    .heroPage {
+        &__profilePicWrapper {
             right: calc(8rem + 8px);
         }
     }
 
-    .header, .footer{
+    .header,
+    .footer {
         padding-left: 8rem;
         padding-right: 8rem;
     }
 }
 
-@media (min-width: 3200px){
-    .heroPage, .about, .skills, .works, .contact{
+@media (min-width: 3200px) {
+
+    .heroPage,
+    .about,
+    .skills,
+    .works,
+    .contact {
         $padding-desktop: 32rem;
         padding-left: $padding-desktop;
         padding-right: $padding-desktop;
     }
 
-    .heroPage{
-        &__profilePicWrapper{
+    .heroPage {
+        &__profilePicWrapper {
             right: calc(16rem + 8px);
         }
     }
 
-    .header, .footer{
+    .header,
+    .footer {
         padding-left: 16rem;
         padding-right: 16rem;
     }
 }
 
-@media (min-width: 4000px){
-    .heroPage, .about, .skills, .works, .contact{
+@media (min-width: 4000px) {
+
+    .heroPage,
+    .about,
+    .skills,
+    .works,
+    .contact {
         $padding-desktop: 40rem;
         padding-left: $padding-desktop;
         padding-right: $padding-desktop;
     }
 
-    .heroPage{
-        &__profilePicWrapper{
+    .heroPage {
+        &__profilePicWrapper {
             right: calc(20rem + 8px);
         }
     }
 
-    .header, .footer{
+    .header,
+    .footer {
         padding-left: 20rem;
         padding-right: 20rem;
     }
 }
 
-@media (max-width: 160px){
-    .header{
+@media (max-width: 160px) {
+    .header {
         justify-content: center;
 
-        &__logo{
+        &__logo {
             display: none;
         }
 
-        &__burgerButton{
+        &__burgerButton {
             margin: 0;
         }
     }
 }
 
-@media (max-width: 310px){
-    .heroPage__profilePicWrapper{
+@media (max-width: 310px) {
+    .heroPage__profilePicWrapper {
         max-width: 140px;
         min-width: 80px;
     }
 }
 
 /* "fix/improvement" for mobile alignment (address bar spacing). and an exception at 310px for the iframe showcase (on mobile) */
- @media all and (pointer: coarse) and (min-width: 310px){
-    .heroPage__profilePicWrapper{
+@media all and (pointer: coarse) and (min-width: 310px) {
+    .heroPage__profilePicWrapper {
         bottom: 12.8%;
     }
-    .arrowBounce{
+
+    .arrowBounce {
         bottom: 10%;
     }
-} 
+}

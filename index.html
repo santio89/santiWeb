@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <!-- open graph -->
     <meta property="og:title" content="santiWeb - Web Developer">
@@ -13,42 +14,52 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web">
-    <meta name="keywords" content="santiWeb, diseño web, desarrollo web, web design, web development, responsive design, caba, argentina">
+    <meta name="keywords"
+        content="santiWeb, diseño web, desarrollo web, web design, web development, responsive design, caba, argentina">
 
     <title>santiWeb / Web Dev</title>
-    <link rel="icon" type="image/png" href="media/favicon.png?v=1"/>    
+    <link rel="icon" type="image/png" href="media/favicon.png?v=1" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="preload" href="media/backgroundA.svg" as="image"> 
-    <link rel="preload" href="media/backgroundB.svg" as="image"> 
+    <link rel="preload" href="media/backgroundA.svg" as="image">
+    <link rel="preload" href="media/backgroundB.svg" as="image">
     <link rel="preload" href="media/backgroundC.svg" as="image">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V8540DPJF"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-1V8540DPJF');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-1V8540DPJF');
     </script>
-    <!-- fin analytics --> 
+    <!-- fin analytics -->
 </head>
+
 <body>
     <canvas class="canvas"></canvas>
-    <div class="loaderWrapper" id="loaderWrapper"><div class="loader"><div class="loader__inner"></div></div></div>
+    <div class="loaderWrapper" id="loaderWrapper">
+        <div class="loader">
+            <div class="loader__inner"></div>
+        </div>
+    </div>
     <header class="header" id="header">
         <a href="https://santiweb.netlify.app/" class="header__logo">SW</a>
         <a href="#about" class="header__skip" lang="en">Skip Navigation</a>
         <a href="#about" class="header__skip" lang="es">Saltar Navegación</a>
-        <button for="header__burgerMenu" class="header__burgerButton" id="header__burgerButton" aria-label="Navigation Menu"><i class="bi bi-arrow-bar-left header__burgerButton__icon"></i></button>
+        <button for="header__burgerMenu" class="header__burgerButton" id="header__burgerButton"
+            aria-label="Navigation Menu"><i class="bi bi-arrow-bar-left header__burgerButton__icon"></i></button>
 
         <nav class="nav" id="nav" aria-label="header nav">
             <ul class="nav__ul">
                 <li class="nav__ul__li color__lang">
-                    <div class="langSelect" aria-label="Select Language"><button class="langSelect--en" aria-label="English">EN</button>/<button aria-label="Spanish" class="langSelect--es">ES</button></div>
+                    <div class="langSelect" aria-label="Select Language"><button class="langSelect--en"
+                            aria-label="English">EN</button>/<button aria-label="Spanish"
+                            class="langSelect--es">ES</button></div>
                     <div class="colorContainer">
-                        <button class="color color--a color--active" id="colorA" aria-label="Color Theme Picker A"></button>
+                        <button class="color color--a color--active" id="colorA"
+                            aria-label="Color Theme Picker A"></button>
                         <button class="color color--b" id="colorB" aria-label="Color Theme Picker B"></button>
                         <button class="color color--c" id="colorC" aria-label="Color Theme Picker C"></button>
                     </div>
@@ -68,74 +79,124 @@
                 <li class="nav__ul__li">
                     <a href="#contact" class="nav__anchor" lang="en">Contact</a>
                     <a href="#contact" class="nav__anchor" lang="es">Contacto</a>
-                </li>               
-            </ul>   
+                </li>
+            </ul>
         </nav>
     </header>
-   
+
     <main class="main">
         <div class="landingImgA" id="landingImgA"></div>
         <div class="landingImgB" id="landingImgB"></div>
         <div class="landingImgC" id="landingImgC"></div>
-        <section class="heroPage" id="heroPage">               
+        <section class="heroPage" id="heroPage">
             <div class="heroPage__title">
-                <h1 lang="en"><span class="heroPage__span">Hi!</span><br>My name is <span class="heroPage__span">Santi</span> <span class="heroPage__span__lineBreak">and I'm a <span class="heroPage__span">web developer</span></span> 
+                <h1 lang="en"><span class="heroPage__span">Hi!</span><br>My name is <span
+                        class="heroPage__span">Santi</span> <span class="heroPage__span__lineBreak">and I'm a <span
+                            class="heroPage__span">web developer</span></span>
                 </h1>
-                <h1 lang="es"><span class="heroPage__span">Hola!</span><br>Mi nombre es <span class="heroPage__span">Santi</span> <span class="heroPage__span__lineBreak">y soy <span class="heroPage__span">desarrollador web</span></span> 
+                <h1 lang="es"><span class="heroPage__span">Hola!</span><br>Mi nombre es <span
+                        class="heroPage__span">Santi</span> <span class="heroPage__span__lineBreak">y soy <span
+                            class="heroPage__span">desarrollador web</span></span>
                 </h1>
-            </div> 
+            </div>
 
             <div class="heroPage__profilePicWrapper" tabindex="0" aria-label="Profile Picture">
                 <div class="heroPage__profilePicWrapper--inner">
-                  <div class="heroPage__profilePic heroPage__profilePic__front" aria-label="Profile Picture">
-                  </div>
+                    <div class="heroPage__profilePic heroPage__profilePic__front" aria-label="Profile Picture">
+                    </div>
 
-                  <div class="heroPage__profilePic heroPage__profilePic__back" aria-label="Profile Picture">
-                  </div>
+                    <div class="heroPage__profilePic heroPage__profilePic__back" aria-label="Profile Picture">
+                    </div>
                 </div>
             </div>
-            
+
             <a aria-label="scroll down arrow" href="#about" class="arrowBounce"><i class="bi bi-arrow-down"></i></a>
         </section>
-        
+
         <section class="about" id="about">
-            <div class="section__container">            
+            <div class="section__container">
                 <div class="sectionTitle">
-                    <div class="hr hr--backwards"><div class="hr__inside"></div></div>
+                    <div class="hr hr--backwards">
+                        <div class="hr__inside"></div>
+                    </div>
                     <h2 lang="en">&nbsp;About&nbsp;</h2>
                     <h2 lang="es">&nbsp;Sobre&nbsp;</h2>
-                    <div class="hr"><div class="hr__inside"></div></div>
+                    <div class="hr">
+                        <div class="hr__inside"></div>
+                    </div>
                 </div>
-                
+
                 <div class="about__info" data-aos="fade-up">
-                    <p class="about__info__details" lang="en">My name is Santiago and I am a web dev in the making located in Buenos Aires, Argentina.<br><br>Having worked in IT for many years, I found in web development a field where I can combine both my passion for technology and art. I enjoy building responsive websites and learning a lot in the process.<br><br>I am always interested in working and collaborating in different projects.</p>
-                    <p class="about__info__details" lang="es">Mi nombre es Santiago y soy un desarrollador web viviendo en Buenos Aires, Argentina.<br><br>Habiendo trabajo en IT varios años, encontré en el desarrollo web un campo donde combinar mis gustos por la tecnología y el arte. Disfruto construir sitios web responsive y aprender en el proceso.<br><br>Estoy siempre interesado en trabajar y colaborar en diferentes proyectos.</p>
-                </div>   
+                    <p class="about__info__details" lang="en">My name is Santiago and I am a web dev in the making
+                        located in Buenos Aires, Argentina.<br><br>Having worked in IT for many years, I found in web
+                        development a field where I can combine both my passion for technology and art. I enjoy building
+                        responsive websites and learning a lot in the process.<br><br>I am always interested in working
+                        and collaborating in different projects.</p>
+                    <p class="about__info__details" lang="es">Mi nombre es Santiago y soy un desarrollador web viviendo
+                        en Buenos Aires, Argentina.<br><br>Habiendo trabajo en IT varios años, encontré en el desarrollo
+                        web un campo donde combinar mis gustos por la tecnología y el arte. Disfruto construir sitios
+                        web responsive y aprender en el proceso.<br><br>Estoy siempre interesado en trabajar y colaborar
+                        en diferentes proyectos.</p>
+                </div>
             </div>
         </section>
 
         <section class="skills" id="skills">
             <div class="section__container">
                 <div class="sectionTitle">
-                    <div class="hr hr--backwards"><div class="hr__inside"></div></div>
+                    <div class="hr hr--backwards">
+                        <div class="hr__inside"></div>
+                    </div>
                     <h2 lang="en">&nbsp;Skills&nbsp;</h2>
                     <h2 lang="es">&nbsp;Habilidades&nbsp;</h2>
-                    <div class="hr"><div class="hr__inside"></div></div>
+                    <div class="hr">
+                        <div class="hr__inside"></div>
+                    </div>
                 </div>
                 <div class="skills__info">
                     <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Technologies I use</h3>
                     <h3 data-aos="fade-right" lang="es"><span class="pointer">◖</span> Tecnologías que uso</h3>
                     <div class="skills__wrapper" data-aos="fade-up">
-                        <div class="skills__wrapper__skill"><p>HTML</p><img class="img-fluid" alt="html" src="media/skills/html.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
-                        <div class="skills__wrapper__skill"><p>CSS</p><img class="img-fluid" alt="css" src="media/skills/css.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
-                        <div class="skills__wrapper__skill"><p>JS</p><img class="img-fluid" alt="javascript" src="media/skills/js.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>  
-                        <div class="skills__wrapper__skill"><p>SASS</p><img class="img-fluid" alt="sass" src="media/skills/sass.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>          
-                        <div class="skills__wrapper__skill"><p>BOOTSTRAP</p><img class="img-fluid" alt="bootstrap" src="media/skills/bs.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
-                        <div class="skills__wrapper__skill"><p>TAILWIND</p><img class="img-fluid" alt="tailwind" src="media/skills/tw.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
-                        <div class="skills__wrapper__skill"><p>REACT</p><img class="img-fluid" alt="react" src="media/skills/react.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
-                        <div class="skills__wrapper__skill"><p>NODE</p><img class="img-fluid" alt="node" src="media/skills/node.png" loading="lazy" data-tilt data-tilt-perspective="200"></div> 
-                        <div class="skills__wrapper__skill"><p>GIT</p><img class="img-fluid" alt="git" src="media/skills/git.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
-                        <div class="skills__wrapper__skill"><p>PHOTOSHOP</p><img class="img-fluid" alt="git" src="media/skills/ps.png" loading="lazy" data-tilt data-tilt-perspective="200"></div>
+                        <div class="skills__wrapper__skill">
+                            <p>HTML</p><img class="img-fluid" alt="html" src="media/skills/html.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>CSS</p><img class="img-fluid" alt="css" src="media/skills/css.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>JS</p><img class="img-fluid" alt="javascript" src="media/skills/js.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>SASS</p><img class="img-fluid" alt="sass" src="media/skills/sass.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>BOOTSTRAP</p><img class="img-fluid" alt="bootstrap" src="media/skills/bs.png"
+                                loading="lazy" data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>TAILWIND</p><img class="img-fluid" alt="tailwind" src="media/skills/tw.png"
+                                loading="lazy" data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>REACT</p><img class="img-fluid" alt="react" src="media/skills/react.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>NODE</p><img class="img-fluid" alt="node" src="media/skills/node.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>GIT</p><img class="img-fluid" alt="git" src="media/skills/git.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
+                        <div class="skills__wrapper__skill">
+                            <p>PHOTOSHOP</p><img class="img-fluid" alt="git" src="media/skills/ps.png" loading="lazy"
+                                data-tilt data-tilt-perspective="200">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,33 +205,44 @@
         <section class="works" id="works">
             <div class="section__container">
                 <div class="sectionTitle">
-                    <div class="hr hr--backwards"><div class="hr__inside"></div></div>
+                    <div class="hr hr--backwards">
+                        <div class="hr__inside"></div>
+                    </div>
                     <h2 lang="en">&nbsp;Works&nbsp;</h2>
                     <h2 lang="es">&nbsp;Trabajos&nbsp;</h2>
-                    <div class="hr"><div class="hr__inside"></div></div>
+                    <div class="hr">
+                        <div class="hr__inside"></div>
+                    </div>
                 </div>
                 <div class="works__wrapper">
                     <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Projects I've done</h3>
                     <h3 data-aos="fade-right" lang="es"><span class="pointer">◖</span> Proyectos que he realizado</h3>
                     <div class="works__wrapper__work" data-aos="fade-up">
                         <div class="works__wrapper__work__container">
-                            <p class="works__wrapper__work__container__p"><a href="https://music-store-firebase.web.app/" target="_blank">Music Store</a></p>
+                            <p class="works__wrapper__work__container__p"><a
+                                    href="https://music-store-firebase.web.app/" target="_blank">Music Store</a></p>
                             <div class="works__wrapper__work__page">
-                                <iframe src="https://music-store-firebase.web.app/#view=FitH" loading="lazy" tabindex="-1">
-                                </iframe>
-                            </div>
-                        </div>
-                        
-                        <div class="works__wrapper__work__container">
-                            <p class="works__wrapper__work__container__p"><a href="https://santio89.github.io/blackFriday/" target="_blank">Black Friday Bebidas</a></p>
-                            <div class="works__wrapper__work__page">
-                                <iframe src="https://santio89.github.io/blackFriday#view=FitH" loading="lazy" tabindex="-1">
+                                <iframe src="https://music-store-firebase.web.app/#view=FitH" loading="lazy"
+                                    tabindex="-1">
                                 </iframe>
                             </div>
                         </div>
 
                         <div class="works__wrapper__work__container">
-                            <p class="works__wrapper__work__container__p"><a href="https://crashtattoostudio.netlify.app/" target="_blank">Crash Tattoo Studio</a></p>
+                            <p class="works__wrapper__work__container__p"><a
+                                    href="https://santio89.github.io/blackFriday/" target="_blank">Black Friday
+                                    Bebidas</a></p>
+                            <div class="works__wrapper__work__page">
+                                <iframe src="https://santio89.github.io/blackFriday#view=FitH" loading="lazy"
+                                    tabindex="-1">
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="works__wrapper__work__container">
+                            <p class="works__wrapper__work__container__p"><a
+                                    href="https://crashtattoostudio.netlify.app/" target="_blank">Crash Tattoo
+                                    Studio</a></p>
                             <div class="works__wrapper__work__page">
                                 <iframe src="https://crashtattoostudio.netlify.app/" loading="lazy" tabindex="-1">
                                 </iframe>
@@ -178,7 +250,9 @@
                         </div>
 
                         <div class="works__wrapper__work__container">
-                            <p class="works__wrapper__work__container__p"><a href="https://argenta-ecologica.netlify.app/" target="_blank">Argenta Ecológica</a></p>
+                            <p class="works__wrapper__work__container__p"><a
+                                    href="https://argenta-ecologica.netlify.app/" target="_blank">Argenta Ecológica</a>
+                            </p>
                             <div class="works__wrapper__work__page">
                                 <iframe src="https://argenta-ecologica.netlify.app/" loading="lazy" tabindex="-1">
                                 </iframe>
@@ -186,7 +260,8 @@
                         </div>
 
                         <div class="works__wrapper__work__container">
-                            <p class="works__wrapper__work__container__p"><a href="https://santiweb.netlify.app/" target="_blank">My Website</a></p>
+                            <p class="works__wrapper__work__container__p"><a href="https://santiweb.netlify.app/"
+                                    target="_blank">My Website</a></p>
                             <div class="works__wrapper__work__page">
                                 <iframe src="https://santiweb.netlify.app/" loading="lazy" tabindex="-1">
                                 </iframe>
@@ -194,84 +269,108 @@
                         </div>
 
                         <div class="works__wrapper__work__container">
-                            <p class="works__wrapper__work__container__p"><a href="https://github.com/santio89" target="_blank">GitHub</a></p>
+                            <p class="works__wrapper__work__container__p"><a href="https://github.com/santio89"
+                                    target="_blank">GitHub</a></p>
                             <div class="works__wrapper__work__page">
-                                <a href="https://github.com/santio89" target="_blank"><img alt="GitHub" src="media/github.png" class="img-fluid works__wrapper__work__page__githubImg" loading="lazy"></a>
+                                <a href="https://github.com/santio89" target="_blank"><img alt="GitHub"
+                                        src="media/github.png" class="img-fluid works__wrapper__work__page__githubImg"
+                                        loading="lazy"></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        
+
         <section class="contact" id="contact">
             <div class="section__container">
                 <div class="sectionTitle">
-                    <div class="hr hr--backwards"><div class="hr__inside"></div></div>
+                    <div class="hr hr--backwards">
+                        <div class="hr__inside"></div>
+                    </div>
                     <h2 lang="en">&nbsp;Contact&nbsp;</h2>
                     <h2 lang="es">&nbsp;Contacto&nbsp;</h2>
-                    <div class="hr"><div class="hr__inside"></div></div>
+                    <div class="hr">
+                        <div class="hr__inside"></div>
+                    </div>
                 </div>
 
                 <div class="contact__wrapper">
-                    <form method="POST" class="contact__form" name="contact" data-netlify="true" netlify-honeypot="bot-field">
+                    <form method="POST" class="contact__form" name="contact" data-netlify="true"
+                        netlify-honeypot="bot-field">
                         <div class="contact__form__title">
                             <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Send a message</h3>
                             <h3 data-aos="fade-right" lang="es"><span class="pointer">◖</span> Envía un mensaje</h3>
                         </div>
-                        
+
                         <div class="contact__form__fields" data-aos="fade-up">
                             <div class="contact__form__bot">
-                                <label lang="en">Don't fill this out if you're a human: <input type="text" name="bot-field"/></label>
-                                <label lang="es">No llenar si eres humano: <input type="text" name="bot-field"/></label>
+                                <label lang="en">Don't fill this out if you're a human: <input type="text"
+                                        name="bot-field" /></label>
+                                <label lang="es">No llenar si eres humano: <input type="text"
+                                        name="bot-field" /></label>
                             </div>
                             <div>
-                                <input type="text" name="nombre" id="name" placeholder="Name" autocomplete="off" required class="contact__form__name" aria-label="Name" lang="en">
-                                <input type="text" name="nombre" id="name" placeholder="Nombre" autocomplete="off" required class="contact__form__name" aria-label="Name" lang="es">
+                                <input type="text" name="nombre" id="name" placeholder="Name" autocomplete="off"
+                                    required class="contact__form__name" aria-label="Name" lang="en">
+                                <input type="text" name="nombre" id="name" placeholder="Nombre" autocomplete="off"
+                                    required class="contact__form__name" aria-label="Name" lang="es">
                             </div>
-            
+
                             <div>
-                                <input type="email" name="email" id="email" placeholder="E-Mail" autocomplete="off" required class="contact__form__email" aria-label="E-Mail">
+                                <input type="email" name="email" id="email" placeholder="E-Mail" autocomplete="off"
+                                    required class="contact__form__email" aria-label="E-Mail">
                             </div>
-        
+
                             <div>
-                                <textarea name="mensaje" id="message" placeholder="Write a message" required class="contact__form__message" aria-label="Message" lang="en"></textarea>
-                                <textarea name="mensaje" id="message" placeholder="Escriba un mensaje" required class="contact__form__message" aria-label="Message" lang="es"></textarea>
+                                <textarea name="mensaje" id="message" placeholder="Write a message" required
+                                    class="contact__form__message" aria-label="Message" lang="en"></textarea>
+                                <textarea name="mensaje" id="message" placeholder="Escriba un mensaje" required
+                                    class="contact__form__message" aria-label="Message" lang="es"></textarea>
                             </div>
-            
+
                             <div class="contact__form__send">
                                 <input type="reset" id="reset" class="contact__form__resetInput" value="Reset">
                                 <label for="reset" class="contact__form__reset"><span>X</span></label>
-            
+
                                 <input type="submit" id="submit" class="contact__form__submitInput" value="Submit">
                                 <label for="submit" class="contact__form__submit" lang="en"><span>Submit</span></label>
                                 <label for="submit" class="contact__form__submit" lang="es"><span>Enviar</span></label>
                             </div>
-                        </div>                   
+                        </div>
                     </form>
-        
+
                     <div class="contact__info">
                         <div class="contact__form__title">
                             <h3 data-aos="fade-right" lang="en"><span class="pointer">◖</span> Contact Info</h3>
-                            <h3 data-aos="fade-right" lang="es"><span class="pointer">◖</span> Información de Contacto</h3>
+                            <h3 data-aos="fade-right" lang="es"><span class="pointer">◖</span> Información de Contacto
+                            </h3>
                         </div>
 
                         <div class="contact__info__details" data-aos="fade-up">
-                            <p><span class="pointer">·</span> E-Mail: <span><a href="mailto:santiolais1989@gmail.com">santiolais1989@gmail.com</a></span></p>
+                            <p><span class="pointer">·</span> E-Mail: <span><a
+                                        href="mailto:santiolais1989@gmail.com">santiolais1989@gmail.com</a></span></p>
 
-                            <p lang="en"><span class="pointer">·</span> Phone: <span><a href="https://wa.me//542804379057" target="_blank">(+54) 0280-154379057</a></span></p>
-                            <p lang="es"><span class="pointer">·</span> Teléfono: <span><a href="https://wa.me//542804379057" target="_blank">(+54) 0280-154379057</a></span></p>
+                            <p lang="en"><span class="pointer">·</span> Phone: <span><a
+                                        href="https://wa.me//542804379057" target="_blank">(+54)
+                                        0280-154379057</a></span></p>
+                            <p lang="es"><span class="pointer">·</span> Teléfono: <span><a
+                                        href="https://wa.me//542804379057" target="_blank">(+54)
+                                        0280-154379057</a></span></p>
 
-                            <p><span class="pointer">·</span> <a href="https://www.linkedin.com/in/santiago-olais-829542b9/" target="_blank">LinkedIn</a></p> 
+                            <p><span class="pointer">·</span> <a
+                                    href="https://www.linkedin.com/in/santiago-olais-829542b9/"
+                                    target="_blank">LinkedIn</a></p>
 
-                            <p><span class="pointer">·</span><a href="https://github.com/santio89" target="_blank"> GitHub</a></p>
+                            <p><span class="pointer">·</span><a href="https://github.com/santio89" target="_blank">
+                                    GitHub</a></p>
                         </div>
                     </div>
                 </div>
-            </div>    
+            </div>
         </section>
     </main>
-    
+
     <footer class="footer" id="footer">
         <nav class="footer__nav">
             <ul class="footer__nav__ul">
@@ -291,22 +390,27 @@
                     <a href="#contact" class="footer__nav__ul__li__anchor" lang="en">Contact</a>
                     <a href="#contact" class="footer__nav__ul__li__anchor" lang="es">Contacto</a>
                 </li>
-            </ul>   
+            </ul>
         </nav>
 
         <div class="sectionTitle">
             <div class="footer__hr" id="footer__hr"></div>
             <div class="footer__santi">
-                <a href="https://www.linkedin.com/in/santiago-olais-829542b9/" target="_blank" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                <a href="https://github.com/santio89" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                <a href="https://www.linkedin.com/in/santiago-olais-829542b9/" target="_blank" aria-label="LinkedIn"><i
+                        class="bi bi-linkedin"></i></a>
+                <a href="https://github.com/santio89" target="_blank" aria-label="GitHub"><i
+                        class="bi bi-github"></i></a>
                 <a href="#heroPage">santiWeb<i class="bi bi-arrow-up-short"></i></a>
-            </div>          
+            </div>
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="js/vanilla-tilt.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>AOS.init();</script>
     <script src="js/scripts.js"></script>
+</body>
+
 </html>
