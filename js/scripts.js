@@ -243,45 +243,42 @@ function colorPickerC() {
 
 
 /* INICIO CAMBIAR IDIOMA */
-if (localStorage.getItem("language")) {
-  if (localStorage.getItem("language") == "es") {
-    $('[lang="en"]').hide();
-    document.documentElement.setAttribute("lang", "es");
-    let lang__es = document.querySelector(".langSelect--es")
-    lang__es.classList.add("langSelect--active")
-  } else {
-    $('[lang="es"]').hide();
-    document.documentElement.setAttribute("lang", "en");
-    let lang__en = document.querySelector(".langSelect--en");
-    if (lang__en) {
-      lang__en.classList.add("langSelect--active");
-    }
-  }
+/* localStorage lang */
+if (localStorage.getItem("language") && localStorage.getItem("language") == "es") {
+  document.documentElement.setAttribute("lang", "es");
+  langArrayEn = $('[lang="en"]').detach()
+  langArrayEs = null;
+  $('.langSelect--es').addClass('langSelect--active');
+  $('.langSelect--en').removeClass('langSelect--active');
 } else {
   document.documentElement.setAttribute("lang", "en");
-  $('[lang="es"]').hide();
-  let lang__en = document.querySelector(".langSelect--en");
-  lang__en.classList.add("langSelect--active");
-};
+  langArrayEs = $('[lang="es"]').detach()
+  langArrayEn = null;
+  $('.langSelect--en').addClass('langSelect--active');
+  $('.langSelect--es').removeClass('langSelect--active');
+}
 
-$('.langSelect').click(function () {
-  document.documentElement.setAttribute("lang", "");
-  $('[lang="es"]').toggle();
-  $('[lang="en"]').toggle();
-  $('.langSelect button').toggleClass('langSelect--active');
-
-  let lang__es = document.querySelector(".langSelect--es")
-  if (lang__es.classList.contains("langSelect--active")) {
+/* langSelect button */
+$('.langSelect').click(() => {
+  if (langArrayEs) {
     document.documentElement.setAttribute("lang", "es");
+    langArrayEn = $('[lang="en"]').each(function (i) { $(this).replaceWith(langArrayEs[i]) })
+    langArrayEs = null;
+    $('.langSelect--es').addClass('langSelect--active');
+    $('.langSelect--en').removeClass('langSelect--active');
     localStorage.setItem("language", "es");
-  } else {
+  } else if (langArrayEn) {
     document.documentElement.setAttribute("lang", "en");
+    langArrayEs = $('[lang="es"]').each(function (i) { $(this).replaceWith(langArrayEn[i]) })
+    langArrayEn = null;
+    $('.langSelect--en').addClass('langSelect--active');
+    $('.langSelect--es').removeClass('langSelect--active');
     localStorage.setItem("language", "en");
   }
-
   textWobbleOnce();
-});
+})
 /* FIN CAMBIAR IDIOMA */
+
 
 /* inicio loader */
 let loader = document.getElementById("loaderWrapper");
