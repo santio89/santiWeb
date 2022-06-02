@@ -696,6 +696,14 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   justify-content: center;
   align-items: start;
   gap: calc(2rem + 0.2vw + 0.2vh);
+  font-size: calc(1rem + 0.2vw + 0.2vh);
+}
+.works__wrapper__work__container__p {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: start;
+  gap: calc(0.4rem + 0.1vw + 0.1vh);
 }
 .works__wrapper__work__container__p a {
   outline: 1px solid var(--color-segundo);
