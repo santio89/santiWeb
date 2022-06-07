@@ -24,10 +24,10 @@ $(document).ready(function () {
 });
 
 function rubberBandOnce(){
-  let header__title = $(".header__logo");
-  header__title.addClass("rubberBand");
+  let header__logo = $(".header__logo");
+  header__logo.addClass("rubberBand");
   header__logo.on("mouseenter click", (e)=>e.target.classList.add("rubberBand"));
-  header__title.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
+  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
 }
 
 /* inicio mouse trail */
