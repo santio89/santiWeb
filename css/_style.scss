@@ -355,6 +355,15 @@ p {
     }
 }
 
+.scrollTracker{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: .1rem;
+    background-color: var(--color-segundo);
+    transform-origin: left;
+}
 
 /* main */
 

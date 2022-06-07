@@ -1,3 +1,6 @@
+/* timeline polyfill */
+import 'https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js';
+
 let root = document.documentElement;
 
 /* title animation - jquery y css*/
@@ -13,15 +16,26 @@ function textWobbleOnce() {
   header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e) => e.target.classList.remove("textWobble"));
 }
 
-
-
 /* inicio mouse trail */
 //******************BUBBLES ON MOUSE TAIL*******************
 
-var canvas = document.querySelector('canvas');
+let canvas = document.querySelector('canvas');
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
-c = canvas.getContext('2d');
+let c = canvas.getContext('2d');
+
+
+let circleArray = [];
+
+function initCanvas() {
+  circleArray = [];
+}
+
+let colorArray = [
+  '117, 255, 186',
+  '95, 0, 185',
+  '117, 255, 186'
+]
 
 window.addEventListener('resize', function () {
   canvas.height = window.innerHeight;
@@ -30,7 +44,7 @@ window.addEventListener('resize', function () {
   initCanvas();
 });
 if ($(window).width() > 800) {
-  var mouse = {
+  let mouse = {
     x: undefined,
     y: undefined
   };
@@ -96,18 +110,6 @@ if ($(window).width() > 800) {
 
   }
 
-  var circleArray = [];
-
-  function initCanvas() {
-    circleArray = [];
-  }
-
-  var colorArray = [
-    '117, 255, 186',
-    '95, 0, 185',
-    '117, 255, 186'
-  ]
-
   function drawCircles() {
     for (let i = 0; i < 6; i++) {
       let radius = Math.floor(Math.random() * 4) + 2;
@@ -121,7 +123,7 @@ if ($(window).width() > 800) {
     }
   }
 
-  var frame = 0;
+  let frame = 0;
 
   function animate() {
     requestAnimationFrame(animate);
@@ -141,6 +143,22 @@ if ($(window).width() > 800) {
 
 /* fin mouse trail */
 
+/* INICIO SCROLL TRACKER */
+  const scrollTracker = document.querySelector(".scrollTracker");
+  const scrollTrackingTimeline = new ScrollTimeline({
+    source: document.scrollingElement,
+    orientation: "block",
+    scrollOffsets: [CSS.percent(0), CSS.percent(100)],
+  })
+
+  scrollTracker.animate({
+    transform: ["scaleX(0)", "scaleX(1)"]
+  },
+  {
+    duration: 1,
+    timeline: scrollTrackingTimeline,
+  })
+/* FIN COLOR TRACKER */
 
 /* INICIO COLOR PICKER */
 let colorA = document.getElementById("colorA");
@@ -244,6 +262,9 @@ function colorPickerC() {
 
 /* INICIO CAMBIAR IDIOMA */
 /* localStorage lang */
+let langArrayEn;
+let langArrayEs;
+
 if (localStorage.getItem("language") && localStorage.getItem("language") == "es") {
   document.documentElement.setAttribute("lang", "es");
   langArrayEn = $('[lang="en"]').detach()
