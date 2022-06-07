@@ -6,14 +6,28 @@ let root = document.documentElement;
 /* title animation - jquery y css*/
 $(document).ready(function () {
   let header__logo = $(".heroPage__span");
-  header__logo.on("mouseenter", (e) => e.target.classList.add("textWobble"));
+  header__logo.on("mouseenter click", (e) => e.target.classList.add("textWobble"));
   header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e) => e.target.classList.remove("textWobble"));
 });
 
 function textWobbleOnce() {
   let header__logo = $(".heroPage__span");
   header__logo.addClass("textWobble");
+  header__logo.on("mouseenter click", (e) => e.target.classList.add("textWobble"));
   header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e) => e.target.classList.remove("textWobble"));
+}
+
+$(document).ready(function () {
+  let header__logo = $(".header__logo");
+  header__logo.on("mouseenter click", (e)=>e.target.classList.add("rubberBand"));
+  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
+});
+
+function rubberBandOnce(){
+  let header__title = $(".header__logo");
+  header__title.addClass("rubberBand");
+  header__logo.on("mouseenter click", (e)=>e.target.classList.add("rubberBand"));
+  header__title.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
 }
 
 /* inicio mouse trail */
@@ -297,6 +311,7 @@ $('.langSelect').click(() => {
     localStorage.setItem("language", "en");
   }
   textWobbleOnce();
+  rubberBandOnce();
 })
 /* FIN CAMBIAR IDIOMA */
 
@@ -315,6 +330,7 @@ window.onload = setTimeout(function () {
 /* run animation one time when it loads */
 window.onload = setTimeout(function () {
   textWobbleOnce();
+  rubberBandOnce();
 }, 1200);
 /* fin run animation */
 

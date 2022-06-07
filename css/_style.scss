@@ -10,12 +10,8 @@
 :root {
     --color-primero-rgb: 95, 0, 185;
     --color-segundo-rgb: 117, 255, 186;
-    --color-primero:
-        /* rgb(95, 0, 185) */
-    ;
-    --color-segundo:
-        /* rgb(117, 255, 186) */
-    ;
+    --color-primero:#5f00b9;
+    --color-segundo:#75ffba;
     --color-tercero: rgb(255, 140, 0);
     --color-cero: rgb(255, 255, 255);
     --color-fondo: rgb(30, 30, 30);
@@ -43,18 +39,17 @@ html {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: lighten($color-fondo, 4%);
+    background: $color-fondo;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), .8), rgba(var(--color-segundo-rgb), .8));
-    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), .8) 50%, rgba(var(--color-segundo-rgb), .8) 50%);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1), rgba(var(--color-segundo-rgb), 1));
+    background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1) 50%, rgba(var(--color-segundo-rgb), 1) 50%);
 }
 
 /* FIN SCROLLBAR */
@@ -269,6 +264,7 @@ p {
         line-height: 1;
         text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
         filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
+        will-change: transform;
 
         &:hover,
         &:focus {
@@ -356,7 +352,7 @@ p {
     }
 }
 
-.scrollTracker{
+.scrollTracker {
     position: absolute;
     top: 100%;
     left: 0;
@@ -431,6 +427,10 @@ p {
     animation: textWobble 300ms;
 }
 
+.rubberBand{
+    animation: rubberBand 450ms;
+}
+
 .heroPage {
     padding: $padding-general;
     color: var(--color-cero);
@@ -450,6 +450,7 @@ p {
         line-height: 1.1;
         user-select: none;
         text-rendering: optimizeLegibility;
+        will-change: transform;
     }
 
     &__span {

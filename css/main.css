@@ -19,10 +19,8 @@ $color-segundo: #ffffff;
 :root {
   --color-primero-rgb: 95, 0, 185;
   --color-segundo-rgb: 117, 255, 186;
-  --color-primero:
-      /* rgb(95, 0, 185) */ ;
-  --color-segundo:
-      /* rgb(117, 255, 186) */ ;
+  --color-primero:#5f00b9;
+  --color-segundo:#75ffba;
   --color-tercero: rgb(255, 140, 0);
   --color-cero: rgb(255, 255, 255);
   --color-fondo: rgb(30, 30, 30);
@@ -48,18 +46,17 @@ html {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #282828;
+  background: #1e1e1e;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 0.8), rgba(var(--color-segundo-rgb), 0.8));
-  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 0.8) 50%, rgba(var(--color-segundo-rgb), 0.8) 50%);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1), rgba(var(--color-segundo-rgb), 1));
+  background: linear-gradient(180deg, rgba(var(--color-primero-rgb), 1) 50%, rgba(var(--color-segundo-rgb), 1) 50%);
 }
 
 /* FIN SCROLLBAR */
@@ -271,6 +268,7 @@ p {
   line-height: 1;
   text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
   filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(0 0 1px var(--color-segundo));
+  will-change: transform;
 }
 .header__logo:hover, .header__logo:focus {
   color: var(--color-tercero);
@@ -420,6 +418,11 @@ p {
           animation: textWobble 300ms;
 }
 
+.rubberBand {
+  -webkit-animation: rubberBand 450ms;
+          animation: rubberBand 450ms;
+}
+
 .heroPage {
   padding: 1.4rem;
   color: var(--color-cero);
@@ -442,6 +445,7 @@ p {
       -ms-user-select: none;
           user-select: none;
   text-rendering: optimizeLegibility;
+  will-change: transform;
 }
 .heroPage__span {
   color: var(--color-segundo);
@@ -1303,6 +1307,52 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   100% {
     opacity: 0;
     display: none;
+  }
+}
+@-webkit-keyframes rubberBand {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes rubberBand {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
   }
 }
 @media (min-width: 700px) {
