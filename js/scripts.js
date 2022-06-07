@@ -7,28 +7,37 @@ let root = document.documentElement;
 $(document).ready(function () {
   let header__logo = $(".heroPage__span");
   header__logo.on("mouseenter click", (e) => e.target.classList.add("textWobble"));
-  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e) => e.target.classList.remove("textWobble"));
+  header__logo.on("animationend webkitAnimationEnd", (e) => e.target.classList.remove("textWobble"));
 });
 
 function textWobbleOnce() {
   let header__logo = $(".heroPage__span");
   header__logo.addClass("textWobble");
   header__logo.on("mouseenter click", (e) => e.target.classList.add("textWobble"));
-  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e) => e.target.classList.remove("textWobble"));
+  header__logo.on("animationend webkitAnimationEnd", (e) => e.target.classList.remove("textWobble"));
 }
 
 $(document).ready(function () {
   let header__logo = $(".header__logo");
-  header__logo.on("mouseenter click", (e)=>e.target.classList.add("rubberBand"));
-  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
+  header__logo.on("click", (e)=>e.target.classList.add("rubberBand"));
+  header__logo.on("animationend webkitAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
 });
 
 function rubberBandOnce(){
   let header__logo = $(".header__logo");
   header__logo.addClass("rubberBand");
-  header__logo.on("mouseenter click", (e)=>e.target.classList.add("rubberBand"));
-  header__logo.on("animationend webkitAnimationEnd oAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
+  header__logo.on("click", (e)=>e.target.classList.add("rubberBand"));
+  header__logo.on("animationend webkitAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
 }
+
+$(document).ready(function () {
+  let skills = document.querySelectorAll(".skills__wrapper__skill img");
+  skills.forEach((skill)=>{
+    skill.addEventListener("click", (e) => e.target.classList.add("rubberBand"));
+    skill.addEventListener("animationend", (e) => e.target.classList.remove("rubberBand"));
+    skill.addEventListener("webkitAnimationEnd", (e) => e.target.classList.remove("rubberBand"));
+  })
+});
 
 /* inicio mouse trail */
 //******************BUBBLES ON MOUSE TAIL*******************

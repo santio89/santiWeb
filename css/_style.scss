@@ -10,8 +10,8 @@
 :root {
     --color-primero-rgb: 95, 0, 185;
     --color-segundo-rgb: 117, 255, 186;
-    --color-primero:#5f00b9;
-    --color-segundo:#75ffba;
+    --color-primero: #5f00b9;
+    --color-segundo: #75ffba;
     --color-tercero: rgb(255, 140, 0);
     --color-cero: rgb(255, 255, 255);
     --color-fondo: rgb(30, 30, 30);
@@ -263,13 +263,22 @@ p {
         line-height: 1;
         text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
         filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(1px 1px 1px var(--color-primero));
+        /* antialiasing (para evitar que se vea blurreado el contorno del texto al realizar la animacion) */
+        outline: 1px solid transparent;
+        transform: translateZ(0);
         will-change: transform;
-        transition: 200ms;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        perspective: 1000;
+        -webkit-perspective: 1000;
+        text-rendering: optimizeLegibility;
+        /* fin antialiasing */
+        transition: 100ms;
 
         &:hover,
         &:focus {
-            color: var(--color-tercero);
-            text-shadow: .4px .4px 0 var(--color-primero), .8px .8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
+            color: var(--color-primero);
+            text-shadow: .4px .4px 0 var(--color-segundo), .8px .8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo);
         }
     }
 
@@ -339,7 +348,8 @@ p {
         &:hover,
         &:focus {
             color: var(--color-segundo);
-            background-size: 100% 2px;;
+            background-size: 100% 2px;
+            ;
         }
     }
 
@@ -424,7 +434,7 @@ p {
     animation: textWobble 300ms;
 }
 
-.rubberBand{
+.rubberBand {
     animation: rubberBand 450ms;
 }
 
@@ -466,7 +476,7 @@ p {
         -webkit-perspective: 1000;
         text-rendering: optimizeLegibility;
         /* fin antialiasing */
-        transition: 200ms;
+        transition: 100ms;
 
         &:hover {
             color: var(--color-tercero);
@@ -688,7 +698,7 @@ section {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(MIN(150px, 45%), 1fr));
-        gap: calc(.2rem + 1vw + 1vh);
+        gap: calc(2*(.2rem + 1vw + 1vh)) calc(.2rem + 1vw + 1vh);
 
         &__skill {
             text-align: center;
@@ -705,13 +715,23 @@ section {
 
             img {
                 width: 100%;
+                filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo));
+                /* antialiasing (para evitar que se vea blurreado el contorno del texto al realizar la animacion) */
+                outline: 1px solid transparent;
+                transform: translateZ(0);
+                will-change: transform;
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+                perspective: 1000;
+                -webkit-perspective: 1000;
+                text-rendering: optimizeLegibility;
+                /* fin antialiasing */
                 transition: 100ms;
-                filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(20%);
-
+                opacity: .9;
 
                 &:hover,
                 &:focus {
-                    filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
+                    opacity: 1;
                 }
             }
 

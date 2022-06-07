@@ -19,8 +19,8 @@ $color-segundo: #ffffff;
 :root {
   --color-primero-rgb: 95, 0, 185;
   --color-segundo-rgb: 117, 255, 186;
-  --color-primero:#5f00b9;
-  --color-segundo:#75ffba;
+  --color-primero: #5f00b9;
+  --color-segundo: #75ffba;
   --color-tercero: rgb(255, 140, 0);
   --color-cero: rgb(255, 255, 255);
   --color-fondo: rgb(30, 30, 30);
@@ -267,12 +267,21 @@ p {
   line-height: 1;
   text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
   filter: drop-shadow(1px 1px 0 var(--color-primero)) drop-shadow(1px 1px 1px var(--color-primero));
+  /* antialiasing (para evitar que se vea blurreado el contorno del texto al realizar la animacion) */
+  outline: 1px solid transparent;
+  transform: translateZ(0);
   will-change: transform;
-  transition: 200ms;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000;
+  -webkit-perspective: 1000;
+  text-rendering: optimizeLegibility;
+  /* fin antialiasing */
+  transition: 100ms;
 }
 .header__logo:hover, .header__logo:focus {
-  color: var(--color-tercero);
-  text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
+  color: var(--color-primero);
+  text-shadow: 0.4px 0.4px 0 var(--color-segundo), 0.8px 0.8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo);
 }
 .header__burgerButton {
   margin-left: auto;
@@ -460,7 +469,7 @@ p {
   -webkit-perspective: 1000;
   text-rendering: optimizeLegibility;
   /* fin antialiasing */
-  transition: 200ms;
+  transition: 100ms;
 }
 .heroPage__span:hover {
   color: var(--color-tercero);
@@ -655,7 +664,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(150px, 45%), 1fr));
-  gap: calc(0.2rem + 1vw + 1vh);
+  gap: calc(2 * (0.2rem + 1vw + 1vh)) calc(0.2rem + 1vw + 1vh);
 }
 .skills__wrapper__skill {
   text-align: center;
@@ -671,11 +680,22 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 .skills__wrapper__skill img {
   width: 100%;
+  filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo));
+  /* antialiasing (para evitar que se vea blurreado el contorno del texto al realizar la animacion) */
+  outline: 1px solid transparent;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000;
+  -webkit-perspective: 1000;
+  text-rendering: optimizeLegibility;
+  /* fin antialiasing */
   transition: 100ms;
-  filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(20%);
+  opacity: 0.9;
 }
 .skills__wrapper__skill img:hover, .skills__wrapper__skill img:focus {
-  filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(0%);
+  opacity: 1;
 }
 
 /* section works */
