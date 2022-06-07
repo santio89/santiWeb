@@ -319,6 +319,7 @@ p {
     width: 175px;
     transform: translateX(calc(104% + .1rem));
     transition: transform 200ms linear;
+    z-index: 1;
 
     &__ul {
         display: flex;
