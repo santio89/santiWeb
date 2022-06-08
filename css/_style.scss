@@ -725,11 +725,10 @@ section {
                 text-rendering: optimizeLegibility;
                 /* fin antialiasing */
                 transition: 100ms;
-                opacity: .9;
 
                 &:hover,
                 &:focus {
-                    opacity: 1;
+                    filter: drop-shadow(2px 2px 0 var(--color-cero)) drop-shadow(2px 2px 0 var(--color-segundo)) grayscale(.4) invert(.8);
                 }
             }
 
@@ -1285,7 +1284,7 @@ section {
         background: linear-gradient(90deg, rgb(124, 47, 0) 50%, rgb(87, 216, 255) 50%)
     }
 
-    &--d{
+    &--d {
         border-radius: 10% 10% 50% 50%;
         background: linear-gradient(90deg, rgb(30, 30, 30) 50%, rgb(220, 220, 220) 50%)
     }
