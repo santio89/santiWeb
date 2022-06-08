@@ -22,9 +22,8 @@ $color-segundo: #ffffff;
   --color-primero: #5f00b9;
   --color-segundo: #75ffba;
   --color-tercero: rgb(255, 140, 0);
-  --color-cero: rgb(255, 255, 255);
+  --color-cero: rgb(250, 250, 250);
   --color-fondo: rgb(30, 30, 30);
-  --color-fondo-rgb: 30, 30, 30;
 }
 
 html {
@@ -46,7 +45,7 @@ html {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #1e1e1e;
+  background: var(--color-fondo);
 }
 
 /* Handle */
@@ -87,7 +86,7 @@ body {
   line-height: 1.5;
   font-family: "Roboto", sans-serif;
   font-weight: 200;
-  background: #1e1e1e;
+  background: var(--color-fondo);
   color: var(--color-cero);
   display: flex;
   flex-direction: column;
@@ -168,7 +167,7 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #1e1e1e;
+  background: var(--color-fondo);
   z-index: 4;
   display: flex;
   flex-flow: row wrap;
@@ -216,7 +215,7 @@ p {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: #1e1e1e;
+  background: var(--color-fondo);
 }
 
 /* fin loader */
@@ -231,7 +230,7 @@ p {
   height: 60px;
   padding-left: 1.4rem;
   padding-right: 1.4rem;
-  background: #1e1e1e;
+  background: var(--color-fondo);
   box-shadow: 0 0.1rem 0rem 0 var(--color-primero);
   z-index: 3;
   transition: 200ms;
@@ -241,7 +240,7 @@ p {
   top: 110%;
   left: -4%;
   transform: translateX(-104%);
-  color: #1e1e1e;
+  color: var(--color-fondo);
   font-weight: 400;
   background: var(--color-segundo);
   margin-left: 4%;
@@ -251,7 +250,7 @@ p {
 .header__skip:focus-visible, .header__skip:hover {
   outline: 2px dashed var(--color-cero);
   transform: translateX(0);
-  color: #1e1e1e;
+  color: var(--color-fondo);
 }
 .header__logo {
   color: var(--color-cero);
@@ -312,7 +311,7 @@ p {
   align-self: end;
   display: flex;
   justify-content: center;
-  background: #1e1e1e;
+  background: var(--color-fondo);
   box-shadow: 0 0.1rem 0rem 0 var(--color-segundo), -0.1rem 0 0rem 0 var(--color-segundo), 0 -0.1rem 0rem 0 var(--color-segundo);
   text-shadow: 0 0 0.2rem var(--color-segundo);
   border-radius: 0.25em 0 0 1em;
@@ -379,7 +378,7 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #1e1e1e;
+  background-color: var(--color-fondo);
   background-image: url(/media/backgroundA.svg);
   background-size: 1920px;
   background-position-x: 50%;
@@ -394,7 +393,7 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #1e1e1e;
+  background-color: var(--color-fondo);
   background-image: url(/media/backgroundB.svg);
   background-size: 1920px;
   background-position-x: 50%;
@@ -410,7 +409,7 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #1e1e1e;
+  background-color: var(--color-fondo);
   background-image: url(/media/backgroundC.svg);
   background-size: 1920px;
   background-position-x: 50%;
@@ -439,7 +438,7 @@ p {
   justify-content: start;
   align-items: start;
   position: relative;
-  background: rgba(var(--color-fondo-rgb), 1);
+  background: var(--color-fondo);
 }
 .heroPage__title {
   z-index: 2;
@@ -626,7 +625,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 /* section about */
 .about {
-  /* background-color: $color-fondo;
+  /* background-color: var(--color-fondo);
   background-image: var(--background);
   background-attachment: fixed;
   background-size: cover;
@@ -651,7 +650,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 /* section skills */
 .skills {
-  background: #1e1e1e;
+  background: var(--color-fondo);
 }
 .skills__info {
   display: flex;
@@ -749,7 +748,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 }
 .works__wrapper__work__page {
   position: relative;
-  background: #1e1e1e;
+  background: var(--color-fondo);
   margin-bottom: 2rem;
   width: 320px;
   height: 460px;
@@ -795,7 +794,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 
 /* section contact */
 .contact {
-  background: #1e1e1e;
+  background: var(--color-fondo);
 }
 .contact__wrapper {
   display: flex;
@@ -953,7 +952,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   left: -10px;
   width: calc(100% + 20px);
   height: calc(100% - 12px);
-  background: #1e1e1e;
+  background: var(--color-fondo);
   transition: 200ms;
   transform: scaleY(1);
 }
@@ -964,7 +963,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   left: 6px;
   width: calc(100% - 12px);
   height: calc(100% + 20px);
-  background: #1e1e1e;
+  background: var(--color-fondo);
   transition: 200ms;
   transform: scaleX(1);
 }
@@ -1003,7 +1002,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   left: -10px;
   width: calc(100% + 20px);
   height: calc(100% - 12px);
-  background: #1e1e1e;
+  background: var(--color-fondo);
   transition: 200ms;
   transform: scaleY(1);
 }
@@ -1014,7 +1013,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   left: 6px;
   width: calc(100% - 12px);
   height: calc(100% + 20px);
-  background: #1e1e1e;
+  background: var(--color-fondo);
   transition: 200ms;
   transform: scaleX(1);
 }
@@ -1178,12 +1177,16 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   background: linear-gradient(90deg, rgb(124, 47, 0) 50%, rgb(87, 216, 255) 50%);
 }
 .color--c {
-  background: linear-gradient(90deg, rgb(0, 0, 0) 50%, rgb(255, 255, 255) 50%);
+  background: linear-gradient(90deg, rgb(10, 10, 10) 50%, rgb(200, 200, 200) 50%);
+}
+.color--d {
+  border-radius: 10% 10% 50% 50%;
+  background: linear-gradient(90deg, rgb(30, 30, 30) 50%, rgb(220, 220, 220) 50%);
 }
 .color--active {
   outline: 2px solid var(--color-tercero);
 }
-.color:hover, .color:focus {
+.color:hover, .color:focus-visible {
   outline: 2px solid var(--color-tercero);
 }
 

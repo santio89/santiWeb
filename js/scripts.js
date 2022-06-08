@@ -19,20 +19,20 @@ function textWobbleOnce() {
 
 $(document).ready(function () {
   let header__logo = $(".header__logo");
-  header__logo.on("click", (e)=>e.target.classList.add("rubberBand"));
-  header__logo.on("animationend webkitAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
+  header__logo.on("click", (e) => e.target.classList.add("rubberBand"));
+  header__logo.on("animationend webkitAnimationEnd", (e) => e.target.classList.remove("rubberBand"));
 });
 
-function rubberBandOnce(){
+function rubberBandOnce() {
   let header__logo = $(".header__logo");
   header__logo.addClass("rubberBand");
-  header__logo.on("click", (e)=>e.target.classList.add("rubberBand"));
-  header__logo.on("animationend webkitAnimationEnd", (e)=>e.target.classList.remove("rubberBand"));
+  header__logo.on("click", (e) => e.target.classList.add("rubberBand"));
+  header__logo.on("animationend webkitAnimationEnd", (e) => e.target.classList.remove("rubberBand"));
 }
 
 $(document).ready(function () {
   let skills = document.querySelectorAll(".skills__wrapper__skill img");
-  skills.forEach((skill)=>{
+  skills.forEach((skill) => {
     skill.addEventListener("click", (e) => e.target.classList.add("rubberBand"));
     skill.addEventListener("animationend", (e) => e.target.classList.remove("rubberBand"));
     skill.addEventListener("webkitAnimationEnd", (e) => e.target.classList.remove("rubberBand"));
@@ -167,16 +167,16 @@ if ($(window).width() > 800) {
 /* fin mouse trail */
 
 /* INICIO SCROLL TRACKER */
-  const scrollTracker = document.querySelector(".scrollTracker");
-  const scrollTrackingTimeline = new ScrollTimeline({
-    source: document.scrollingElement,
-    orientation: "block",
-    scrollOffsets: [CSS.percent(0), CSS.percent(100)],
-  })
+const scrollTracker = document.querySelector(".scrollTracker");
+const scrollTrackingTimeline = new ScrollTimeline({
+  source: document.scrollingElement,
+  orientation: "block",
+  scrollOffsets: [CSS.percent(0), CSS.percent(100)],
+})
 
-  scrollTracker.animate({
-    transform: ["scaleX(0)", "scaleX(1)"]
-  },
+scrollTracker.animate({
+  transform: ["scaleX(0)", "scaleX(1)"]
+},
   {
     duration: 1,
     timeline: scrollTrackingTimeline,
@@ -187,10 +187,9 @@ if ($(window).width() > 800) {
 let colorA = document.getElementById("colorA");
 let colorB = document.getElementById("colorB");
 let colorC = document.getElementById("colorC");
-let colorContainer = document.getElementById("colorContainer");
+let colorD = document.getElementById("colorD");
 let footer = document.getElementById("footer");
 let footer__hr = document.getElementById("footer__hr");
-let particles = document.getElementById("particles-js");
 let landingImgA = document.getElementById("landingImgA");
 let landingImgB = document.getElementById("landingImgB");
 let landingImgC = document.getElementById("landingImgC");
@@ -207,9 +206,19 @@ if (localStorage.getItem("colorTheme")) {
   colorPickerA();
 }
 
+if (localStorage.getItem("colorMainTheme")) {
+  if (localStorage.getItem("colorMainTheme") === "light") {
+    colorPickerD("light");
+  } else {
+    localStorage.setItem("colorMainTheme", "dark");
+    colorPickerD("dark");
+  }
+}
+
 colorA.onclick = colorPickerA;
 colorB.onclick = colorPickerB;
 colorC.onclick = colorPickerC;
+colorD.addEventListener("click", ()=>colorPickerD());
 
 function colorPickerA() {
   colorC.classList.remove("color--active");
@@ -261,9 +270,9 @@ function colorPickerC() {
   colorA.classList.remove("color--active");
   colorB.classList.remove("color--active");
   colorC.classList.add("color--active");
-  root.style.setProperty("--color-primero", "rgb(0, 0, 0)");
+  root.style.setProperty("--color-primero", "rgb(10, 10, 10)");
   root.style.setProperty("--color-segundo", "rgb(200, 200, 200)");
-  root.style.setProperty("--color-primero-rgb", "0, 0, 0");
+  root.style.setProperty("--color-primero-rgb", "10, 10, 10");
   root.style.setProperty("--color-segundo-rgb", "200, 200, 200");
   landingImgC.style.setProperty("opacity", "1");
   landingImgA.style.setProperty("opacity", "0");
@@ -273,11 +282,37 @@ function colorPickerC() {
   footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
   colorArray = [
     '200, 200, 200',
-    '0, 0, 0',
+    '10, 10, 10',
     '200, 200, 200'
   ]
 
   localStorage.setItem("colorTheme", "C");
+}
+
+function colorPickerD(theme) {
+  if (!theme) {
+    if (localStorage.getItem("colorMainTheme")) {
+      if (localStorage.getItem("colorMainTheme") === "dark") {
+        root.style.setProperty("--color-fondo", "rgb(220, 220, 220)");
+        localStorage.setItem("colorMainTheme", "light");
+      } else {
+        root.style.setProperty("--color-fondo", "rgb(30, 30, 30)");
+        localStorage.setItem("colorMainTheme", "dark");
+      }
+    } else {
+      root.style.setProperty("--color-fondo", "rgb(220, 220, 220)");
+      localStorage.setItem("colorMainTheme", "light");
+    }
+   
+  } else {
+    if (theme === "light") {
+      root.style.setProperty("--color-fondo", "rgb(220, 220, 220)");
+    } else {
+      root.style.setProperty("--color-fondo", "rgb(30, 30, 30)");
+    }
+  }
+
+  /*   localStorage.setItem("colorMainTheme", "A"); */
 }
 
 /* FIN COLOR PICKER */
