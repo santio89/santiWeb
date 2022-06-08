@@ -186,7 +186,6 @@ scrollTracker.animate({
 /* INICIO COLOR PICKER */
 let colorA = document.getElementById("colorA");
 let colorB = document.getElementById("colorB");
-let colorC = document.getElementById("colorC");
 let colorD = document.getElementById("colorD");
 let footer = document.getElementById("footer");
 let footer__hr = document.getElementById("footer__hr");
@@ -217,11 +216,9 @@ if (localStorage.getItem("colorMainTheme")) {
 
 colorA.onclick = colorPickerA;
 colorB.onclick = colorPickerB;
-colorC.onclick = colorPickerC;
 colorD.addEventListener("click", ()=>colorPickerD());
 
 function colorPickerA() {
-  colorC.classList.remove("color--active");
   colorB.classList.remove("color--active");
   colorA.classList.add("color--active");
   root.style.setProperty("--color-primero", "rgb(95, 0, 185)");
@@ -245,7 +242,6 @@ function colorPickerA() {
 
 function colorPickerB() {
   colorA.classList.remove("color--active");
-  colorC.classList.remove("color--active");
   colorB.classList.add("color--active");
   root.style.setProperty("--color-primero", "rgb(124, 47, 0)");
   root.style.setProperty("--color-segundo", "rgb(87, 216, 255)");
@@ -264,29 +260,6 @@ function colorPickerB() {
   ]
 
   localStorage.setItem("colorTheme", "B");
-}
-
-function colorPickerC() {
-  colorA.classList.remove("color--active");
-  colorB.classList.remove("color--active");
-  colorC.classList.add("color--active");
-  root.style.setProperty("--color-primero", "rgb(10, 10, 10)");
-  root.style.setProperty("--color-segundo", "rgb(200, 200, 200)");
-  root.style.setProperty("--color-primero-rgb", "10, 10, 10");
-  root.style.setProperty("--color-segundo-rgb", "200, 200, 200");
-  landingImgC.style.setProperty("opacity", "1");
-  landingImgA.style.setProperty("opacity", "0");
-  landingImgB.style.setProperty("opacity", "0");
-  footer.style.setProperty("background", "linear-gradient(45deg, rgb(0, 0, 0), rgb(255, 255, 255)");
-  footer.style.setProperty("background-size", "500%");
-  footer__hr.style.setProperty("background", "linear-gradient(270deg, rgb(0, 0, 0),rgb(255, 255, 255)");
-  colorArray = [
-    '200, 200, 200',
-    '10, 10, 10',
-    '200, 200, 200'
-  ]
-
-  localStorage.setItem("colorTheme", "C");
 }
 
 function colorPickerD(theme) {

@@ -1176,9 +1176,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 .color--b {
   background: linear-gradient(90deg, rgb(124, 47, 0) 50%, rgb(87, 216, 255) 50%);
 }
-.color--c {
-  background: linear-gradient(90deg, rgb(10, 10, 10) 50%, rgb(200, 200, 200) 50%);
-}
 .color--d {
   border-radius: 10% 10% 50% 50%;
   background: linear-gradient(90deg, rgb(30, 30, 30) 50%, rgb(220, 220, 220) 50%);
