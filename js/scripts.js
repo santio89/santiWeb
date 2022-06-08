@@ -19,14 +19,14 @@ function textWobbleOnce() {
 
 $(document).ready(function () {
   let header__logo = $(".header__logo");
-  header__logo.on("click", (e) => e.target.classList.add("rubberBand"));
+  header__logo.on("mouseenter click", (e) => e.target.classList.add("rubberBand"));
   header__logo.on("animationend webkitAnimationEnd", (e) => e.target.classList.remove("rubberBand"));
 });
 
 function rubberBandOnce() {
   let header__logo = $(".header__logo");
   header__logo.addClass("rubberBand");
-  header__logo.on("click", (e) => e.target.classList.add("rubberBand"));
+  header__logo.on("mouseenter click", (e) => e.target.classList.add("rubberBand"));
   header__logo.on("animationend webkitAnimationEnd", (e) => e.target.classList.remove("rubberBand"));
 }
 
