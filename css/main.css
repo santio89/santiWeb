@@ -280,7 +280,6 @@ p {
 }
 .header__logo:hover, .header__logo:focus {
   color: var(--color-segundo);
-  /*  text-shadow: .4px .4px 0 var(--color-segundo), .8px .8px 0 var(--color-segundo), 1.2px 1.2px 0 var(--color-segundo), 1.6px 1.6px 0 var(--color-segundo); */
 }
 .header__burgerButton {
   margin-left: auto;
