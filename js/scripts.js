@@ -34,6 +34,7 @@ $(document).ready(function () {
   let skills = document.querySelectorAll(".skills__wrapper__skill img");
   skills.forEach((skill) => {
     skill.addEventListener("click", (e) => e.target.classList.add("rubberBand"));
+    skill.addEventListener("mouseenter", (e) => e.target.classList.add("rubberBand"));
     skill.addEventListener("animationend", (e) => e.target.classList.remove("rubberBand"));
     skill.addEventListener("webkitAnimationEnd", (e) => e.target.classList.remove("rubberBand"));
   })
