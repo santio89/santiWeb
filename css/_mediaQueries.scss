@@ -79,8 +79,9 @@
             display: flex;
             flex-flow: row wrap;
             justify-content: center;
-            align-items: start;
+            align-items: stretch;
             gap: calc(1.2rem + .4vw + .4vh);
+            
         }
 
         &__form {

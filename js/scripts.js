@@ -268,21 +268,26 @@ function colorPickerD(theme) {
     if (localStorage.getItem("colorMainTheme")) {
       if (localStorage.getItem("colorMainTheme") === "dark") {
         root.style.setProperty("--color-fondo", "rgb(220, 220, 220)");
+        root.style.setProperty("--color-fondo-dark", "rgb(180, 180, 180)");
         localStorage.setItem("colorMainTheme", "light");
       } else {
         root.style.setProperty("--color-fondo", "rgb(30, 30, 30)");
+        root.style.setProperty("--color-fondo-dark", "rgb(40, 40, 40)");
         localStorage.setItem("colorMainTheme", "dark");
       }
     } else {
       root.style.setProperty("--color-fondo", "rgb(220, 220, 220)");
+      root.style.setProperty("--color-fondo-dark", "rgb(180, 180, 180)");
       localStorage.setItem("colorMainTheme", "light");
     }
    
   } else {
     if (theme === "light") {
       root.style.setProperty("--color-fondo", "rgb(220, 220, 220)");
+      root.style.setProperty("--color-fondo-dark", "rgb(180, 180, 180)");
     } else {
       root.style.setProperty("--color-fondo", "rgb(30, 30, 30)");
+       root.style.setProperty("--color-fondo-dark", "rgb(40, 40, 40)");
     }
   }
 
