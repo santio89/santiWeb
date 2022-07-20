@@ -1388,7 +1388,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   .header__burgerButton {
     display: none;
   }
-
   .nav {
     position: unset;
     width: unset;
@@ -1408,7 +1407,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     flex-flow: row wrap;
     gap: 0.7em;
   }
-
   .langSelect {
     position: fixed;
     top: 0;
@@ -1419,28 +1417,23 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     border-radius: 0 0 0 0.2em;
     background: rgba(var(--color-primero-rgb), 0.8);
   }
-
   .colorContainer {
     padding-left: 0.4rem;
     padding-right: 0.4rem;
   }
-
   .heroPage,
 section {
     padding-left: 8rem;
     padding-right: 8rem;
   }
-
   .heroPage__profilePicWrapper {
     right: calc(4rem + 8px);
   }
-
   .header,
 .footer {
     padding-left: 4rem;
     padding-right: 4rem;
   }
-
   .contact__wrapper {
     display: flex;
     flex-flow: row wrap;
@@ -1476,11 +1469,9 @@ section {
     padding-left: 16rem;
     padding-right: 16rem;
   }
-
   .heroPage__profilePicWrapper {
     right: calc(8rem + 8px);
   }
-
   .header,
 .footer {
     padding-left: 8rem;
@@ -1496,11 +1487,9 @@ section {
     padding-left: 32rem;
     padding-right: 32rem;
   }
-
   .heroPage__profilePicWrapper {
     right: calc(16rem + 8px);
   }
-
   .header,
 .footer {
     padding-left: 16rem;
@@ -1516,11 +1505,9 @@ section {
     padding-left: 40rem;
     padding-right: 40rem;
   }
-
   .heroPage__profilePicWrapper {
     right: calc(20rem + 8px);
   }
-
   .header,
 .footer {
     padding-left: 20rem;
@@ -1549,7 +1536,6 @@ section {
   .heroPage__profilePicWrapper {
     bottom: 12.8%;
   }
-
   .arrowBounce {
     bottom: 10%;
   }
