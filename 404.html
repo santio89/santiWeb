@@ -45,31 +45,35 @@
         <nav class="nav" id="nav" aria-label="header nav">
             <ul class="nav__ul">
                 <li class="nav__ul__li color__lang">
-                    <div class="langSelect" aria-label="Select Language"><button class="langSelect--en" aria-label="English">EN</button>/<button aria-label="Spanish" class="langSelect--es">ES</button></div>
+                    <div class="langSelect" aria-label="Select Language"><button class="langSelect--en"
+                            aria-label="English">EN</button>/<button aria-label="Spanish"
+                            class="langSelect--es">ES</button></div>
                     <div class="colorContainer">
-                        <button class="color color--a color--active" id="colorA" aria-label="Color Theme Picker A"></button>
+                        <button class="color color--a color--active" id="colorA"
+                            aria-label="Color Theme Picker A"></button>
                         <button class="color color--b" id="colorB" aria-label="Color Theme Picker B"></button>
-                        <button class="color color--c" id="colorC" aria-label="Color Theme Picker C"></button>
+                        <button class="color color--d" id="colorD" aria-label="Main Theme Toggler"></button>
                     </div>
                 </li>
                 <li class="nav__ul__li">
-                    <a href="https://santiweb.netlify.app//#about" class="nav__anchor" lang="en">About</a>
-                    <a href="https://santiweb.netlify.app//#about" class="nav__anchor" lang="es">Sobre</a>
+                    <a href="#about" class="nav__anchor" lang="en">About</a>
+                    <a href="#about" class="nav__anchor" lang="es">Sobre</a>
                 </li>
                 <li class="nav__ul__li">
-                    <a href="https://santiweb.netlify.app/#skills" class="nav__anchor" lang="en">Skills</a>
-                    <a href="https://santiweb.netlify.app/#skills" class="nav__anchor" lang="es">Habilidades</a>
+                    <a href="#skills" class="nav__anchor" lang="en">Skills</a>
+                    <a href="#skills" class="nav__anchor" lang="es">Habilidades</a>
                 </li>
                 <li class="nav__ul__li">
-                    <a href="https://santiweb.netlify.app/#works" class="nav__anchor" lang="en">Works</a>
-                    <a href="https://santiweb.netlify.app/#works" class="nav__anchor" lang="es">Trabajos</a>
+                    <a href="#works" class="nav__anchor" lang="en">Works</a>
+                    <a href="#works" class="nav__anchor" lang="es">Trabajos</a>
                 </li>
                 <li class="nav__ul__li">
-                    <a href="https://santiweb.netlify.app/#contact" class="nav__anchor" lang="en">Contact</a>
-                    <a href="https://santiweb.netlify.app/#contact" class="nav__anchor" lang="es">Contacto</a>
-                </li>               
-            </ul>   
+                    <a href="#contact" class="nav__anchor" lang="en">Contact</a>
+                    <a href="#contact" class="nav__anchor" lang="es">Contacto</a>
+                </li>
+            </ul>
         </nav>
+        <div class="scrollTracker"></div>
     </header>
    
     <main class="main">
@@ -138,9 +142,8 @@
     </footer>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="js/vanilla-tilt.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>AOS.init();</script>
-    <script src="js/scripts.js"></script>
+    <script src="js/scripts.js" type="module"></script>
 </body>
 </html>
