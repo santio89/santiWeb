@@ -1,5 +1,5 @@
 /* timeline polyfill */
-import './scroll-timeline.js';
+import 'https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js';
 
 let root = document.documentElement;
 
@@ -172,8 +172,7 @@ const scrollTracker = document.querySelector(".scrollTracker");
 const scrollTrackingTimeline = new ScrollTimeline({
   source: document.scrollingElement,
   orientation: "block",
-  scrollOffsets: [CSS.percent(0), CSS.percent(100)],
-  animationTimeline: null,
+  scrollOffsets: [CSS.percent(0), CSS.percent(100)]
 })
 
 scrollTracker.animate({
