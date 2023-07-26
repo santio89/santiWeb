@@ -290,8 +290,6 @@ function colorPickerD(theme) {
        root.style.setProperty("--color-fondo-dark", "rgb(40, 40, 40)");
     }
   }
-
-  /*   localStorage.setItem("colorMainTheme", "A"); */
 }
 
 /* FIN COLOR PICKER */

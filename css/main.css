@@ -194,8 +194,7 @@ p {
   background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
   z-index: -1;
   border-radius: 50%;
-  -webkit-animation: rotate 4000ms linear infinite;
-          animation: rotate 4000ms linear infinite;
+  animation: rotate 4000ms linear infinite;
 }
 .loader::before {
   content: "";
@@ -204,8 +203,7 @@ p {
   background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
   z-index: -1;
   border-radius: 50%;
-  -webkit-animation: rotate 4000ms linear infinite;
-          animation: rotate 4000ms linear infinite;
+  animation: rotate 4000ms linear infinite;
   filter: blur(4px);
 }
 .loader__inner {
@@ -262,7 +260,6 @@ p {
   font-size: 3.2rem;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
   line-height: 1;
   text-shadow: 0.4px 0.4px 0 var(--color-primero), 0.8px 0.8px 0 var(--color-primero), 1.2px 1.2px 0 var(--color-primero), 1.6px 1.6px 0 var(--color-primero);
@@ -328,7 +325,6 @@ p {
 .nav__ul__li {
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 .nav__ul__li:not(:first-of-type):hover, .nav__ul__li:not(:first-of-type):focus {
@@ -419,13 +415,11 @@ p {
 }
 
 .textWobble {
-  -webkit-animation: textWobble 300ms;
-          animation: textWobble 300ms;
+  animation: textWobble 300ms;
 }
 
 .rubberBand {
-  -webkit-animation: rubberBand 450ms;
-          animation: rubberBand 450ms;
+  animation: rubberBand 450ms;
 }
 
 .heroPage {
@@ -447,7 +441,6 @@ p {
   line-height: 1.1;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
   text-rendering: optimizeLegibility;
   will-change: transform;
@@ -518,8 +511,7 @@ p {
   background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
   z-index: -1;
   border-radius: 50%;
-  -webkit-animation: rotate 8000ms linear infinite;
-          animation: rotate 8000ms linear infinite;
+  animation: rotate 8000ms linear infinite;
 }
 .heroPage__profilePicWrapper--inner::before {
   content: "";
@@ -528,8 +520,7 @@ p {
   background: linear-gradient(var(--color-primero) 50%, var(--color-segundo) 50%);
   z-index: -1;
   border-radius: 50%;
-  -webkit-animation: rotate 8000ms linear infinite;
-          animation: rotate 8000ms linear infinite;
+  animation: rotate 8000ms linear infinite;
   filter: blur(4px);
 }
 .heroPage__profilePicWrapper:hover .heroPage__profilePicWrapper--inner, .heroPage__profilePicWrapper:focus .heroPage__profilePicWrapper--inner {
@@ -542,7 +533,6 @@ p {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   position: absolute;
 }
@@ -562,8 +552,7 @@ p {
   bottom: 1.4rem;
   left: 1.4rem;
   font-size: 2.8rem;
-  -webkit-animation: bounce 2s infinite;
-          animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
   color: var(--color-segundo);
   opacity: 80%;
   transition: inset 200ms;
@@ -860,9 +849,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 .contact__form__name::-moz-placeholder, .contact__form__email::-moz-placeholder {
   font-style: italic;
 }
-.contact__form__name:-ms-input-placeholder, .contact__form__email:-ms-input-placeholder {
-  font-style: italic;
-}
 .contact__form__name::placeholder, .contact__form__email::placeholder {
   font-style: italic;
 }
@@ -888,9 +874,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   background-size: 100% 2px;
 }
 .contact__form__message::-moz-placeholder {
-  font-style: italic;
-}
-.contact__form__message:-ms-input-placeholder {
   font-style: italic;
 }
 .contact__form__message::placeholder {
@@ -1073,8 +1056,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   flex-flow: column wrap;
   justify-content: space-between;
   align-items: stretch;
-  -webkit-animation: gradiente__fondo 20s infinite linear alternate;
-          animation: gradiente__fondo 20s infinite linear alternate;
+  animation: gradiente__fondo 20s infinite linear alternate;
   position: relative;
 }
 .footer__nav {
@@ -1090,7 +1072,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
 .footer__nav__ul__li {
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 .footer__nav__ul__li__anchor {
@@ -1116,7 +1097,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   align-items: center;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 .footer__santi :hover,
@@ -1200,32 +1180,12 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   background: transparent;
 }
 
-@-webkit-keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  60% {
-    transform: translateY(-15px);
   }
 }
 @keyframes bounce {
@@ -1239,40 +1199,12 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     transform: translateY(-15px);
   }
 }
-@-webkit-keyframes vis {
-  0% {
-    visibility: visible;
-  }
-  100% {
-    visibility: hidden;
-  }
-}
 @keyframes vis {
   0% {
     visibility: visible;
   }
   100% {
     visibility: hidden;
-  }
-}
-@-webkit-keyframes textWobble {
-  0% {
-    transform: skewX(0deg);
-  }
-  20% {
-    transform: skewX(-15deg);
-  }
-  40% {
-    transform: skewX(15deg);
-  }
-  60% {
-    transform: skewX(-15deg);
-  }
-  80% {
-    transform: skewX(15deg);
-  }
-  100% {
-    transform: skewX(0deg);
   }
 }
 @keyframes textWobble {
@@ -1295,29 +1227,12 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     transform: skewX(0deg);
   }
 }
-@-webkit-keyframes gradiente__fondo {
-  0% {
-    background-position: 10 0%;
-  }
-  100% {
-    background-position: 60% 0%;
-  }
-}
 @keyframes gradiente__fondo {
   0% {
     background-position: 10 0%;
   }
   100% {
     background-position: 60% 0%;
-  }
-}
-@-webkit-keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
   }
 }
 @keyframes fadeOut {
@@ -1327,29 +1242,6 @@ section:hover .hr__inside, section:focus-within .hr__inside {
   100% {
     opacity: 0;
     display: none;
-  }
-}
-@-webkit-keyframes rubberBand {
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-  30% {
-    transform: scale3d(1.25, 0.75, 1);
-  }
-  40% {
-    transform: scale3d(0.75, 1.25, 1);
-  }
-  50% {
-    transform: scale3d(1.15, 0.85, 1);
-  }
-  65% {
-    transform: scale3d(0.95, 1.05, 1);
-  }
-  75% {
-    transform: scale3d(1.05, 0.95, 1);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
   }
 }
 @keyframes rubberBand {
@@ -1422,7 +1314,7 @@ section:hover .hr__inside, section:focus-within .hr__inside {
     padding-right: 0.4rem;
   }
   .heroPage,
-section {
+  section {
     padding-left: 8rem;
     padding-right: 8rem;
   }
@@ -1430,7 +1322,7 @@ section {
     right: calc(4rem + 8px);
   }
   .header,
-.footer {
+  .footer {
     padding-left: 4rem;
     padding-right: 4rem;
   }
@@ -1455,17 +1347,17 @@ section {
 }
 @media (min-width: 1920px) {
   .landingImgA,
-.landingImgB,
-.landingImgC {
+  .landingImgB,
+  .landingImgC {
     background-size: cover;
   }
 }
 @media (min-width: 2000px) {
   .heroPage,
-.about,
-.skills,
-.works,
-.contact {
+  .about,
+  .skills,
+  .works,
+  .contact {
     padding-left: 16rem;
     padding-right: 16rem;
   }
@@ -1473,17 +1365,17 @@ section {
     right: calc(8rem + 8px);
   }
   .header,
-.footer {
+  .footer {
     padding-left: 8rem;
     padding-right: 8rem;
   }
 }
 @media (min-width: 3200px) {
   .heroPage,
-.about,
-.skills,
-.works,
-.contact {
+  .about,
+  .skills,
+  .works,
+  .contact {
     padding-left: 32rem;
     padding-right: 32rem;
   }
@@ -1491,17 +1383,17 @@ section {
     right: calc(16rem + 8px);
   }
   .header,
-.footer {
+  .footer {
     padding-left: 16rem;
     padding-right: 16rem;
   }
 }
 @media (min-width: 4000px) {
   .heroPage,
-.about,
-.skills,
-.works,
-.contact {
+  .about,
+  .skills,
+  .works,
+  .contact {
     padding-left: 40rem;
     padding-right: 40rem;
   }
@@ -1509,7 +1401,7 @@ section {
     right: calc(20rem + 8px);
   }
   .header,
-.footer {
+  .footer {
     padding-left: 20rem;
     padding-right: 20rem;
   }
