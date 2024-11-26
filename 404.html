@@ -1,149 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <!-- open graph -->
-    <meta property="og:title" content="santiWeb - Web Developer">
-    <meta property="og:description" content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://raw.githubusercontent.com/santio89/santiWeb/master/media/opengraph.jpg">
-    <meta property="og:url" content="https://santio89.github.io/santiWeb/">
+    <meta property="og:title" content="santiWeb - Web Developer" />
+    <meta
+      property="og:description"
+      content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/santio89/santiWeb/master/media/opengraph.jpg"
+    />
+    <meta property="og:url" content="https://santio89.github.io/santiWeb/" />
     <!-- fin open graph -->
 
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web">
-    <meta name="keywords" content="santiWeb, diseño web, desarrollo web, web design, web development, responsive design, caba, argentina">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web"
+    />
+    <meta
+      name="keywords"
+      content="santiWeb, diseño web, desarrollo web, web design, web development, responsive design, caba, argentina"
+    />
 
     <title>santiWeb / Web Dev</title>
-    <link rel="icon" type="image/png" href="media/favicon.png?v=1"/>    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="preload" href="media/backgroundA.svg" as="image"> 
-    <link rel="preload" href="media/backgroundB.svg" as="image"> 
-    <link rel="preload" href="media/backgroundC.svg" as="image">
-    
+    <link rel="icon" type="image/png" href="media/favicon.png?v=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="preload" href="media/backgroundA.svg" as="image" />
+    <link rel="preload" href="media/backgroundB.svg" as="image" />
+    <link rel="preload" href="media/backgroundC.svg" as="image" />
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V8540DPJF"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-1V8540DPJF"
+    ></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-1V8540DPJF');
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-1V8540DPJF");
     </script>
     <!-- fin analytics -->
-</head>
-<body>
+  </head>
+  <body>
     <canvas class="canvas"></canvas>
-    <div class="loaderWrapper" id="loaderWrapper"><div class="loader"><div class="loader__inner"></div></div></div>
+    <div class="loaderWrapper" id="loaderWrapper">
+      <div class="loader"><div class="loader__inner"></div></div>
+    </div>
     <header class="header" id="header">
-        <a href="https://santiweb.netlify.app/" class="header__logo">SW</a>
-        <a href="#footer" class="header__skip">Skip Navigation</a>
-        <button for="header__burgerMenu" class="header__burgerButton" id="header__burgerButton" aria-label="Navigation Menu"><i class="bi bi-arrow-bar-left header__burgerButton__icon"></i></button>
+      <a href="https://santiweb.netlify.app/" class="header__logo">SW</a>
+      <a href="#footer" class="header__skip">Skip Navigation</a>
+      <button
+        for="header__burgerMenu"
+        class="header__burgerButton"
+        id="header__burgerButton"
+        aria-label="Navigation Menu"
+      >
+        <i class="bi bi-arrow-bar-left header__burgerButton__icon"></i>
+      </button>
 
-        <nav class="nav" id="nav" aria-label="header nav">
-            <ul class="nav__ul">
-                <li class="nav__ul__li color__lang">
-                    <div class="langSelect" aria-label="Select Language"><button class="langSelect--en"
-                            aria-label="English">EN</button>/<button aria-label="Spanish"
-                            class="langSelect--es">ES</button></div>
-                    <div class="colorContainer">
-                        <button class="color color--a color--active" id="colorA"
-                            aria-label="Color Theme Picker A"></button>
-                        <button class="color color--b" id="colorB" aria-label="Color Theme Picker B"></button>
-                        <button class="color color--d" id="colorD" aria-label="Main Theme Toggler"></button>
-                    </div>
-                </li>
-                <li class="nav__ul__li">
-                    <a href="#about" class="nav__anchor" lang="en">About</a>
-                    <a href="#about" class="nav__anchor" lang="es">Sobre</a>
-                </li>
-                <li class="nav__ul__li">
-                    <a href="#skills" class="nav__anchor" lang="en">Skills</a>
-                    <a href="#skills" class="nav__anchor" lang="es">Habilidades</a>
-                </li>
-                <li class="nav__ul__li">
-                    <a href="#works" class="nav__anchor" lang="en">Works</a>
-                    <a href="#works" class="nav__anchor" lang="es">Trabajos</a>
-                </li>
-                <li class="nav__ul__li">
-                    <a href="#contact" class="nav__anchor" lang="en">Contact</a>
-                    <a href="#contact" class="nav__anchor" lang="es">Contacto</a>
-                </li>
-            </ul>
-        </nav>
-        <div class="scrollTracker"></div>
-    </header>
-   
-    <main class="main">
-        <div class="landingImgA" id="landingImgA"></div>
-        <div class="landingImgB" id="landingImgB"></div>
-        <div class="landingImgC" id="landingImgC"></div>
-           
-        </div>
-        <section class="heroPage" id="heroPage">
-            <div class="heroPage__title">
-                <h1 class="heroPage__h1" lang="en"><span class="heroPage__span">Error 404</span><br>Page not found
-                </h1>
-                <h1 class="heroPage__h1" lang="es"><span class="heroPage__span">Error 404</span><br>Página no encontrada
-                </h1>
-                <p class="heroPage__pError" lang="en">The page you're trying to access is unavailable or doesn't exist.</p>
-                <p class="heroPage__pError" lang="es">La página que intentas acceder no está disponible o no existe.</p>
-                <a href="https://santiweb.netlify.app/" class="heroPage__span heroPage__pError__back" lang="en">Back to home?</a>
-                <a href="https://santiweb.netlify.app/" class="heroPage__span heroPage__pError__back" lang="es">Volver al inicio?</a>
-            </div>        
-            
-            <div class="heroPage__profilePicWrapper" tabindex="0">
-                <div class="heroPage__profilePicWrapper--inner">
-                  <div class="heroPage__profilePic heroPage__profilePic__front" aria-label="Profile Picture">
-                    
-                  </div>
-                  <div class="heroPage__profilePic heroPage__profilePic__back" aria-label="Profile Picture">
-                      
-                  </div>
-                </div>
+      <nav class="nav" id="nav" aria-label="header nav">
+        <ul class="nav__ul">
+          <li class="nav__ul__li color__lang">
+            <div class="langSelect" aria-label="Select Language">
+              <button class="langSelect--en" aria-label="English">EN</button
+              >/<button aria-label="Spanish" class="langSelect--es">ES</button>
             </div>
-            
-            <a aria-label="scroll down arrow" href="#footer" class="arrowBounce"><i class="bi bi-arrow-down-short"></i></a>
-        </section>
-    </main>
-    
-    <footer class="footer" id="footer">
-        <nav class="footer__nav">
-            <ul class="footer__nav__ul">
-                <li class="footer__nav__ul__li">
-                    <a href="https://santiweb.netlify.app/#about" class="footer__nav__ul__li__anchor" lang="en">About</a>
-                    <a href="https://santiweb.netlify.app/#about" class="footer__nav__ul__li__anchor" lang="es">Sobre</a>
-                </li>
-                <li class="footer__nav__ul__li">
-                    <a href="https://santiweb.netlify.app/#skills" class="footer__nav__ul__li__anchor" lang="en">Skills</a>
-                    <a href="https://santiweb.netlify.app/#skills" class="footer__nav__ul__li__anchor" lang="es">Habilidades</a>
-                </li>
-                <li class="footer__nav__ul__li">
-                    <a href="https://santiweb.netlify.app/#works" class="footer__nav__ul__li__anchor" lang="en">Works</a>
-                    <a href="https://santiweb.netlify.app/#works" class="footer__nav__ul__li__anchor" lang="es">Trabajos</a>
-                </li>
-                <li class="footer__nav__ul__li">
-                    <a href="https://santiweb.netlify.app/#contact" class="footer__nav__ul__li__anchor" lang="en">Contact</a>
-                    <a href="https://santiweb.netlify.app/#contact" class="footer__nav__ul__li__anchor" lang="es">Contacto</a>
-                </li>
-            </ul>   
-        </nav>
+            <div class="colorContainer">
+              <button
+                class="color color--a color--active"
+                id="colorA"
+                aria-label="Color Theme Picker A"
+              ></button>
+              <button
+                class="color color--b"
+                id="colorB"
+                aria-label="Color Theme Picker B"
+              ></button>
+              <button
+                class="color color--d"
+                id="colorD"
+                aria-label="Main Theme Toggler"
+              ></button>
+            </div>
+          </li>
+          <li class="nav__ul__li">
+            <a href="#about" class="nav__anchor" lang="en">About</a>
+            <a href="#about" class="nav__anchor" lang="es">Sobre</a>
+          </li>
+          <li class="nav__ul__li">
+            <a href="#skills" class="nav__anchor" lang="en">Skills</a>
+            <a href="#skills" class="nav__anchor" lang="es">Habilidades</a>
+          </li>
+          <li class="nav__ul__li">
+            <a href="#works" class="nav__anchor" lang="en">Works</a>
+            <a href="#works" class="nav__anchor" lang="es">Trabajos</a>
+          </li>
+          <li class="nav__ul__li">
+            <a href="#contact" class="nav__anchor" lang="en">Contact</a>
+            <a href="#contact" class="nav__anchor" lang="es">Contacto</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="scrollTracker"></div>
+    </header>
 
-        <div class="sectionTitle">
-            <div class="footer__hr" id="footer__hr"></div>
-            <div class="footer__santi">
-                <a href="https://www.linkedin.com/in/santiago-olais-829542b9/" target="_blank" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                <a href="https://github.com/santio89" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a>
-                <a href="#heroPage">santiWeb<i class="bi bi-arrow-up-short"></i></a>
-            </div>          
+    <main class="main">
+      <div class="landingImgA" id="landingImgA"></div>
+      <div class="landingImgB" id="landingImgB"></div>
+      <div class="landingImgC" id="landingImgC"></div>
+
+      <section class="heroPage" id="heroPage">
+        <div class="heroPage__title">
+          <h1 class="heroPage__h1" lang="en">
+            <span class="heroPage__span">Error 404</span><br />Page not found
+          </h1>
+          <h1 class="heroPage__h1" lang="es">
+            <span class="heroPage__span">Error 404</span><br />Página no
+            encontrada
+          </h1>
+          <p class="heroPage__pError" lang="en">
+            The page you're trying to access is unavailable or doesn't exist.
+          </p>
+          <p class="heroPage__pError" lang="es">
+            La página que intentas acceder no está disponible o no existe.
+          </p>
+          <a
+            href="https://santiweb.netlify.app/"
+            class="heroPage__span heroPage__pError__back"
+            lang="en"
+            >Back to home?</a
+          >
+          <a
+            href="https://santiweb.netlify.app/"
+            class="heroPage__span heroPage__pError__back"
+            lang="es"
+            >Volver al inicio?</a
+          >
         </div>
+
+        <div class="heroPage__profilePicWrapper" tabindex="0">
+          <div class="heroPage__profilePicWrapper--inner">
+            <div
+              class="heroPage__profilePic heroPage__profilePic__front"
+              aria-label="Profile Picture"
+            ></div>
+            <div
+              class="heroPage__profilePic heroPage__profilePic__back"
+              aria-label="Profile Picture"
+            ></div>
+          </div>
+        </div>
+
+        <a aria-label="scroll down arrow" href="#footer" class="arrowBounce"
+          ><i class="bi bi-arrow-down-short"></i
+        ></a>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer">
+      <nav class="footer__nav">
+        <ul class="footer__nav__ul">
+          <li class="footer__nav__ul__li">
+            <a
+              href="https://santiweb.netlify.app/#about"
+              class="footer__nav__ul__li__anchor"
+              lang="en"
+              >About</a
+            >
+            <a
+              href="https://santiweb.netlify.app/#about"
+              class="footer__nav__ul__li__anchor"
+              lang="es"
+              >Sobre</a
+            >
+          </li>
+          <li class="footer__nav__ul__li">
+            <a
+              href="https://santiweb.netlify.app/#skills"
+              class="footer__nav__ul__li__anchor"
+              lang="en"
+              >Skills</a
+            >
+            <a
+              href="https://santiweb.netlify.app/#skills"
+              class="footer__nav__ul__li__anchor"
+              lang="es"
+              >Habilidades</a
+            >
+          </li>
+          <li class="footer__nav__ul__li">
+            <a
+              href="https://santiweb.netlify.app/#works"
+              class="footer__nav__ul__li__anchor"
+              lang="en"
+              >Works</a
+            >
+            <a
+              href="https://santiweb.netlify.app/#works"
+              class="footer__nav__ul__li__anchor"
+              lang="es"
+              >Trabajos</a
+            >
+          </li>
+          <li class="footer__nav__ul__li">
+            <a
+              href="https://santiweb.netlify.app/#contact"
+              class="footer__nav__ul__li__anchor"
+              lang="en"
+              >Contact</a
+            >
+            <a
+              href="https://santiweb.netlify.app/#contact"
+              class="footer__nav__ul__li__anchor"
+              lang="es"
+              >Contacto</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sectionTitle">
+        <div class="footer__hr" id="footer__hr"></div>
+        <div class="footer__santi">
+          <a
+            href="https://www.linkedin.com/in/santiago-olais-829542b9/"
+            target="_blank"
+            aria-label="LinkedIn"
+            ><i class="bi bi-linkedin"></i
+          ></a>
+          <a
+            href="https://github.com/santio89"
+            target="_blank"
+            aria-label="GitHub"
+            ><i class="bi bi-github"></i
+          ></a>
+          <a href="#heroPage">santiWeb<i class="bi bi-arrow-up-short"></i></a>
+        </div>
+      </div>
     </footer>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init();</script>
+    <script>
+      AOS.init();
+    </script>
     <script src="js/scripts.js" type="module"></script>
-</body>
+  </body>
 </html>
