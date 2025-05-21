@@ -187,7 +187,7 @@ scrollTracker.animate({
 /* INICIO COLOR PICKER */
 let colorA = document.getElementById("colorA");
 let colorB = document.getElementById("colorB");
-let colorD = document.getElementById("colorD");
+/* let colorD = document.getElementById("colorD"); */
 let footer = document.getElementById("footer");
 let footer__hr = document.getElementById("footer__hr");
 let landingImgA = document.getElementById("landingImgA");
@@ -195,12 +195,10 @@ let landingImgB = document.getElementById("landingImgB");
 let landingImgC = document.getElementById("landingImgC");
 
 if (localStorage.getItem("colorTheme")) {
-  if (localStorage.getItem("colorTheme") == "A") {
-    colorPickerA();
-  } else if (localStorage.getItem("colorTheme") == "B") {
+  if (localStorage.getItem("colorTheme") == "B") {
     colorPickerB();
-  } else if (localStorage.getItem("colorTheme") == "C") {
-    colorPickerC();
+  } else {
+    colorPickerA()
   }
 } else {
   colorPickerA();
@@ -217,7 +215,7 @@ if (localStorage.getItem("colorMainTheme")) {
 
 colorA.onclick = colorPickerA;
 colorB.onclick = colorPickerB;
-colorD.addEventListener("click", ()=>colorPickerD());
+/* colorD.addEventListener("click", () => colorPickerD()); */
 
 function colorPickerA() {
   colorB.classList.remove("color--active");
@@ -263,7 +261,7 @@ function colorPickerB() {
   localStorage.setItem("colorTheme", "B");
 }
 
-function colorPickerD(theme) {
+/* function colorPickerD(theme) {
   if (!theme) {
     if (localStorage.getItem("colorMainTheme")) {
       if (localStorage.getItem("colorMainTheme") === "dark") {
@@ -280,17 +278,17 @@ function colorPickerD(theme) {
       root.style.setProperty("--color-fondo-dark", "rgb(180, 180, 180)");
       localStorage.setItem("colorMainTheme", "light");
     }
-   
+
   } else {
     if (theme === "light") {
       root.style.setProperty("--color-fondo", "rgb(220, 220, 220)");
       root.style.setProperty("--color-fondo-dark", "rgb(180, 180, 180)");
     } else {
       root.style.setProperty("--color-fondo", "rgb(30, 30, 30)");
-       root.style.setProperty("--color-fondo-dark", "rgb(40, 40, 40)");
+      root.style.setProperty("--color-fondo-dark", "rgb(40, 40, 40)");
     }
   }
-}
+} */
 
 /* FIN COLOR PICKER */
 
