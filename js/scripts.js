@@ -204,14 +204,14 @@ if (localStorage.getItem("colorTheme")) {
   colorPickerA();
 }
 
-if (localStorage.getItem("colorMainTheme")) {
+/* if (localStorage.getItem("colorMainTheme")) {
   if (localStorage.getItem("colorMainTheme") === "light") {
     colorPickerD("light");
   } else {
     localStorage.setItem("colorMainTheme", "dark");
     colorPickerD("dark");
   }
-}
+} */
 
 colorA.onclick = colorPickerA;
 colorB.onclick = colorPickerB;
