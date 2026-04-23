@@ -9,6 +9,8 @@
   --accent-fg: #0a0a0a;
   --accent-2: #ff4f1f;
   --accent-3: #ffd166;
+  /* RGB triplet for use inside rgba() neon glows so opacity is tweakable */
+  --accent-rgb: 245, 144, 28;
 
   --font-sans: "Inter", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
@@ -35,7 +37,10 @@
   --line: #2a2a2a;
   --line-strong: #3d3d3d;
   --line-fg: #f5f5f5;
-  --shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.85);
+  /* hard brutalist offset - in dark mode the shadow uses the same fg
+     off-white as the body text, mirroring the light-mode convention of a
+     solid black offset on light bg */
+  --shadow: 5px 5px 0 0 #f5f5f5;
   --grain-opacity: 0.06;
   color-scheme: dark;
 }
@@ -52,7 +57,7 @@
   --line: #0a0a0a;
   --line-strong: #0a0a0a;
   --line-fg: #0a0a0a;
-  --shadow: 8px 8px 0 0 #0a0a0a;
+  --shadow: 5px 5px 0 0 #0a0a0a;
   --grain-opacity: 0.04;
   color-scheme: light;
 }
@@ -78,7 +83,7 @@
     text-shadow 380ms var(--ease),
     caret-color 380ms var(--ease) !important;
 }
-/* never tween the live cursor canvas - it draws its own pixels */
+/* never tween live canvases / cursor layers - they draw their own pixels */
 .theme-transitioning .cursor-canvas,
 .theme-transitioning .cursor-core,
 .theme-transitioning .cursor-core * {
@@ -97,6 +102,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  background: var(--bg);
   scrollbar-width: thin;
   scrollbar-color: var(--line-strong) var(--bg-inset);
   scroll-padding-top: calc(var(--header-h) + 16px);
@@ -121,7 +127,7 @@ body {
   font-weight: 400;
   font-size: 16px;
   line-height: 1.6;
-  background: var(--bg);
+  background: transparent;
   color: var(--fg);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -229,14 +235,58 @@ textarea:focus-visible {
 }
 .dot--live {
   background: var(--accent);
-  box-shadow: 0 0 0 0 var(--accent);
+  /* dual layered glow: an inner solid halo + the outward pulse ring */
+  box-shadow:
+    0 0 6px rgba(var(--accent-rgb), 0.85),
+    0 0 14px rgba(var(--accent-rgb), 0.45),
+    0 0 0 0 rgba(var(--accent-rgb), 0.7);
   animation: pulse 1.8s ease-out infinite;
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(245, 144, 28, 0.7); }
-  70% { box-shadow: 0 0 0 8px rgba(245, 144, 28, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(245, 144, 28, 0); }
+  0% {
+    box-shadow:
+      0 0 6px rgba(var(--accent-rgb), 0.85),
+      0 0 14px rgba(var(--accent-rgb), 0.45),
+      0 0 0 0 rgba(var(--accent-rgb), 0.7);
+  }
+  70% {
+    box-shadow:
+      0 0 6px rgba(var(--accent-rgb), 0.85),
+      0 0 14px rgba(var(--accent-rgb), 0.45),
+      0 0 0 9px rgba(var(--accent-rgb), 0);
+  }
+  100% {
+    box-shadow:
+      0 0 6px rgba(var(--accent-rgb), 0.85),
+      0 0 14px rgba(var(--accent-rgb), 0.45),
+      0 0 0 0 rgba(var(--accent-rgb), 0);
+  }
+}
+
+/* ---------- NEON ACCENT GLOW ----------
+   A single breathing keyframe re-used across accent surfaces (hero name,
+   section `//` prefix, work title underline) so the orange feels electric and
+   alive without overwhelming the brutalist surfaces. */
+@keyframes accentBreathe {
+  0%, 100% {
+    text-shadow:
+      0 0 8px  rgba(var(--accent-rgb), 0.32),
+      0 0 22px rgba(var(--accent-rgb), 0.18);
+  }
+  50% {
+    text-shadow:
+      0 0 14px rgba(var(--accent-rgb), 0.55),
+      0 0 36px rgba(var(--accent-rgb), 0.32);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* keep glows but stop the breathing */
+  .hero__title__line--accent > span,
+  .section__title::before,
+  .work__item__title h3::after {
+    animation: none !important;
+  }
 }
 
 /* ---------- GRAIN OVERLAY ---------- */
@@ -249,6 +299,98 @@ textarea:focus-visible {
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   background-size: 220px;
+}
+
+/* ---------- NUCLEUS ----------
+   A scoped 3-blob warm gradient cluster injected behind specific titles
+   (hero accent + every section title). Each blob orbits on a different
+   prime-ish period and the whole cluster slowly rotates - the effect is
+   a small, elegant "merging nucleus" of warm light, not a global wash.
+   No blend modes: solid translucent gradients so it reads consistently
+   on both dark and light themes. */
+.nucleus {
+  position: absolute;
+  --n-size: 220px;
+  width: var(--n-size);
+  height: var(--n-size);
+  pointer-events: none;
+  z-index: -1;
+  filter: saturate(1.7) brightness(1.2);
+  opacity: 0.7;
+}
+.nucleus__core {
+  position: absolute;
+  inset: 0;
+  animation: nucleusSpin 32s linear infinite;
+  will-change: transform;
+}
+@keyframes nucleusSpin {
+  to { transform: rotate(360deg); }
+}
+.nucleus__core > i {
+  position: absolute;
+  top: 22%;
+  left: 22%;
+  width: 56%;
+  height: 56%;
+  border-radius: 50%;
+  /* heavy blur so the orbs lose all shape and read as a pure neon halo
+     of warm light spilling outward - relative to nucleus size so it
+     scales correctly between hero and section titles */
+  filter: blur(calc(var(--n-size) * 0.32));
+  will-change: transform;
+}
+.nucleus__core > i:nth-child(1) {
+  background: radial-gradient(circle, hsla(22, 100%, 62%, 1), hsla(22, 100%, 62%, 0) 70%);
+  animation: nucleusOrbit1 7s ease-in-out var(--n-delay, 0s) infinite;
+}
+.nucleus__core > i:nth-child(2) {
+  background: radial-gradient(circle, hsla(40, 100%, 64%, 0.95), hsla(40, 100%, 64%, 0) 70%);
+  animation: nucleusOrbit2 11s ease-in-out var(--n-delay, 0s) infinite;
+}
+.nucleus__core > i:nth-child(3) {
+  background: radial-gradient(circle, hsla(10, 100%, 58%, 0.95), hsla(10, 100%, 58%, 0) 70%);
+  animation: nucleusOrbit3 13s ease-in-out var(--n-delay, 0s) infinite;
+}
+@keyframes nucleusOrbit1 {
+  0%, 100% { transform: translate(-14%, -8%) scale(1); }
+  33%      { transform: translate(8%, 6%)   scale(1.2); }
+  66%      { transform: translate(2%, -10%) scale(0.85); }
+}
+@keyframes nucleusOrbit2 {
+  0%, 100% { transform: translate(10%, 8%)  scale(1.05); }
+  40%      { transform: translate(-8%, -6%) scale(0.9); }
+  75%      { transform: translate(4%, 12%)  scale(1.25); }
+}
+@keyframes nucleusOrbit3 {
+  0%, 100% { transform: translate(-4%, 10%) scale(0.95); }
+  50%      { transform: translate(10%, -8%) scale(1.2); }
+}
+:root[data-theme="light"] .nucleus {
+  opacity: 0.55;
+  filter: saturate(1.5);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nucleus { display: none; }
+}
+
+/* placement variants - kept here so the JS only needs to inject one
+   .nucleus span and the CSS handles per-target sizing & positioning */
+.section__title { position: relative; isolation: isolate; }
+.section__title .nucleus {
+  --n-size: clamp(60px, 6vw, 100px);
+  /* centered on the // glyph so the halo bleeds out from behind it */
+  left: 0;
+  top: 50%;
+  transform: translate(-15%, -50%);
+}
+.hero__title { isolation: isolate; }
+.hero__title .nucleus {
+  --n-size: clamp(70px, 9vw, 130px);
+  /* anchored over the SANTI! accent line, centered on the "S" */
+  left: 5%;
+  bottom: 12%;
+  transform: translateX(-50%);
 }
 
 /* ---------- CUSTOM CURSOR ---------- */
@@ -792,14 +934,28 @@ textarea:focus-visible {
   display: inline-block;
   animation: titleRise 900ms var(--ease) both;
 }
-.hero__title__line:nth-child(2) > span { animation-delay: 120ms; }
 
 .hero__title__line--accent > span {
   color: var(--accent);
-  text-shadow: 0 0 60px rgba(245, 144, 28, 0.35);
+  /* layered breathing neon: tight inner glow over the wide ambient halo */
+  text-shadow:
+    0 0 8px  rgba(var(--accent-rgb), 0.45),
+    0 0 24px rgba(var(--accent-rgb), 0.3),
+    0 0 60px rgba(var(--accent-rgb), 0.28);
+  animation:
+    titleRise 900ms var(--ease) both,
+    accentBreathe 5.5s ease-in-out 1.2s infinite;
+}
+.hero__title__line:nth-child(2) > span {
+  animation:
+    titleRise 900ms var(--ease) 120ms both,
+    accentBreathe 5.5s ease-in-out 1.2s infinite;
 }
 :root[data-theme="light"] .hero__title__line--accent > span {
-  text-shadow: 0 0 50px rgba(245, 144, 28, 0.55);
+  text-shadow:
+    0 0 6px  rgba(var(--accent-rgb), 0.55),
+    0 0 22px rgba(var(--accent-rgb), 0.4),
+    0 0 50px rgba(var(--accent-rgb), 0.45);
 }
 
 @keyframes titleRise {
@@ -862,14 +1018,34 @@ textarea:focus-visible {
   background: var(--accent);
   color: var(--accent-fg);
   border-color: var(--accent);
-  box-shadow: var(--shadow);
+  /* brutalist offset + subtle warm neon halo bleeding downward, like the
+     button is casting light onto the surface beneath it. negative spread
+     keeps the glow concentrated below the button instead of haloing all
+     four sides */
+  box-shadow:
+    var(--shadow),
+    0 14px 28px -10px rgba(var(--accent-rgb), 0.5),
+    0 26px 52px -14px rgba(var(--accent-rgb), 0.28);
 }
 .btn--primary:hover {
   transform: translate(-3px, -3px);
-  box-shadow: 11px 11px 0 0 rgba(0, 0, 0, 0.85);
+  /* hard brutalist offset shadow + soft neon halo radiating from the button +
+     the same downward warm bleed from the rest state, so the button still
+     looks like it's casting light onto the floor when lifted */
+  box-shadow:
+    7px 7px 0 0 #f5f5f5,
+    0 0 18px rgba(var(--accent-rgb), 0.55),
+    0 0 42px rgba(var(--accent-rgb), 0.32),
+    0 14px 28px -10px rgba(var(--accent-rgb), 0.5),
+    0 26px 52px -14px rgba(var(--accent-rgb), 0.28);
 }
 :root[data-theme="light"] .btn--primary:hover {
-  box-shadow: 11px 11px 0 0 #0a0a0a;
+  box-shadow:
+    7px 7px 0 0 #0a0a0a,
+    0 0 18px rgba(var(--accent-rgb), 0.55),
+    0 0 42px rgba(var(--accent-rgb), 0.32),
+    0 14px 28px -10px rgba(var(--accent-rgb), 0.5),
+    0 26px 52px -14px rgba(var(--accent-rgb), 0.28);
 }
 .btn--primary:hover svg {
   transform: translateX(4px);
@@ -920,6 +1096,9 @@ textarea:focus-visible {
   background: var(--accent);
   position: relative;
   overflow: hidden;
+  box-shadow:
+    0 0 6px  rgba(var(--accent-rgb), 0.55),
+    0 0 14px rgba(var(--accent-rgb), 0.3);
 }
 .hero__scroll__line::after {
   content: "";
@@ -941,6 +1120,8 @@ textarea:focus-visible {
   width: 30px;
   height: 30px;
   border: 1.5px solid var(--line-strong);
+  /* slightly off-white in light mode so the button doesn't punch out as
+     pure #fff against the warm cream page bg */
   background: var(--bg-panel);
   color: var(--fg);
   transition:
@@ -956,13 +1137,20 @@ textarea:focus-visible {
   width: 14px;
   height: 14px;
 }
+:root[data-theme="light"] .hero__scroll__arrow {
+  background: #fbf8ed;
+}
 .hero__scroll:hover .hero__scroll__arrow,
 .hero__scroll:focus-visible .hero__scroll__arrow {
   background: var(--accent);
   color: var(--accent-fg);
   border-color: var(--accent);
   transform: translateY(2px);
-  box-shadow: 4px 4px 0 0 var(--line-fg);
+  /* keep just the warm neon halo on hover - the hard offset shadow read
+     too heavy on such a small button */
+  box-shadow:
+    0 0 14px rgba(var(--accent-rgb), 0.55),
+    0 0 32px rgba(var(--accent-rgb), 0.3);
   animation-play-state: paused;
 }
 @keyframes scrollArrowBob {
@@ -981,6 +1169,23 @@ textarea:focus-visible {
   touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
+  /* fade content (and borders) to transparent at the horizontal edges
+     so the band reads as scrolling infinitely off-screen */
+  --marquee-fade: clamp(48px, 9%, 140px);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--marquee-fade),
+    #000 calc(100% - var(--marquee-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--marquee-fade),
+    #000 calc(100% - var(--marquee-fade)),
+    transparent 100%
+  );
 }
 .marquee.is-dragging {
   cursor: grabbing;
@@ -1050,7 +1255,16 @@ textarea:focus-visible {
 .section__title::before {
   content: "// ";
   color: var(--accent);
+  text-shadow:
+    0 0 8px  rgba(var(--accent-rgb), 0.4),
+    0 0 22px rgba(var(--accent-rgb), 0.22);
+  animation: accentBreathe 6s ease-in-out infinite;
 }
+/* slightly stagger each section's breath so they don't pulse in sync */
+.section:nth-of-type(2) .section__title::before { animation-delay: -1.2s; }
+.section:nth-of-type(3) .section__title::before { animation-delay: -2.4s; }
+.section:nth-of-type(4) .section__title::before { animation-delay: -3.6s; }
+.section:nth-of-type(5) .section__title::before { animation-delay: -4.8s; }
 .section__line {
   flex: 1;
   height: 1.5px;
@@ -1330,11 +1544,21 @@ textarea:focus-visible {
   width: 36px;
   height: 3px;
   background: var(--accent);
-  transition: width 280ms var(--ease-snap);
+  /* baseline neon halo - lifts on hover for an electric ramp */
+  box-shadow:
+    0 0 6px  rgba(var(--accent-rgb), 0.35),
+    0 0 14px rgba(var(--accent-rgb), 0.2);
+  transition:
+    width 280ms var(--ease-snap),
+    box-shadow 280ms var(--ease);
 }
 .work__item:hover .work__item__title h3::after,
 .work__item:focus-within .work__item__title h3::after {
   width: 64px;
+  box-shadow:
+    0 0 10px rgba(var(--accent-rgb), 0.7),
+    0 0 24px rgba(var(--accent-rgb), 0.45),
+    0 0 44px rgba(var(--accent-rgb), 0.25);
 }
 .work__item__meta p {
   color: var(--fg-mute);

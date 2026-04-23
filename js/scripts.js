@@ -494,7 +494,6 @@ function initCursor() {
   const mouse = { x: W / 2, y: H / 2, prevX: W / 2, prevY: H / 2, vx: 0, vy: 0, speed: 0 };
   let down = false;
   let wasDown = false; // edge-detect for click burst
-  let hue = Math.random() * 360;
 
   const onMove = (e) => {
     mouse.x = e.clientX;
@@ -528,7 +527,13 @@ function initCursor() {
   const MAX_PARTICLES = 420;
   let canvasDirty = false;
 
-  function spawn(x, y, baseHue, life, gen, sizeMul, vx, vy) {
+  // warm "ember" palette - matches the brand orange / sunset bg
+  // ~10 (red-orange) .. ~46 (amber-yellow). occasional hotter cores allowed.
+  function emberHue() {
+    return 10 + Math.random() * 36;
+  }
+
+  function spawn(x, y, _baseHue, life, gen, sizeMul, vx, vy) {
     if (particles.length >= MAX_PARTICLES) return;
     const angle = Math.random() * Math.PI * 2;
     const sp = (Math.random() * 1.6 + 0.6) * sizeMul;
@@ -543,7 +548,9 @@ function initCursor() {
       freqX: 0.02 + Math.random() * 0.05,
       freqY: 0.02 + Math.random() * 0.05,
       r: (Math.random() * 2.8 + 1.4) * sizeMul,
-      hue: (baseHue + Math.random() * 90 - 45 + 360) % 360,
+      hue: emberHue(),
+      // tiny per-particle jitter for spark "crackle"
+      jit: 0.04 + Math.random() * 0.06,
       life,
       max: life,
       gen,
@@ -569,23 +576,22 @@ function initCursor() {
     core.style.transform = `translate3d(${corePos.x - 13}px, ${corePos.y - 13}px, 0) scale(${coreScale})`;
     const ring = core.firstElementChild;
     if (ring) {
-      ring.style.transform = `rotate(${(performance.now() / 28) * (1 + mouse.speed / 70)}deg)`;
+      ring.style.transform = `rotate(${(performance.now() / 90) * (1 + mouse.speed / 220)}deg)`;
     }
 
     // ignite: radial burst on the exact click frame
     if (down && !wasDown) {
-      hue = (hue + 40) % 360;
-      const burst = 26;
+      const burst = 28;
       for (let i = 0; i < burst; i++) {
-        const a = (i / burst) * Math.PI * 2 + Math.random() * 0.4;
-        const sp = 2 + Math.random() * 4;
+        const a = (i / burst) * Math.PI * 2 + Math.random() * 0.5;
+        const sp = 2.4 + Math.random() * 4.2;
         spawn(
           mouse.x,
           mouse.y,
-          (hue + i * (360 / burst)) % 360,
-          80 + Math.random() * 50,
           0,
-          1.3,
+          90 + Math.random() * 60,
+          0,
+          1.35,
           Math.cos(a) * sp,
           Math.sin(a) * sp,
         );
@@ -595,14 +601,23 @@ function initCursor() {
 
     // continuous trail - only while click is held
     if (down) {
-      hue = (hue + 1.6 + speed * 0.06) % 360;
       const count = Math.min(Math.floor(speed / 3) + 2, 9);
-      // fractal-ish stamping along the segment between prev and current pos
+      // sparks inherit a slice of mouse velocity but in the *trailing*
+      // direction (negative) so they fall behind the cursor naturally,
+      // with a perpendicular fan-out for that "ember spray" feel
+      const inheritFactor = 0.28;
       for (let i = 0; i < count; i++) {
         const t = (i + 1) / (count + 1);
         const x = mouse.prevX + (mouse.x - mouse.prevX) * t;
         const y = mouse.prevY + (mouse.y - mouse.prevY) * t;
-        spawn(x, y, hue, 90 + Math.random() * 50, 0, 1);
+        // perpendicular axis to mouse motion
+        const vlen = Math.hypot(mouse.vx, mouse.vy) + 0.0001;
+        const perpX = -mouse.vy / vlen;
+        const perpY = mouse.vx / vlen;
+        const fan = (Math.random() - 0.5) * 2.6;
+        const vx = -mouse.vx * inheritFactor + perpX * fan + (Math.random() - 0.5) * 0.6;
+        const vy = -mouse.vy * inheritFactor + perpY * fan + (Math.random() - 0.5) * 0.6;
+        spawn(x, y, 0, 90 + Math.random() * 50, 0, 1, vx, vy);
       }
     }
 
@@ -640,9 +655,14 @@ function initCursor() {
       const swirl = 0.12 / d;
       p.vx += dx * pull + cx + -dy * swirl;
       p.vy += dy * pull + cy + dx * swirl;
-      // damping
-      p.vx *= 0.962;
-      p.vy *= 0.962;
+      // tiny per-particle jitter for spark crackle
+      p.vx += (Math.random() - 0.5) * p.jit;
+      p.vy += (Math.random() - 0.5) * p.jit;
+      // featherweight gravity - embers settle gently
+      p.vy += 0.018;
+      // damping (slightly stronger for cleaner trails)
+      p.vx *= 0.952;
+      p.vy *= 0.952;
       p.x += p.vx;
       p.y += p.vy;
       p.life -= 1;
@@ -651,37 +671,49 @@ function initCursor() {
       const alpha = Math.max(0, lifeRatio) * 0.95;
       const r = p.r * (0.45 + 0.65 * lifeRatio);
 
-      // outer glow
+      // velocity-based "heat" - fast fresh particles burn brighter
+      const v = Math.hypot(p.vx, p.vy);
+      const heat = Math.min(1, lifeRatio * 0.7 + Math.min(v / 5, 0.45));
+      // hue cools from amber-yellow toward deep red as the spark dies
+      const hue = Math.max(0, p.hue - (1 - lifeRatio) * 16);
+      const light = 46 + heat * 32; // 46..78
+
+      // outer glow - same warm hue, sharper falloff for a defined ember
       const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 6.5);
-      grad.addColorStop(0, `hsla(${p.hue}, 100%, 70%, ${alpha})`);
-      grad.addColorStop(0.35, `hsla(${(p.hue + 40) % 360}, 100%, 58%, ${alpha * 0.6})`);
-      grad.addColorStop(1, `hsla(${p.hue}, 100%, 50%, 0)`);
+      grad.addColorStop(0, `hsla(${hue}, 100%, ${light}%, ${alpha})`);
+      grad.addColorStop(
+        0.35,
+        `hsla(${Math.max(0, hue - 6)}, 100%, ${Math.max(36, light - 14)}%, ${alpha * 0.55})`,
+      );
+      grad.addColorStop(1, `hsla(${hue}, 100%, ${light}%, 0)`);
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r * 6.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // bright contrasting core dot (complementary hue)
-      ctx.fillStyle = `hsla(${(p.hue + 180) % 360}, 100%, 80%, ${Math.min(1, alpha + 0.2)})`;
+      // bright same-hue core (yellow-shifted, no complementary tint)
+      ctx.fillStyle = `hsla(${Math.min(50, hue + 8)}, 100%, ${Math.min(86, light + 16)}%, ${Math.min(1, alpha + 0.18)})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r * 0.6, 0, Math.PI * 2);
       ctx.fill();
 
-      // hot white center for max contrast
-      ctx.fillStyle = `hsla(0, 0%, 100%, ${Math.min(1, alpha * 0.9)})`;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, r * 0.28, 0, Math.PI * 2);
-      ctx.fill();
+      // hot white center - only for fresh, fast sparks (true heat)
+      if (heat > 0.55) {
+        ctx.fillStyle = `hsla(46, 100%, 96%, ${Math.min(1, alpha * 0.9 * heat)})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
       // recursive fractal child spawn (limited to gen 0 -> gen 1)
       if (
         p.gen < 1 &&
         p.life === Math.floor(p.max * 0.5) &&
-        Math.random() < 0.85 &&
+        Math.random() < 0.7 &&
         particles.length < MAX_PARTICLES - 4
       ) {
         for (let k = 0; k < 3; k++) {
-          spawn(p.x, p.y, (p.hue + 60 * k) % 360, 36, p.gen + 1, 0.55);
+          spawn(p.x, p.y, 0, 36, p.gen + 1, 0.5);
         }
       }
 
@@ -717,7 +749,9 @@ function initMarquee() {
     m.classList.add("is-js");
 
     let offset = 0;
-    const baseSpeed = prefersReducedMotion ? 0 : 0.5; // px / frame
+    // time-based speed - immune to display refresh rate (60/120/144Hz) and
+    // frame drops. 30 px/sec matches the previous "0.5 px/frame @ 60fps" feel.
+    const PX_PER_SEC = prefersReducedMotion ? 0 : 30;
     let trackHalf = 0;
 
     let dragging = false;
@@ -747,11 +781,25 @@ function initMarquee() {
       document.fonts.ready.then(measure).catch(() => {});
     }
 
-    const tick = () => {
+    let lastFrame = 0;
+    const tick = (now) => {
+      // first frame: seed lastFrame so we don't get a huge dt jump
+      if (lastFrame === 0) lastFrame = now;
+      // cap dt so coming back from a hidden tab / long pause doesn't fling
+      // the track halfway across the screen in a single frame
+      const dt = Math.min(64, now - lastFrame);
+      lastFrame = now;
+
       if (!dragging) {
-        offset -= baseSpeed + velocity;
-        velocity *= 0.93;
-        if (Math.abs(velocity) < 0.02) velocity = 0;
+        // perfectly linear auto-scroll, in real-time units
+        offset -= (PX_PER_SEC * dt) / 1000;
+        // residual fling from a user drag - decay is also time-based so the
+        // inertia feels identical at 60Hz, 120Hz and 144Hz
+        if (velocity !== 0) {
+          offset -= velocity * (dt / 16);
+          velocity *= Math.pow(0.93, dt / 16);
+          if (Math.abs(velocity) < 0.02) velocity = 0;
+        }
       }
       if (trackHalf > 0) {
         // wrap modulo, both directions
@@ -859,8 +907,33 @@ function initForm() {
 }
 
 /* -------------------------------------------------------------
-   INIT
+   NUCLEI
+   Inject a small "nucleus" gradient cluster behind specific titles only:
+   the hero accent line and every section heading. Each nucleus is a trio
+   of orange/amber/red blurred orbs that orbit on different periods and
+   slowly rotate together - a localized, elegant accent rather than a
+   global background wash. Markup is injected from JS to keep index.html
+   semantic and untouched.
    ------------------------------------------------------------- */
+function initNuclei() {
+  if (prefersReducedMotion) return;
+  const targets = [
+    document.querySelector(".hero__title"),
+    ...document.querySelectorAll(".section__title"),
+  ].filter(Boolean);
+
+  targets.forEach((el, idx) => {
+    const n = document.createElement("span");
+    n.className = "nucleus";
+    n.setAttribute("aria-hidden", "true");
+    n.innerHTML = '<span class="nucleus__core"><i></i><i></i><i></i></span>';
+    // negative delay -> orbits start mid-cycle, so adjacent nuclei never
+    // sync up and the page never feels mechanical
+    n.style.setProperty("--n-delay", `-${(idx * 1.7) % 5}s`);
+    el.prepend(n);
+  });
+}
+
 /* -------------------------------------------------------------
    ANIMATED HERO GRID CELLS
    Sprinkles brutalist micro-animations across random snapped grid cells
@@ -869,7 +942,10 @@ function initForm() {
 function initHeroCells() {
   const layer = document.getElementById("heroCells");
   if (!layer) return;
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (prefersReducedMotion) {
+    layer.remove();
+    return;
+  }
 
   const CELL = 80;
   const TYPES = ["fill", "pulse", "spin", "flipy", "flipx"];
@@ -933,6 +1009,9 @@ function initHeroCells() {
   setInterval(populate, 22000);
 }
 
+/* -------------------------------------------------------------
+   INIT
+   ------------------------------------------------------------- */
 function init() {
   initTheme();
   initLang();
@@ -942,6 +1021,7 @@ function init() {
   initTilt();
   initCursor();
   initMarquee();
+  initNuclei();
   initHeroCells();
   initYear();
   initForm();
