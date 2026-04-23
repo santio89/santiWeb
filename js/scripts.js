@@ -107,6 +107,8 @@ const I18N = {
     "doom.k.weapon": "WEAPON",
     "doom.k.size": "SIZE",
     "doom.k.exit": "EXIT",
+    "doom.k.vol": "VOL",
+    "doom.k.sens": "SENS",
   },
   es: {
     "nav.skip": "OMITIR NAVEGACIÓN",
@@ -202,6 +204,8 @@ const I18N = {
     "doom.k.weapon": "ARMA",
     "doom.k.size": "TAMAÑO",
     "doom.k.exit": "SALIR",
+    "doom.k.vol": "VOL",
+    "doom.k.sens": "SENS",
   },
 };
 
@@ -237,9 +241,12 @@ function applyLang(lang) {
 }
 
 function initLang() {
+  // English is the canonical default - we no longer auto-pick from
+  // navigator.language, only from a previous explicit toggle stored in
+  // localStorage. This matches how the lang toggle is treated as an
+  // intentional user preference rather than a locale guess.
   const stored = localStorage.getItem("sw.lang");
-  const browser = (navigator.language || "en").slice(0, 2).toLowerCase();
-  const lang = stored || (browser === "es" ? "es" : "en");
+  const lang = stored === "es" ? "es" : "en";
   applyLang(lang);
 
   const toggle = document.getElementById("langToggle");
@@ -1104,9 +1111,12 @@ function getHostTheme() {
 }
 
 // Minimal CSS for the iframe. With js-dos in `kiosk: true` mode the
-// sidebar / settings chrome is gone, so all we need is to make the host
-// background match our theme (so loaders / letterboxing don't flash a
-// different color) and keep the canvas filling the iframe.
+// sidebar / settings chrome is gone, so all we need is:
+//   1) match the host background so loaders / letterboxing don't flash
+//   2) hide the cursor on the actual play surface (the canvas) so the
+//      OS pointer doesn't sit on top of the rendered scene while the
+//      player isn't pointer-locked. Overlays like "click to capture
+//      mouse" still get a normal cursor since they aren't <canvas>.
 function doomThemeCss(theme) {
   const p = DOOM_PALETTES[theme] || DOOM_PALETTES.dark;
   return `
@@ -1116,6 +1126,7 @@ function doomThemeCss(theme) {
       color: ${p.fg} !important;
       font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace !important;
     }
+    canvas { cursor: none !important; }
   `;
 }
 
@@ -1187,9 +1198,10 @@ function buildDoomFrameDoc(bundleUrl, theme) {
       // chrome entirely, so we get just the game canvas and js-dos's own
       // capture / loader overlays. No DOM trimming or DaisyUI overrides
       // needed; the host modal already provides our brutalist frame.
+      var dosProps = null;
       if (typeof Dos === "function") {
         try {
-          Dos(document.getElementById("dos"), {
+          dosProps = Dos(document.getElementById("dos"), {
             url: ${url},
             theme: ${JSON.stringify(jsDosTheme)},
             backend: "dosbox",
@@ -1205,6 +1217,28 @@ function buildDoomFrameDoc(bundleUrl, theme) {
       } else {
         parent.postMessage({ type: "doom:error", message: "js-dos failed to load" }, "*");
       }
+
+      // The parent posts {type:"doom:set", prop:"volume"|"mouseSensitivity",
+      // value:n} when the user drags one of our footer sliders. We try
+      // every API name js-dos has shipped under across recent versions
+      // before falling back to a property write, so this stays working
+      // across minor v8 updates.
+      window.addEventListener("message", function (e) {
+        if (!e.data || e.data.type !== "doom:set") return;
+        if (!dosProps) return;
+        var prop = e.data.prop;
+        var value = Number(e.data.value);
+        if (!isFinite(value)) return;
+        var setter =
+          "set" + prop.charAt(0).toUpperCase() + prop.slice(1);
+        try {
+          if (typeof dosProps[setter] === "function") {
+            dosProps[setter](value);
+            return;
+          }
+        } catch (_) {}
+        try { dosProps[prop] = value; } catch (_) {}
+      });
     })();
   </script>
 </body>
@@ -1366,6 +1400,55 @@ function initDoom() {
     attributes: true,
     attributeFilter: ["data-theme"],
   });
+
+  // Footer slider + number-input pair -> postMessage into the iframe,
+  // which calls the matching js-dos setter on the captured player props.
+  // Either control can drive the value; the other mirrors it. The
+  // number input commits on blur or Enter so partial typing (e.g. "0.")
+  // doesn't immediately rewrite back.
+  const wireSliderPair = (sliderId, numberId, prop, fmt) => {
+    const slider = document.getElementById(sliderId);
+    const number = document.getElementById(numberId);
+    if (!slider || !number) return;
+    const min = Number(slider.min);
+    const max = Number(slider.max);
+    const clamp = (v) => Math.min(max, Math.max(min, v));
+    const post = (v) => {
+      if (!frame || !frame.contentWindow) return;
+      try {
+        frame.contentWindow.postMessage(
+          { type: "doom:set", prop, value: v },
+          "*"
+        );
+      } catch (_) {}
+    };
+    const apply = (raw, source) => {
+      const n = Number(raw);
+      if (!isFinite(n)) return;
+      const v = clamp(n);
+      if (source !== slider) slider.value = String(v);
+      if (source !== number) number.value = fmt(v);
+      post(v);
+    };
+    slider.addEventListener("input", () => apply(slider.value, slider));
+    slider.addEventListener("change", () => apply(slider.value, slider));
+    // typing in the number field: only commit on Enter or blur so the
+    // user can finish typing "0.85" without it snapping mid-keystroke
+    number.addEventListener("change", () => apply(number.value, number));
+    number.addEventListener("blur", () => apply(number.value, number));
+    number.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        number.blur();
+      }
+    });
+    // initial paint
+    number.value = fmt(Number(slider.value));
+  };
+  wireSliderPair("doomVol", "doomVolVal", "volume", (v) => v.toFixed(2));
+  wireSliderPair("doomSens", "doomSensVal", "mouseSensitivity", (v) =>
+    v.toFixed(2)
+  );
 }
 
 /* -------------------------------------------------------------

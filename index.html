@@ -469,7 +469,7 @@
                 loading="lazy"
                 decoding="async"
                 width="1024"
-                height="490"
+                height="489"
               />
               <span class="work__item__overlay">
                 <span>OPEN</span>
@@ -747,7 +747,7 @@
                 <h3>Creative Engineer</h3>
                 <span class="exp__item__period">NOV 2025 - PRESENT</span>
               </header>
-              <span class="exp__item__company">@ EMBEDDABLES</span>
+              <span class="exp__item__company">@EMBEDDABLES</span>
               <p data-i18n="exp.p1">
                 Design and ship funnel experiences used by thousands of users -
                 landing pages, forms, checkouts - focused on conversion.
@@ -769,7 +769,7 @@
                 <h3 data-i18n="exp.r2">Web Development Tutor</h3>
                 <span class="exp__item__period">JUN 2022 - PRESENT</span>
               </header>
-              <span class="exp__item__company">@ CODERHOUSE</span>
+              <span class="exp__item__company">@CODERHOUSE</span>
               <p data-i18n="exp.p2">
                 Answer student questions, review challenges and projects, run
                 after-class tutoring sessions.
@@ -789,7 +789,7 @@
                 <h3 data-i18n="exp.r3">IT Administrator</h3>
                 <span class="exp__item__period">AUG 2021 - JAN 2026</span>
               </header>
-              <span class="exp__item__company">@ ORLOSH</span>
+              <span class="exp__item__company">@ORLOSH</span>
               <p data-i18n="exp.p3">
                 Configuration and maintenance of Windows Server, VMs (Hyper-V,
                 VMware, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) and
@@ -811,7 +811,7 @@
                 <h3 data-i18n="exp.r4">IT Specialist</h3>
                 <span class="exp__item__period">FEB 2018 - JAN 2021</span>
               </header>
-              <span class="exp__item__company">@ CROMOSOL</span>
+              <span class="exp__item__company">@CROMOSOL</span>
               <p data-i18n="exp.p4">
                 Support across PCs, notebooks, Raspberry Pis, networking, CCTV,
                 printers, labelers and mobiles. Installation and configuration
@@ -1180,6 +1180,8 @@
             </li>
             <li class="doom-modal__keys__group">
               <span class="doom-modal__keys__chip">CTRL</span>
+              <span class="doom-modal__keys__sep">/</span>
+              <span class="doom-modal__keys__chip">LMB</span>
               <span class="doom-modal__keys__label" data-i18n="doom.k.fire">FIRE</span>
             </li>
             <li class="doom-modal__keys__group">
@@ -1210,6 +1212,53 @@
             <li class="doom-modal__keys__group">
               <span class="doom-modal__keys__chip">ESC</span>
               <span class="doom-modal__keys__label" data-i18n="doom.k.exit">EXIT</span>
+            </li>
+            <li class="doom-modal__keys__break" aria-hidden="true"></li>
+            <li class="doom-modal__keys__group doom-modal__keys__group--slider">
+              <span class="doom-modal__keys__label" data-i18n="doom.k.vol">VOL</span>
+              <input
+                type="range"
+                class="doom-modal__slider"
+                id="doomVol"
+                min="0"
+                max="1"
+                step="0.05"
+                value="1"
+                aria-label="Volume"
+              />
+              <input
+                type="number"
+                class="doom-modal__keys__chip doom-modal__keys__chip--val"
+                id="doomVolVal"
+                min="0"
+                max="1"
+                step="0.05"
+                value="1.00"
+                aria-label="Volume value"
+              />
+            </li>
+            <li class="doom-modal__keys__group doom-modal__keys__group--slider">
+              <span class="doom-modal__keys__label" data-i18n="doom.k.sens">SENS</span>
+              <input
+                type="range"
+                class="doom-modal__slider"
+                id="doomSens"
+                min="0.1"
+                max="3"
+                step="0.05"
+                value="1"
+                aria-label="Mouse sensitivity"
+              />
+              <input
+                type="number"
+                class="doom-modal__keys__chip doom-modal__keys__chip--val"
+                id="doomSensVal"
+                min="0.1"
+                max="3"
+                step="0.05"
+                value="1.00"
+                aria-label="Mouse sensitivity value"
+              />
             </li>
           </ul>
         </footer>

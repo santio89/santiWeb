@@ -2109,14 +2109,24 @@ textarea:focus-visible {
 }
 .doom-modal__panel {
   position: relative;
-  /* width is the min of: max design width, available viewport width,
-     and what would let a 4:3 body still fit the viewport vertically.
-     The third clause keeps the modal tidy on short / landscape screens
-     by letting height drive the layout when it's the tighter axis. */
-  width: min(960px, 94vw, calc(82dvh * 4 / 3));
+  /* Width is the min of:
+       1) max design width (1280px)
+       2) available viewport width (94vw)
+       3) the width that lets a 4:3 body STILL leave room for the
+          header + footer in the viewport.
+     For (3) we reserve ~210px of vertical space - header (~60), the
+     footer in its worst case (2-row chips + dashed break + sliders ~140),
+     panel borders (~10) - and derive the matching 4:3 width from what
+     is left. This guarantees the entire modal (including all footer
+     controls) is visible at every desktop / laptop size from 720p up;
+     bigger screens just get bigger games. */
+  width: min(1280px, 94vw, calc((92dvh - 210px) * 4 / 3));
   max-height: 92dvh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  /* minmax(0, 1fr) lets the body shrink past its 4:3 intrinsic size if
+     the viewport gets shorter than expected, so the footer with the
+     keys + sliders is never pushed below the viewport edge */
+  grid-template-rows: auto minmax(0, 1fr) auto;
   background: var(--bg);
   color: var(--fg);
   border: 1.5px solid var(--line-fg);
@@ -2348,7 +2358,7 @@ textarea:focus-visible {
   text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.45);
 }
 .doom-modal__foot {
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-top: 1.5px solid var(--line-strong);
   background: var(--bg-alt);
   overflow-x: auto;
@@ -2361,13 +2371,32 @@ textarea:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px 14px;
+  /* generous row gap so the keys line and the sliders line never read
+     as cramped if the panel is too narrow to fit them on one row */
+  column-gap: 14px;
+  row-gap: 14px;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.16em;
   color: var(--fg-mute);
   text-transform: uppercase;
+}
+/* Force the slider pair onto its own visual row regardless of how wide
+   the panel is. The first slider group breaks before itself with a
+   full-width pseudo divider, which creates a clean horizontal line
+   between the key chips and the live controls. */
+.doom-modal__keys__group--slider:first-of-type {
+  margin-left: 0;
+}
+.doom-modal__keys__break {
+  flex-basis: 100%;
+  width: 100%;
+  height: 0;
+  margin: 2px 0 0;
+  border-top: 1.5px dashed var(--line);
+  list-style: none;
+  opacity: 0.55;
 }
 .doom-modal__keys__group {
   display: inline-flex;
@@ -2415,6 +2444,99 @@ textarea:focus-visible {
 }
 .doom-modal__keys__label {
   color: var(--fg-mute);
+}
+
+/* footer slider rows for volume + sensitivity. The slider gets a flat
+   brutalist track and a square accent thumb; the value chip on the
+   right reuses the key-chip style so everything in the footer reads as
+   one consistent strip. */
+.doom-modal__keys__group--slider {
+  gap: 8px;
+}
+.doom-modal__keys__chip--val {
+  min-width: 42px;
+  width: 42px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  /* override the browser's default number-input chrome so it reads as
+     a brutalist key chip, while still being editable from the keyboard */
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  cursor: text;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+.doom-modal__keys__chip--val::-webkit-outer-spin-button,
+.doom-modal__keys__chip--val::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.doom-modal__keys__chip--val:hover,
+.doom-modal__keys__chip--val:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.doom-modal__keys__chip--val:focus {
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.doom-modal__slider {
+  -webkit-appearance: none;
+  appearance: none;
+  /* clamp lets the slider grow on bigger modals without ever getting
+     so short on narrow ones that it's hard to drop the thumb on a
+     specific value */
+  width: clamp(96px, 14vw, 160px);
+  height: 14px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  /* lets the thumb extend a hair beyond the visual track */
+  box-sizing: border-box;
+}
+.doom-modal__slider::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--line-strong);
+  border: 1.5px solid var(--line-strong);
+}
+.doom-modal__slider::-moz-range-track {
+  height: 4px;
+  background: var(--line-strong);
+  border: 1.5px solid var(--line-strong);
+}
+.doom-modal__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 14px;
+  background: var(--accent);
+  border: 1.5px solid var(--line-strong);
+  margin-top: -7px;
+  cursor: grab;
+  transition: transform 120ms var(--ease-snap);
+}
+.doom-modal__slider::-moz-range-thumb {
+  width: 10px;
+  height: 14px;
+  background: var(--accent);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 0;
+  cursor: grab;
+  transition: transform 120ms var(--ease-snap);
+}
+.doom-modal__slider:hover::-webkit-slider-thumb,
+.doom-modal__slider:focus-visible::-webkit-slider-thumb {
+  transform: scaleX(1.2);
+}
+.doom-modal__slider:hover::-moz-range-thumb,
+.doom-modal__slider:focus-visible::-moz-range-thumb {
+  transform: scaleX(1.2);
+}
+.doom-modal__slider:focus-visible {
+  outline: 1.5px solid var(--accent);
+  outline-offset: 4px;
 }
 
 /* native fullscreen */
@@ -2570,18 +2692,23 @@ textarea:focus-visible {
 
   .doom-modal { padding: 8px; }
   .doom-modal__panel {
-    /* match the modal's mobile padding (8px each side) so the panel
-       never spills over the scrim, while still letting height drive
-       the layout in landscape phones where vh is the tight axis. */
-    width: min(calc(100vw - 16px), calc(78dvh * 4 / 3));
+    /* On phones the footer wraps onto more rows (key chips + sliders +
+       break may eat 200px+), so we reserve 230px and derive the 4:3
+       width from what's left, same approach as desktop. The 100vw - 16
+       clause keeps the panel inside the modal padding on tall portrait
+       layouts where width isn't the bottleneck. */
+    width: min(calc(100vw - 16px), calc((100dvh - 230px) * 4 / 3));
     max-height: calc(100dvh - 16px);
   }
   .doom-modal__head { padding: 10px 12px; gap: 10px; }
   .doom-modal__face { width: 24px; height: 24px; }
   .doom-modal__btn { width: 32px; height: 32px; }
   .doom-modal__title { font-size: 16px; }
-  .doom-modal__foot { font-size: 9px; letter-spacing: 0.14em; padding: 8px 10px; }
-  .doom-modal__keys { gap: 6px 10px; }
+  .doom-modal__foot { font-size: 9px; letter-spacing: 0.14em; padding: 10px 12px; }
+  .doom-modal__keys { column-gap: 10px; row-gap: 10px; }
+  .doom-modal__keys__break { margin-top: 0; opacity: 0.4; }
+  .doom-modal__slider { width: clamp(80px, 30vw, 140px); }
+  .doom-modal__keys__chip--val { width: 38px; min-width: 38px; }
 
   .contact__links a { grid-template-columns: auto 1fr auto; }
   .contact__links__cv { grid-template-columns: 1fr; }
