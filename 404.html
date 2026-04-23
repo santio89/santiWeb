@@ -1,266 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
   <head>
-    <!-- open graph -->
-    <meta property="og:title" content="santiWeb - Web Developer" />
-    <meta
-      property="og:description"
-      content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web"
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:image"
-      content="https://raw.githubusercontent.com/santio89/santiWeb/master/media/opengraph.jpg"
-    />
-    <meta property="og:url" content="https://santio89.github.io/santiWeb/" />
-    <!-- fin open graph -->
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
     <meta
       name="description"
-      content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web"
+      content="404 - Page not found. santiWeb / Santiago Olais."
     />
+
+    <meta property="og:title" content="404 // santiWeb" />
     <meta
-      name="keywords"
-      content="santiWeb, diseño web, desarrollo web, web design, web development, responsive design, caba, argentina"
+      property="og:description"
+      content="The page you're trying to access doesn't exist."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://santiweb.netlify.app/" />
+    <meta property="og:site_name" content="santiWeb" />
+    <meta
+      property="og:image"
+      content="https://santiweb.netlify.app/media/opengraph.png?v=3"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="HI, I'M SANTI! - Portfolio cover for Santiago Olais."
     />
 
-    <title>santiWeb / Web Dev</title>
-    <link rel="icon" type="image/png" href="media/favicon.png?v=1" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://santiweb.netlify.app/media/opengraph.png?v=3"
+    />
+
+    <title>404 // santiWeb</title>
+    <link rel="icon" type="image/svg+xml" href="media/favicon.svg?v=4" />
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon-32.png?v=4" />
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon-16.png?v=4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="media/apple-touch-icon.png?v=4" />
+    <link rel="shortcut icon" href="media/favicon.png?v=4" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
     />
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/main.css" />
-    <link rel="preload" href="media/backgroundA.svg" as="image" />
-    <link rel="preload" href="media/backgroundB.svg" as="image" />
-    <link rel="preload" href="media/backgroundC.svg" as="image" />
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-1V8540DPJF"
     ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
       gtag("config", "G-1V8540DPJF");
     </script>
-    <!-- fin analytics -->
   </head>
-  <body>
-    <canvas class="canvas"></canvas>
-    <div class="loaderWrapper" id="loaderWrapper">
-      <div class="loader"><div class="loader__inner"></div></div>
-    </div>
-    <header class="header" id="header">
-      <a href="https://santiweb.netlify.app/" class="header__logo">SW</a>
-      <a href="#footer" class="header__skip">Skip Navigation</a>
-      <button
-        for="header__burgerMenu"
-        class="header__burgerButton"
-        id="header__burgerButton"
-        aria-label="Navigation Menu"
-      >
-        <i class="bi bi-arrow-bar-left header__burgerButton__icon"></i>
-      </button>
 
-      <nav class="nav" id="nav" aria-label="header nav">
-        <ul class="nav__ul">
-          <li class="nav__ul__li color__lang">
-            <div class="langSelect" aria-label="Select Language">
-              <button class="langSelect--en" aria-label="English">EN</button
-              >/<button aria-label="Spanish" class="langSelect--es">ES</button>
-            </div>
-            <div class="colorContainer">
-              <button
-                class="color color--a color--active"
-                id="colorA"
-                aria-label="Color Theme Picker A"
-              ></button>
-              <button
-                class="color color--b"
-                id="colorB"
-                aria-label="Color Theme Picker B"
-              ></button>
-              <button
-                class="color color--d"
-                id="colorD"
-                aria-label="Main Theme Toggler"
-              ></button>
-            </div>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#about" class="nav__anchor" lang="en">About</a>
-            <a href="#about" class="nav__anchor" lang="es">Sobre</a>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#skills" class="nav__anchor" lang="en">Skills</a>
-            <a href="#skills" class="nav__anchor" lang="es">Habilidades</a>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#works" class="nav__anchor" lang="en">Works</a>
-            <a href="#works" class="nav__anchor" lang="es">Trabajos</a>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#contact" class="nav__anchor" lang="en">Contact</a>
-            <a href="#contact" class="nav__anchor" lang="es">Contacto</a>
-          </li>
-        </ul>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <canvas class="cursor-canvas" id="cursorCanvas" aria-hidden="true"></canvas>
+    <div class="cursor-core" id="cursorCore" aria-hidden="true">
+      <div class="cursor-core__ring"></div>
+      <div class="cursor-core__dot"></div>
+    </div>
+
+    <header class="header" id="header">
+      <a href="/" class="header__logo" aria-label="Home">
+        <span class="header__logo__a">SO</span>
+        <span class="header__logo__b">/</span>
+        <span class="header__logo__c">WEB</span>
+      </a>
+
+      <nav class="header__nav" id="primaryNav" aria-label="Main navigation">
+        <a href="/#about" class="header__nav__link" data-i18n="nav.about">ABOUT</a>
+        <a href="/#skills" class="header__nav__link" data-i18n="nav.skills">STACK</a>
+        <a href="/#work" class="header__nav__link" data-i18n="nav.work">WORK</a>
+        <a href="/#experience" class="header__nav__link" data-i18n="nav.exp">EXPERIENCE</a>
+        <a href="/#contact" class="header__nav__link" data-i18n="nav.contact">CONTACT</a>
       </nav>
-      <div class="scrollTracker"></div>
+
+      <div class="header__actions">
+        <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+          <span class="lang-toggle__opt" data-lang="en">EN</span>
+          <span class="lang-toggle__sep">/</span>
+          <span class="lang-toggle__opt" data-lang="es">ES</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">
+          <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+          <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
     </header>
 
-    <main class="main">
-      <div class="landingImgA" id="landingImgA"></div>
-      <div class="landingImgB" id="landingImgB"></div>
-      <div class="landingImgC" id="landingImgC"></div>
+    <main class="error-page">
+      <div class="hero__grid" aria-hidden="true" style="opacity:.4"></div>
 
-      <section class="heroPage" id="heroPage">
-        <div class="heroPage__title">
-          <h1 class="heroPage__h1" lang="en">
-            <span class="heroPage__span">Error 404</span><br />Page not found
-          </h1>
-          <h1 class="heroPage__h1" lang="es">
-            <span class="heroPage__span">Error 404</span><br />Página no
-            encontrada
-          </h1>
-          <p class="heroPage__pError" lang="en">
-            The page you're trying to access is unavailable or doesn't exist.
-          </p>
-          <p class="heroPage__pError" lang="es">
-            La página que intentas acceder no está disponible o no existe.
-          </p>
-          <a
-            href="https://santiweb.netlify.app/"
-            class="heroPage__span heroPage__pError__back"
-            lang="en"
-            >Back to home?</a
-          >
-          <a
-            href="https://santiweb.netlify.app/"
-            class="heroPage__span heroPage__pError__back"
-            lang="es"
-            >Volver al inicio?</a
-          >
-        </div>
+      <span class="brut-label" style="margin-bottom:18px">▣ ERROR.SYS</span>
 
-        <div class="heroPage__profilePicWrapper" tabindex="0">
-          <div class="heroPage__profilePicWrapper--inner">
-            <div
-              class="heroPage__profilePic heroPage__profilePic__front"
-              aria-label="Profile Picture"
-            ></div>
-            <div
-              class="heroPage__profilePic heroPage__profilePic__back"
-              aria-label="Profile Picture"
-            ></div>
-          </div>
-        </div>
+      <h1 class="error-page__code">
+        4<span>0</span>4
+      </h1>
 
-        <a aria-label="scroll down arrow" href="#footer" class="arrowBounce"
-          ><i class="bi bi-arrow-down-short"></i
-        ></a>
-      </section>
+      <p class="error-page__msg" data-i18n="404.msg">
+        The page you're trying to access is unavailable, was moved or never
+        existed.
+      </p>
+
+      <div class="error-page__actions">
+        <a href="/" class="btn btn--primary">
+          <span data-i18n="404.cta1">BACK HOME</span>
+          <svg class="brut-arrow brut-arrow--right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <path d="M4 12h16M13 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="/#contact" class="btn btn--ghost" data-i18n="404.cta2">CONTACT</a>
+      </div>
     </main>
 
     <footer class="footer" id="footer">
-      <nav class="footer__nav">
-        <ul class="footer__nav__ul">
-          <li class="footer__nav__ul__li">
-            <a
-              href="https://santiweb.netlify.app/#about"
-              class="footer__nav__ul__li__anchor"
-              lang="en"
-              >About</a
-            >
-            <a
-              href="https://santiweb.netlify.app/#about"
-              class="footer__nav__ul__li__anchor"
-              lang="es"
-              >Sobre</a
-            >
-          </li>
-          <li class="footer__nav__ul__li">
-            <a
-              href="https://santiweb.netlify.app/#skills"
-              class="footer__nav__ul__li__anchor"
-              lang="en"
-              >Skills</a
-            >
-            <a
-              href="https://santiweb.netlify.app/#skills"
-              class="footer__nav__ul__li__anchor"
-              lang="es"
-              >Habilidades</a
-            >
-          </li>
-          <li class="footer__nav__ul__li">
-            <a
-              href="https://santiweb.netlify.app/#works"
-              class="footer__nav__ul__li__anchor"
-              lang="en"
-              >Works</a
-            >
-            <a
-              href="https://santiweb.netlify.app/#works"
-              class="footer__nav__ul__li__anchor"
-              lang="es"
-              >Trabajos</a
-            >
-          </li>
-          <li class="footer__nav__ul__li">
-            <a
-              href="https://santiweb.netlify.app/#contact"
-              class="footer__nav__ul__li__anchor"
-              lang="en"
-              >Contact</a
-            >
-            <a
-              href="https://santiweb.netlify.app/#contact"
-              class="footer__nav__ul__li__anchor"
-              lang="es"
-              >Contacto</a
-            >
-          </li>
-        </ul>
-      </nav>
-
-      <div class="sectionTitle">
-        <div class="footer__hr" id="footer__hr"></div>
-        <div class="footer__santi">
-          <a
-            href="https://www.linkedin.com/in/santiago-olais-829542b9/"
-            target="_blank"
-            aria-label="LinkedIn"
-            ><i class="bi bi-linkedin"></i
-          ></a>
-          <a
-            href="https://github.com/santio89"
-            target="_blank"
-            aria-label="GitHub"
-            ><i class="bi bi-github"></i
-          ></a>
-          <a href="#heroPage">santiWeb<i class="bi bi-arrow-up-short"></i></a>
+      <div class="footer__top">
+        <a href="/" class="footer__brand">
+          <span class="footer__brand__a">SO</span>
+          <span class="footer__brand__b">/WEB</span>
+        </a>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <a href="/#about" data-i18n="nav.about">ABOUT</a>
+          <a href="/#skills" data-i18n="nav.skills">STACK</a>
+          <a href="/#work" data-i18n="nav.work">WORK</a>
+          <a href="/#experience" data-i18n="nav.exp">EXPERIENCE</a>
+          <a href="/#contact" data-i18n="nav.contact">CONTACT</a>
+        </nav>
+        <div class="footer__socials">
+          <a href="https://github.com/santio89" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.95 3.21 9.14 7.66 10.62.56.1.77-.24.77-.54v-1.88c-3.12.68-3.78-1.5-3.78-1.5-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.55 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.97 0 0 .95-.3 3.1 1.15.9-.25 1.86-.38 2.83-.38s1.93.13 2.83.38c2.15-1.45 3.1-1.15 3.1-1.15.61 1.54.23 2.69.11 2.97.72.79 1.16 1.79 1.16 3.02 0 4.31-2.62 5.27-5.12 5.55.4.34.76 1.02.76 2.05v3.04c0 .3.21.65.78.54 4.45-1.49 7.66-5.68 7.66-10.62C23.25 5.48 18.27.5 12 .5z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/santiago-olais/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/></svg>
+          </a>
+          <a href="mailto:santiolais1989@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 7l9 7 9-7"/></svg>
+          </a>
         </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> SANTIAGO OLAIS</span>
+        <span>BUILT WITH HTML · CSS · JS</span>
       </div>
     </footer>
 
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-      AOS.init();
-    </script>
     <script src="js/scripts.js" type="module"></script>
   </body>
 </html>

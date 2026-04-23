@@ -1,45 +1,75 @@
 <!doctype html>
-<html>
+<html lang="en" data-theme="dark">
   <head>
-    <!-- open graph -->
-    <meta property="og:title" content="santiWeb - Web Developer" />
-    <meta
-      property="og:description"
-      content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web"
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:image"
-      content="https://raw.githubusercontent.com/santio89/santiWeb/master/media/opengraph.jpg"
-    />
-    <meta property="og:url" content="https://santiweb.netlify.app/" />
-    <!-- fin open graph -->
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
     <meta
       name="description"
-      content="santiWeb - Web Design / Web Development / Diseño Web / Desarrollo Web"
+      content="Santiago Olais - Web Developer & IT Specialist. Building responsive, conversion-focused web apps. Based in Buenos Aires, Argentina."
     />
     <meta
       name="keywords"
-      content="santiWeb, diseño web, desarrollo web, web design, web development, responsive design, caba, argentina"
+      content="santiWeb, Santiago Olais, web developer, web development, frontend developer, react developer, next.js, IT specialist, portfolio, Buenos Aires, Argentina"
     />
-    <meta name="theme-color" content="#1e1e1e" />
-    <title>santiWeb / Web Dev</title>
-    <link rel="icon" type="image/png" href="media/favicon.png?v=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
-    />
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="preload" href="media/backgroundA.svg" as="image" />
-    <link rel="preload" href="media/backgroundB.svg" as="image" />
-    <link rel="preload" href="media/backgroundC.svg" as="image" />
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Open Graph -->
+    <meta property="og:title" content="santiWeb - Santiago Olais / Web Dev" />
+    <meta
+      property="og:description"
+      content="Web Developer with a passion for technology and art, crafting responsive, high-performance, conversion-focused web apps."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://santiweb.netlify.app/" />
+    <meta property="og:site_name" content="santiWeb" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_AR" />
+    <meta
+      property="og:image"
+      content="https://santiweb.netlify.app/media/opengraph.png?v=3"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="HI, I'M SANTI! - Portfolio cover for Santiago Olais, Web Developer based in Buenos Aires."
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="santiWeb - Santiago Olais / Web Dev" />
+    <meta
+      name="twitter:description"
+      content="Web Developer with a passion for technology and art, crafting responsive, high-performance, conversion-focused web apps."
+    />
+    <meta
+      name="twitter:image"
+      content="https://santiweb.netlify.app/media/opengraph.png?v=3"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="HI, I'M SANTI! - Portfolio cover for Santiago Olais."
+    />
+
+    <title>santiWeb // Santiago Olais - Web Dev / IT</title>
+    <link rel="icon" type="image/svg+xml" href="media/favicon.svg?v=4" />
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon-32.png?v=4" />
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon-16.png?v=4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="media/apple-touch-icon.png?v=4" />
+    <link rel="shortcut icon" href="media/favicon.png?v=4" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- Google Analytics -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-1V8540DPJF"
@@ -52,829 +82,916 @@
       gtag("js", new Date());
       gtag("config", "G-1V8540DPJF");
     </script>
-    <!-- fin analytics -->
   </head>
 
   <body>
-    <canvas class="canvas"></canvas>
-    <div class="loaderWrapper" id="loaderWrapper">
-      <div class="loader">
-        <div class="loader__inner"></div>
+    <!-- film grain overlay -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- custom cursor layers -->
+    <canvas
+      class="cursor-canvas"
+      id="cursorCanvas"
+      aria-hidden="true"
+    ></canvas>
+    <div class="cursor-core" id="cursorCore" aria-hidden="true">
+      <div class="cursor-core__ring"></div>
+      <div class="cursor-core__dot"></div>
+    </div>
+
+    <!-- boot loader -->
+    <div class="boot" id="boot" aria-hidden="true">
+      <div class="boot__inner">
+        <div class="boot__brand">SANTI<span>/WEB</span></div>
+        <div class="boot__bar"><span></span></div>
+        <div class="boot__meta">
+          <span data-i18n="boot.loading">LOADING SYSTEM</span>
+          <span class="boot__pct" id="bootPct">000</span>
+        </div>
       </div>
     </div>
-    <header data-lang="true" class="header" id="header">
-      <a href="#heroPage" class="header__logo">SW</a>
-      <a href="#about" class="header__skip" lang="en">Skip Navigation</a>
-      <a href="#about" class="header__skip" lang="es">Saltar Navegación</a>
-      <button
-        for="header__burgerMenu"
-        class="header__burgerButton"
-        id="header__burgerButton"
-        aria-label="Navigation Menu"
-      >
-        <i class="bi bi-arrow-bar-left header__burgerButton__icon"></i>
-      </button>
 
-      <nav class="nav" id="nav" aria-label="header nav">
-        <ul class="nav__ul">
-          <li class="nav__ul__li color__lang">
-            <div class="langSelect" aria-label="Select Language">
-              <button class="langSelect--en" aria-label="English">EN</button
-              >/<button aria-label="Spanish" class="langSelect--es">ES</button>
-            </div>
-            <div class="colorContainer">
-              <button
-                class="color color--a color--active"
-                id="colorA"
-                aria-label="Color Theme Picker A"
-              ></button>
-              <button
-                class="color color--b"
-                id="colorB"
-                aria-label="Color Theme Picker B"
-              ></button>
-              <!-- <button
-                class="color color--d"
-                id="colorD"
-                aria-label="Main Theme Toggler"
-              ></button> -->
-            </div>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#about" class="nav__anchor" lang="en">About</a>
-            <a href="#about" class="nav__anchor" lang="es">Sobre</a>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#skills" class="nav__anchor" lang="en">Skills</a>
-            <a href="#skills" class="nav__anchor" lang="es">Habilidades</a>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#works" class="nav__anchor" lang="en">Works</a>
-            <a href="#works" class="nav__anchor" lang="es">Trabajos</a>
-          </li>
-          <li class="nav__ul__li">
-            <a href="#contact" class="nav__anchor" lang="en">Contact</a>
-            <a href="#contact" class="nav__anchor" lang="es">Contacto</a>
-          </li>
-        </ul>
+    <!-- skip link - hidden until tab-focused, scrolls to first content section -->
+    <a href="#about" class="skip" data-i18n="nav.skip">SKIP NAVIGATION</a>
+
+    <!-- top progress bar -->
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <header class="header" id="header">
+      <a href="#hero" class="header__logo" aria-label="Home">
+        <span class="header__logo__a">SO</span>
+        <span class="header__logo__b">/</span>
+        <span class="header__logo__c">WEB</span>
+      </a>
+
+      <nav class="header__nav" id="primaryNav" aria-label="Main navigation">
+        <a href="#about" class="header__nav__link" data-i18n="nav.about"
+          >ABOUT</a
+        >
+        <a href="#skills" class="header__nav__link" data-i18n="nav.skills"
+          >STACK</a
+        >
+        <a href="#work" class="header__nav__link" data-i18n="nav.work"
+          >WORK</a
+        >
+        <a href="#experience" class="header__nav__link" data-i18n="nav.exp"
+          >EXPERIENCE</a
+        >
+        <a href="#contact" class="header__nav__link" data-i18n="nav.contact"
+          >CONTACT</a
+        >
       </nav>
-      <div class="scrollTracker"></div>
+
+      <div class="header__actions">
+        <button
+          class="lang-toggle"
+          id="langToggle"
+          aria-label="Toggle language"
+        >
+          <span class="lang-toggle__opt" data-lang="en">EN</span>
+          <span class="lang-toggle__sep">/</span>
+          <span class="lang-toggle__opt" data-lang="es">ES</span>
+        </button>
+
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle color theme"
+        >
+          <span class="theme-toggle__icons" aria-hidden="true">
+            <svg
+              class="theme-toggle__sun"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+              />
+            </svg>
+            <svg
+              class="theme-toggle__moon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </span>
+        </button>
+
+        <button
+          class="burger"
+          id="burger"
+          aria-label="Toggle menu"
+          aria-controls="primaryNav"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </header>
 
-    <main class="main">
-      <div class="landingImgA" id="landingImgA"></div>
-      <div class="landingImgB" id="landingImgB"></div>
-      <div class="landingImgC" id="landingImgC"></div>
-      <section class="heroPage" id="heroPage">
-        <div class="heroPage__title">
-          <h1 lang="en">
-            <span class="heroPage__span">Hi!</span><br />My name is
-            <span class="heroPage__span">Santi</span>
-            <span class="heroPage__span__lineBreak"
-              >and I'm a <span class="heroPage__span">web developer</span></span
-            >
-          </h1>
-          <h1 lang="es">
-            <span class="heroPage__span">Hola!</span><br />Mi nombre es
-            <span class="heroPage__span">Santi</span>
-            <span class="heroPage__span__lineBreak"
-              >y soy <span class="heroPage__span">desarrollador web</span></span
-            >
-          </h1>
+    <main class="main" id="main" tabindex="-1">
+      <!-- HERO -->
+      <section class="hero" id="hero">
+        <div class="hero__grid" aria-hidden="true"></div>
+
+        <div class="hero__meta">
+          <span class="dot dot--live"></span>
+          <span data-i18n="hero.location">BUENOS AIRES, AR</span>
         </div>
 
-        <div
-          class="heroPage__profilePicWrapper"
-          tabindex="0"
-          aria-label="Profile Picture"
+        <h1 class="hero__title">
+          <span class="hero__title__line" data-text="HI, I'M">
+            <span data-i18n="hero.l1">HI, I'M</span>
+          </span>
+          <span class="hero__title__line hero__title__line--accent" data-text="SANTI!">
+            <span data-i18n="hero.l2">SANTI!</span>
+          </span>
+        </h1>
+
+        <p class="hero__sub" data-i18n="hero.sub">
+          Web Developer with a passion for technology and art, crafting
+          responsive, high-performance, conversion-focused web apps.
+        </p>
+
+        <div class="hero__cta">
+          <a href="#work" class="btn btn--primary">
+            <span data-i18n="hero.cta1">SEE WORK</span>
+            <svg class="brut-arrow brut-arrow--right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <path d="M4 12h16M13 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#contact" class="btn btn--ghost" data-i18n="hero.cta2"
+            >GET IN TOUCH</a
+          >
+        </div>
+
+        <a
+          href="#about"
+          class="hero__scroll"
+          aria-label="Scroll to about section"
         >
-          <div class="heroPage__profilePicWrapper--inner">
-            <div
-              class="heroPage__profilePic heroPage__profilePic__front"
-              aria-label="Profile Picture"
-            ></div>
+          <span data-i18n="hero.scroll">SCROLL</span>
+          <span class="hero__scroll__line" aria-hidden="true"></span>
+          <span class="hero__scroll__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 4v16M5 13l7 7 7-7" stroke-linecap="square" stroke-linejoin="miter"/>
+            </svg>
+          </span>
+        </a>
 
-            <div
-              class="heroPage__profilePic heroPage__profilePic__back"
-              aria-label="Profile Picture"
-            ></div>
+        <div class="marquee marquee--hero" aria-hidden="true">
+          <div class="marquee__track">
+            <span>REACT</span><span>·</span>
+            <span>NEXT.JS</span><span>·</span>
+            <span>TYPESCRIPT</span><span>·</span>
+            <span>NODE</span><span>·</span>
+            <span>TAILWIND</span><span>·</span>
+            <span>FIREBASE</span><span>·</span>
+            <span>MONGO</span><span>·</span>
+            <span>EXPRESS</span><span>·</span>
+            <span>REACT NATIVE</span><span>·</span>
+            <span>SASS</span><span>·</span>
+            <span>REDUX</span><span>·</span>
+            <span>WORDPRESS</span><span>·</span>
+            <span>REACT</span><span>·</span>
+            <span>NEXT.JS</span><span>·</span>
+            <span>TYPESCRIPT</span><span>·</span>
+            <span>NODE</span><span>·</span>
+            <span>TAILWIND</span><span>·</span>
+            <span>FIREBASE</span><span>·</span>
+            <span>MONGO</span><span>·</span>
+            <span>EXPRESS</span><span>·</span>
+            <span>REACT NATIVE</span><span>·</span>
+            <span>SASS</span><span>·</span>
+            <span>REDUX</span><span>·</span>
+            <span>WORDPRESS</span><span>·</span>
           </div>
         </div>
-
-        <a aria-label="scroll down arrow" href="#about" class="arrowBounce"
-          ><i class="bi bi-arrow-down"></i
-        ></a>
       </section>
 
-      <section class="about" id="about">
-        <div class="section__container">
-          <div class="sectionTitle">
-            <div class="hr hr--backwards">
-              <div class="hr__inside"></div>
-            </div>
-            <h2 lang="en">&nbsp;About&nbsp;</h2>
-            <h2 lang="es">&nbsp;Sobre&nbsp;</h2>
-            <div class="hr">
-              <div class="hr__inside"></div>
-            </div>
-          </div>
+      <!-- ABOUT -->
+      <section class="section about" id="about">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="about.title">ABOUT</h2>
+          <span class="section__line"></span>
+        </div>
 
-          <div class="about__info" data-aos="fade-up">
-            <p class="about__info__details" lang="en">
-              My name is Santiago and I am a Web Dev located in Buenos Aires,
-              Argentina.<br /><br />Having worked in IT for many years, I found
-              in web development a field where I can combine both my passions
-              for technology and art. I enjoy building responsive websites with
-              an aim for conversion, and thrive on continuous learning.<br /><br />I
-              am always looking for new challenges and interested in working and
-              collaborating in different projects.
+        <div class="about__grid">
+          <div class="about__bio reveal">
+            <p data-i18n="about.p1">
+              My name is <strong>Santiago</strong> and I'm a web developer based
+              in Buenos Aires, Argentina.
             </p>
-            <p class="about__info__details" lang="es">
-              Mi nombre es Santiago y soy un Desarrollador Web viviendo en
-              Buenos Aires, Argentina.<br /><br />Habiendo trabajo en IT varios
-              años, encontré en el desarrollo web un campo donde combinar mis
-              gustos por la tecnología y el arte. Disfruto construir sitios web
-              responsive con un enfoque en la conversión, y me entusiasma
-              aprender en el proceso.<br /><br />Estoy siempre buscando nuevos
-              desafíos e interesado en trabajar y colaborar en diferentes
-              proyectos.
+            <p data-i18n="about.p2">
+              After almost a decade in IT - keeping Windows Servers, networks,
+              VMs and 100+ workstations alive - I found in web development a
+              place where I can combine my passions for both technology and
+              art. I enjoy building responsive sites with an eye on
+              conversion, and I thrive on continuous learning.
+            </p>
+            <p data-i18n="about.p3">
+              Always looking for new challenges and up for collaborating on
+              different projects.
             </p>
           </div>
+
+          <aside class="about__card reveal" data-tilt>
+            <div class="about__card__head">
+              <span class="brut-label">▣ PROFILE.SYS</span>
+              <span class="dot dot--live"></span>
+            </div>
+            <dl class="about__card__list">
+              <div>
+                <dt data-i18n="about.role">ROLE</dt>
+                <dd data-i18n="about.roleVal">Web Developer · IT Specialist</dd>
+              </div>
+              <div>
+                <dt data-i18n="about.based">BASED IN</dt>
+                <dd>Buenos Aires, Argentina</dd>
+              </div>
+              <div>
+                <dt data-i18n="about.langs">LANGUAGES</dt>
+                <dd>EN · ES</dd>
+              </div>
+              <div>
+                <dt data-i18n="about.exp">EXPERIENCE</dt>
+                <dd><span data-i18n="about.expVal">8+ yrs IT · 4+ yrs web</span></dd>
+              </div>
+            </dl>
+            <div class="about__card__foot">
+              <a href="#contact" class="about__card__link">
+                <span data-i18n="about.contact">CONTACT</span>
+                <svg class="brut-arrow brut-arrow--right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M4 12h16M13 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section class="skills" id="skills">
-        <div class="section__container">
-          <div class="sectionTitle">
-            <div class="hr hr--backwards">
-              <div class="hr__inside"></div>
-            </div>
-            <h2 lang="en">&nbsp;Skills&nbsp;</h2>
-            <h2 lang="es">&nbsp;Habilidades&nbsp;</h2>
-            <div class="hr">
-              <div class="hr__inside"></div>
-            </div>
-          </div>
-          <div class="skills__info">
-            <h3 data-aos="fade-right" lang="en">
-              <span class="pointer">◖</span> Technologies I use
-            </h3>
-            <h3 data-aos="fade-right" lang="es">
-              <span class="pointer">◖</span> Tecnologías que uso
-            </h3>
-            <div class="skills__wrapper" data-aos="fade-up">
-              <div class="skills__wrapper__skill">
-                <p>HTML</p>
-                <img
-                  class="img-fluid"
-                  alt="html"
-                  src="media/skills/html.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>CSS</p>
-                <img
-                  class="img-fluid"
-                  alt="css"
-                  src="media/skills/css.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>JS</p>
-                <img
-                  class="img-fluid"
-                  alt="javascript"
-                  src="media/skills/js.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>TS</p>
-                <img
-                  class="img-fluid"
-                  alt="javascript"
-                  src="media/skills/ts.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>REACT JS/NATIVE</p>
-                <img
-                  class="img-fluid"
-                  alt="react"
-                  src="media/skills/react.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>NEXT JS</p>
-                <img
-                  class="img-fluid"
-                  alt="next"
-                  src="media/skills/next.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>NODE JS</p>
-                <img
-                  class="img-fluid"
-                  alt="node"
-                  src="media/skills/node.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>EXPRESS</p>
-                <img
-                  class="img-fluid"
-                  alt="git"
-                  src="media/skills/exp.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>FIREBASE</p>
-                <img
-                  class="img-fluid"
-                  alt="tailwind"
-                  src="media/skills/fb.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>MONGO DB</p>
-                <img
-                  class="img-fluid"
-                  alt="git"
-                  src="media/skills/mdb.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>MYSQL</p>
-                <img
-                  class="img-fluid"
-                  alt="git"
-                  src="media/skills/mysql.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>GIT/HUB</p>
-                <img
-                  class="img-fluid"
-                  alt="git"
-                  src="media/skills/git.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>SASS</p>
-                <img
-                  class="img-fluid"
-                  alt="sass"
-                  src="media/skills/sass.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>TAILWIND</p>
-                <img
-                  class="img-fluid"
-                  alt="tailwind"
-                  src="media/skills/tw.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>MATERIAL UI</p>
-                <img
-                  class="img-fluid"
-                  alt="git"
-                  src="media/skills/mui.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>BOOTSTRAP</p>
-                <img
-                  class="img-fluid"
-                  alt="bootstrap"
-                  src="media/skills/bs.png"
-                  loading="lazy"
-                />
-              </div>
-              <div class="skills__wrapper__skill">
-                <p>WORDPRESS</p>
-                <img
-                  class="img-fluid"
-                  alt="wordpress"
-                  src="media/skills/wp.png"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
+      <!-- SKILLS / STACK -->
+      <section class="section skills" id="skills">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="skills.title">STACK</h2>
+          <span class="section__line"></span>
+        </div>
+
+        <p class="section__lede reveal" data-i18n="skills.lede">
+          The tools I reach for. Sharp, opinionated, kept current.
+        </p>
+
+        <div class="skills__grid">
+          <article class="skills__col reveal" data-tilt>
+            <header class="skills__col__head">
+              <span class="brut-label">FRONTEND</span>
+              <span class="skills__col__count">12</span>
+            </header>
+            <ul class="skills__list">
+              <li>React</li>
+              <li>React Native</li>
+              <li>Next.js</li>
+              <li>TypeScript</li>
+              <li>JavaScript</li>
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>Sass</li>
+              <li>Tailwind CSS</li>
+              <li>Material UI</li>
+              <li>Bootstrap</li>
+              <li>Redux</li>
+            </ul>
+          </article>
+
+          <article class="skills__col reveal" data-tilt>
+            <header class="skills__col__head">
+              <span class="brut-label">BACKEND</span>
+              <span class="skills__col__count">3</span>
+            </header>
+            <ul class="skills__list">
+              <li>Node.js</li>
+              <li>Express</li>
+              <li>REST APIs</li>
+            </ul>
+
+            <header class="skills__col__head skills__col__head--mt">
+              <span class="brut-label">DATABASES</span>
+              <span class="skills__col__count">3</span>
+            </header>
+            <ul class="skills__list">
+              <li>MongoDB</li>
+              <li>MySQL</li>
+              <li>Firebase</li>
+            </ul>
+          </article>
+
+          <article class="skills__col reveal" data-tilt>
+            <header class="skills__col__head">
+              <span class="brut-label">DEVOPS</span>
+              <span class="skills__col__count">5</span>
+            </header>
+            <ul class="skills__list">
+              <li>Git</li>
+              <li>GitHub</li>
+              <li>Vercel</li>
+              <li>Netlify</li>
+              <li>WordPress</li>
+            </ul>
+
+            <header class="skills__col__head skills__col__head--mt">
+              <span class="brut-label">IT / OPS</span>
+              <span class="skills__col__count">7</span>
+            </header>
+            <ul class="skills__list">
+              <li>Windows Server</li>
+              <li>Active Directory</li>
+              <li>Networking · Ubiquiti / Cisco / MikroTik</li>
+              <li>VPNs</li>
+              <li>Virtualization · Hyper-V / VMware</li>
+              <li>GLPI · Inventory &amp; Ticketing</li>
+              <li>Hardware support</li>
+            </ul>
+          </article>
         </div>
       </section>
 
-      <section class="works" id="works">
-        <div class="section__container">
-          <div class="sectionTitle">
-            <div class="hr hr--backwards">
-              <div class="hr__inside"></div>
-            </div>
-            <h2 lang="en">&nbsp;Works&nbsp;</h2>
-            <h2 lang="es">&nbsp;Trabajos&nbsp;</h2>
-            <div class="hr">
-              <div class="hr__inside"></div>
-            </div>
-          </div>
-          <div class="works__wrapper">
-            <h3 data-aos="fade-right" lang="en">
-              <span class="pointer">◖</span> Projects I've done
-            </h3>
-            <h3 data-aos="fade-right" lang="es">
-              <span class="pointer">◖</span> Proyectos que he realizado
-            </h3>
-            <div class="works__wrapper__work" data-aos="fade-up">
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://sandbox--code.vercel.app/" target="_blank"
-                    >SandBox</a
-                  >
-                  <p>REACT/REDUX/FIREBASE</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://sandbox--code.vercel.app#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://gol-automaton.vercel.app/" target="_blank"
-                    >Conway's Game of Life</a
-                  >
-                  <p>REACT/REDUX</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://gol-automaton.vercel.app#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://pg-rn.netlify.app/" target="_blank"
-                    >Playground Native</a
-                  >
-                  <p>REACT NATIVE/REDUX/FIREBASE</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://pg-rn.netlify.app#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://it-board.vercel.app/" target="_blank"
-                    >IT DASHBOARD</a
-                  >
-                  <p>REACT/REDUX</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://it-board.vercel.app/#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://taskboard-v0.vercel.app/" target="_blank"
-                    >TASKBOARD</a
-                  >
-                  <p>REACT</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://taskboard-v0.vercel.app/#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://syncle-v0.vercel.app/" target="_blank"
-                    >SYNCLE</a
-                  >
-                  <p>NEXT</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://syncle-v0.vercel.app/#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a
-                    href="https://music-store-firebase.firebaseapp.com/"
-                    target="_blank"
-                    >Music Store</a
-                  >
-                  <p>REACT/FIREBASE</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://music-store-firebase.web.app#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a
-                    href="https://movie-store-front.netlify.app/"
-                    target="_blank"
-                    >Movie Store</a
-                  >
-                  <p>REACT/NODE/MONGO</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://movie-store-front.netlify.app#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a
-                    href="https://santio89.github.io/blackFriday/"
-                    target="_blank"
-                    >Black Friday</a
-                  >
-                  <p>HTML/CSS/JS/JQUERY</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://santio89.github.io/blackFriday#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div>
-
-              <!-- <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a
-                    href="https://dev-game-store-wp.pantheonsite.io/"
-                    target="_blank"
-                    >Game Store</a
-                  >
-                  <p>HTML/CSS/JS/WP</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://dev-game-store-wp.pantheonsite.io#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div> -->
-
-              <!-- <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://santiweb.netlify.app/" target="_blank"
-                    >Portfolio</a
-                  >
-                  <p>HTML/CSS/JS</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <iframe
-                    src="https://santiweb.netlify.app#view=FitH"
-                    loading="lazy"
-                    tabindex="-1"
-                  >
-                  </iframe>
-                </div>
-              </div> -->
-
-              <div class="works__wrapper__work__container">
-                <div class="works__wrapper__work__container__p">
-                  <a href="https://github.com/santio89" target="_blank"
-                    >GitHub</a
-                  >
-                  <p lang="es">REPOSITORIOS</p>
-                  <p lang="en">REPOSITORIES</p>
-                </div>
-                <div class="works__wrapper__work__page">
-                  <a href="https://github.com/santio89" target="_blank"
-                    ><img
-                      alt="GitHub"
-                      src="media/github.png"
-                      class="img-fluid works__wrapper__work__page__githubImg"
-                      loading="lazy"
-                  /></a>
-                </div>
-              </div>
-            </div>
-          </div>
+      <!-- WORK -->
+      <section class="section work" id="work">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="work.title">WORKS</h2>
+          <span class="section__line"></span>
         </div>
-      </section>
 
-      <section class="contact" id="contact">
-        <div class="section__container">
-          <div class="sectionTitle">
-            <div class="hr hr--backwards">
-              <div class="hr__inside"></div>
-            </div>
-            <h2 lang="en">&nbsp;Contact&nbsp;</h2>
-            <h2 lang="es">&nbsp;Contacto&nbsp;</h2>
-            <div class="hr">
-              <div class="hr__inside"></div>
-            </div>
-          </div>
+        <p class="section__lede reveal" data-i18n="work.lede">
+          A small selection. The full archive lives on GitHub.
+        </p>
 
-          <div class="contact__wrapper">
-            <form
-              method="POST"
-              class="contact__form"
-              name="contact"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
+        <div class="work__grid">
+          <article class="work__item reveal" data-tilt>
+            <a
+              class="work__item__frame"
+              href="https://gol-automaton.vercel.app/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open Conway's Game of Life"
             >
-              <div class="contact__form__title">
-                <h3 data-aos="fade-right" lang="en">
-                  <span class="pointer">◖</span> Send a message
-                </h3>
-                <h3 data-aos="fade-right" lang="es">
-                  <span class="pointer">◖</span> Envía un mensaje
-                </h3>
+              <div class="work__item__browser">
+                <span></span><span></span><span></span>
+                <em>gol-automaton.vercel.app</em>
               </div>
-
-              <div class="contact__form__fields" data-aos="fade-up">
-                <div class="contact__form__bot">
-                  <label lang="en"
-                    >Don't fill this out if you're a human:
-                    <input type="text" name="bot-field"
-                  /></label>
-                  <label lang="es"
-                    >No llenar si eres humano:
-                    <input type="text" name="bot-field"
-                  /></label>
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="nombre"
-                    id="name"
-                    placeholder="Name"
-                    autocomplete="off"
-                    required
-                    class="contact__form__name"
-                    aria-label="Name"
-                    lang="en"
-                  />
-                  <input
-                    type="text"
-                    name="nombre"
-                    id="name"
-                    placeholder="Nombre"
-                    autocomplete="off"
-                    required
-                    class="contact__form__name"
-                    aria-label="Name"
-                    lang="es"
-                  />
-                </div>
-
-                <div>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="E-Mail"
-                    autocomplete="off"
-                    required
-                    class="contact__form__email"
-                    aria-label="E-Mail"
-                  />
-                </div>
-
-                <div>
-                  <textarea
-                    name="mensaje"
-                    id="message"
-                    placeholder="Write a message"
-                    required
-                    class="contact__form__message"
-                    aria-label="Message"
-                    lang="en"
-                  ></textarea>
-                  <textarea
-                    name="mensaje"
-                    id="message"
-                    placeholder="Escriba un mensaje"
-                    required
-                    class="contact__form__message"
-                    aria-label="Message"
-                    lang="es"
-                  ></textarea>
-                </div>
-
-                <div class="contact__form__send">
-                  <input
-                    type="reset"
-                    id="reset"
-                    class="contact__form__resetInput"
-                    value="Reset"
-                  />
-                  <label for="reset" class="contact__form__reset"
-                    ><span>X</span></label
-                  >
-
-                  <input
-                    type="submit"
-                    id="submit"
-                    class="contact__form__submitInput"
-                    value="Submit"
-                  />
-                  <label for="submit" class="contact__form__submit" lang="en"
-                    ><span>SUBMIT</span></label
-                  >
-                  <label for="submit" class="contact__form__submit" lang="es"
-                    ><span>ENVIAR</span></label
-                  >
-                </div>
+              <iframe
+                src="https://gol-automaton.vercel.app/#view=FitH"
+                loading="lazy"
+                tabindex="-1"
+                title="Game of Life preview"
+              ></iframe>
+              <span class="work__item__overlay">
+                <span>OPEN</span>
+                <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8"/>
+                </svg>
+              </span>
+            </a>
+            <div class="work__item__meta">
+              <div class="work__item__title">
+                <h3>Conway's Game of Life</h3>
               </div>
-            </form>
-
-            <div class="contact__info">
-              <div class="contact__form__title">
-                <h3 data-aos="fade-right" lang="en">
-                  <span class="pointer">◖</span> Contact Info
-                </h3>
-                <h3 data-aos="fade-right" lang="es">
-                  <span class="pointer">◖</span> Información de Contacto
-                </h3>
-              </div>
-
-              <div class="contact__info__details" data-aos="fade-up">
-                <p>
-                  <span class="pointer">·</span> E-Mail:
-                  <span
-                    ><a href="mailto:santiolais1989@gmail.com"
-                      >santiolais1989@gmail.com</a
-                    ></span
-                  >
-                </p>
-
-                <p>
-                  <span class="pointer">·</span>
-                  <a
-                    href="https://www.linkedin.com/in/santiago-olais/"
-                    target="_blank"
-                    >LinkedIn</a
-                  >
-                </p>
-
-                <p>
-                  <span class="pointer">·</span
-                  ><a href="https://github.com/santio89" target="_blank">
-                    GitHub</a
-                  >
-                </p>
-
-                <p lang="en">
-                  <span class="pointer">·</span
-                  ><a
-                    href="./media/cvs/santiago-olais-cv-eng.pdf"
-                    target="_blank"
-                  >
-                    CV</a
-                  >
-                </p>
-
-                <p lang="es">
-                  <span class="pointer">·</span
-                  ><a
-                    href="./media/cvs/santiago-olais-cv-esp.pdf"
-                    target="_blank"
-                  >
-                    CV</a
-                  >
-                </p>
-              </div>
+              <p data-i18n="work.gol">
+                Interactive cellular automaton. Playback controls, presets,
+                editable grid.
+              </p>
+              <ul class="work__item__tags">
+                <li>REACT</li>
+                <li>REDUX</li>
+              </ul>
             </div>
+          </article>
+
+          <article class="work__item reveal" data-tilt>
+            <a
+              class="work__item__frame"
+              href="https://sandbox--code.vercel.app/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open SandBox"
+            >
+              <div class="work__item__browser">
+                <span></span><span></span><span></span>
+                <em>sandbox--code.vercel.app</em>
+              </div>
+              <iframe
+                src="https://sandbox--code.vercel.app/#view=FitH"
+                loading="lazy"
+                tabindex="-1"
+                title="SandBox preview"
+              ></iframe>
+              <span class="work__item__overlay">
+                <span>OPEN</span>
+                <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8"/>
+                </svg>
+              </span>
+            </a>
+            <div class="work__item__meta">
+              <div class="work__item__title">
+                <h3>SandBox</h3>
+              </div>
+              <p data-i18n="work.sandbox">
+                Code playground with auth, persistence and live preview - try
+                ideas without the setup.
+              </p>
+              <ul class="work__item__tags">
+                <li>REACT</li>
+                <li>REDUX</li>
+                <li>FIREBASE</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="work__item reveal" data-tilt>
+            <a
+              class="work__item__frame"
+              href="https://taskboard-v0.vercel.app/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open TaskBoard"
+            >
+              <div class="work__item__browser">
+                <span></span><span></span><span></span>
+                <em>taskboard-v0.vercel.app</em>
+              </div>
+              <iframe
+                src="https://taskboard-v0.vercel.app/#view=FitH"
+                loading="lazy"
+                tabindex="-1"
+                title="TaskBoard preview"
+              ></iframe>
+              <span class="work__item__overlay">
+                <span>OPEN</span>
+                <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8"/>
+                </svg>
+              </span>
+            </a>
+            <div class="work__item__meta">
+              <div class="work__item__title">
+                <h3>TaskBoard</h3>
+              </div>
+              <p data-i18n="work.taskboard">
+                Kanban-style board with drag-and-drop, filtering and
+                persistence.
+              </p>
+              <ul class="work__item__tags">
+                <li>REACT</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="work__item reveal" data-tilt>
+            <a
+              class="work__item__frame"
+              href="https://it-board.vercel.app/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open IT Dashboard"
+            >
+              <div class="work__item__browser">
+                <span></span><span></span><span></span>
+                <em>it-board.vercel.app</em>
+              </div>
+              <iframe
+                src="https://it-board.vercel.app/#view=FitH"
+                loading="lazy"
+                tabindex="-1"
+                title="IT Dashboard preview"
+              ></iframe>
+              <span class="work__item__overlay">
+                <span>OPEN</span>
+                <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8"/>
+                </svg>
+              </span>
+            </a>
+            <div class="work__item__meta">
+              <div class="work__item__title">
+                <h3>IT Dashboard</h3>
+              </div>
+              <p data-i18n="work.itdash">
+                Inventory and ticket overview built from real-world ops
+                experience.
+              </p>
+              <ul class="work__item__tags">
+                <li>REACT</li>
+                <li>REDUX</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="work__item reveal" data-tilt>
+            <a
+              class="work__item__frame"
+              href="https://syncle-v0.vercel.app/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open Syncle"
+            >
+              <div class="work__item__browser">
+                <span></span><span></span><span></span>
+                <em>syncle-v0.vercel.app</em>
+              </div>
+              <iframe
+                src="https://syncle-v0.vercel.app/#view=FitH"
+                loading="lazy"
+                tabindex="-1"
+                title="Syncle preview"
+              ></iframe>
+              <span class="work__item__overlay">
+                <span>OPEN</span>
+                <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8"/>
+                </svg>
+              </span>
+            </a>
+            <div class="work__item__meta">
+              <div class="work__item__title">
+                <h3>Syncle</h3>
+              </div>
+              <p data-i18n="work.syncle">
+                Collaborative tooling and shared experiences. Built with
+                Next.js.
+              </p>
+              <ul class="work__item__tags">
+                <li>NEXT.JS</li>
+                <li>2025</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="work__item reveal" data-tilt>
+            <a
+              class="work__item__frame"
+              href="https://pg-rn.netlify.app/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Open Playground Native"
+            >
+              <div class="work__item__browser">
+                <span></span><span></span><span></span>
+                <em>pg-rn.netlify.app</em>
+              </div>
+              <iframe
+                src="https://pg-rn.netlify.app/#view=FitH"
+                loading="lazy"
+                tabindex="-1"
+                title="Playground Native preview"
+              ></iframe>
+              <span class="work__item__overlay">
+                <span>OPEN</span>
+                <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8"/>
+                </svg>
+              </span>
+            </a>
+            <div class="work__item__meta">
+              <div class="work__item__title">
+                <h3>Playground Native</h3>
+              </div>
+              <p data-i18n="work.playground">
+                Cross-platform mobile playground built with React Native, Redux
+                and Firebase.
+              </p>
+              <ul class="work__item__tags">
+                <li>REACT NATIVE</li>
+                <li>REDUX</li>
+                <li>FIREBASE</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <a
+          class="work__more reveal"
+          href="https://github.com/santio89"
+          target="_blank"
+          rel="noopener"
+        >
+          <span data-i18n="work.more">SEE MORE ON GITHUB</span>
+          <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+            <path d="M7 17L17 7M9 7h8v8"/>
+          </svg>
+        </a>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section class="section experience" id="experience">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="exp.title">EXPERIENCE</h2>
+          <span class="section__line"></span>
+        </div>
+
+        <ol class="exp__list">
+          <li class="exp__item reveal">
+            <div class="exp__item__rail">
+              <span class="exp__item__node"></span>
+            </div>
+            <div class="exp__item__body" data-tilt>
+              <header class="exp__item__head">
+                <h3>Creative Engineer</h3>
+                <span class="exp__item__period">NOV 2025 - PRESENT</span>
+              </header>
+              <span class="exp__item__company">@ EMBEDDABLES</span>
+              <p data-i18n="exp.p1">
+                Design and ship funnel experiences used by thousands of users -
+                landing pages, forms, checkouts - focused on conversion.
+                Integrate with external platforms and own customer accounts and
+                projects end-to-end.
+              </p>
+              <ul class="exp__item__tags">
+                <li>HTML</li><li>CSS</li><li>JS</li><li>REACT</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="exp__item reveal">
+            <div class="exp__item__rail">
+              <span class="exp__item__node"></span>
+            </div>
+            <div class="exp__item__body" data-tilt>
+              <header class="exp__item__head">
+                <h3 data-i18n="exp.r2">Web Development Tutor</h3>
+                <span class="exp__item__period">JUN 2022 - PRESENT</span>
+              </header>
+              <span class="exp__item__company">@ CODERHOUSE</span>
+              <p data-i18n="exp.p2">
+                Answer student questions, review challenges and projects, run
+                after-class tutoring sessions.
+              </p>
+              <ul class="exp__item__tags">
+                <li>HTML</li><li>CSS</li><li>JS</li><li>REACT</li><li>NODE</li><li>GIT</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="exp__item reveal">
+            <div class="exp__item__rail">
+              <span class="exp__item__node"></span>
+            </div>
+            <div class="exp__item__body" data-tilt>
+              <header class="exp__item__head">
+                <h3 data-i18n="exp.r3">IT Administrator</h3>
+                <span class="exp__item__period">AUG 2021 - JAN 2026</span>
+              </header>
+              <span class="exp__item__company">@ ORLOSH</span>
+              <p data-i18n="exp.p3">
+                Configuration and maintenance of Windows Server, VMs (Hyper-V,
+                VMware, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) and
+                VPNs. Implemented and maintained the GLPI inventory/ticketing
+                system. ~80 workstations.
+              </p>
+              <ul class="exp__item__tags">
+                <li>WINDOWS SERVER</li><li>HYPER-V</li><li>NETWORKING</li><li>GLPI</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="exp__item reveal">
+            <div class="exp__item__rail">
+              <span class="exp__item__node"></span>
+            </div>
+            <div class="exp__item__body" data-tilt>
+              <header class="exp__item__head">
+                <h3 data-i18n="exp.r4">IT Specialist</h3>
+                <span class="exp__item__period">FEB 2018 - JAN 2021</span>
+              </header>
+              <span class="exp__item__company">@ CROMOSOL</span>
+              <p data-i18n="exp.p4">
+                Support across PCs, notebooks, Raspberry Pis, networking, CCTV,
+                printers, labelers and mobiles. Installation and configuration
+                of Windows Server, Active Directory, Hyper-V virtualization and
+                backups. ~120 workstations.
+              </p>
+              <ul class="exp__item__tags">
+                <li>AD</li><li>HYPER-V</li><li>HARDWARE</li><li>GLPI</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="section contact" id="contact">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="contact.title">CONTACT</h2>
+          <span class="section__line"></span>
+        </div>
+
+        <div class="contact__grid">
+          <div class="contact__pitch reveal">
+            <h3 data-i18n="contact.pitch">
+              Got a project in mind, a role to fill, or just want to say hi?
+            </h3>
+            <p data-i18n="contact.pitchSub">
+              I read every message. Replies usually within 24h.
+            </p>
+
+            <ul class="contact__links">
+              <li>
+                <a href="mailto:santiolais1989@gmail.com">
+                  <span class="brut-label">EMAIL</span>
+                  <span>santiolais1989@gmail.com</span>
+                  <svg class="contact__links__arrow brut-arrow brut-arrow--right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                    <path d="M4 12h16M13 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/santiago-olais/"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <span class="brut-label">LINKEDIN</span>
+                  <span>santiago-olais</span>
+                  <svg class="contact__links__arrow brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                    <path d="M7 17L17 7M9 7h8v8"/>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/santio89"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <span class="brut-label">GITHUB</span>
+                  <span>@santio89</span>
+                  <svg class="contact__links__arrow brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                    <path d="M7 17L17 7M9 7h8v8"/>
+                  </svg>
+                </a>
+              </li>
+              <li class="contact__links__cv">
+                <a
+                  href="./media/cvs/santiago-olais-cv-eng.pdf"
+                  target="_blank"
+                  rel="noopener"
+                  data-cv="en"
+                >
+                  <span class="brut-label">CV / EN</span>
+                  <span data-i18n="contact.cv">DOWNLOAD PDF</span>
+                  <svg class="contact__links__arrow brut-arrow brut-arrow--down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                    <path d="M12 4v16M5 13l7 7 7-7"/>
+                  </svg>
+                </a>
+                <a
+                  href="./media/cvs/santiago-olais-cv-esp.pdf"
+                  target="_blank"
+                  rel="noopener"
+                  data-cv="es"
+                >
+                  <span class="brut-label">CV / ES</span>
+                  <span data-i18n="contact.cv">DOWNLOAD PDF</span>
+                  <svg class="contact__links__arrow brut-arrow brut-arrow--down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                    <path d="M12 4v16M5 13l7 7 7-7"/>
+                  </svg>
+                </a>
+              </li>
+            </ul>
           </div>
+
+          <form
+            class="contact__form reveal"
+            method="POST"
+            name="contact"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            data-tilt
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="contact__form__bot">
+              <label
+                >Don't fill this out:
+                <input type="text" name="bot-field" tabindex="-1" autocomplete="off"
+              /></label>
+            </p>
+
+            <div class="contact__form__row">
+              <label for="name">
+                <span class="brut-label">NAME</span>
+                <input
+                  type="text"
+                  id="name"
+                  name="nombre"
+                  required
+                  autocomplete="name"
+                  data-i18n-attr="placeholder"
+                  data-i18n="form.name"
+                  placeholder="Your name"
+                />
+              </label>
+            </div>
+
+            <div class="contact__form__row">
+              <label for="email">
+                <span class="brut-label">EMAIL</span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  placeholder="you@domain.com"
+                />
+              </label>
+            </div>
+
+            <div class="contact__form__row">
+              <label for="message">
+                <span class="brut-label">MESSAGE</span>
+                <textarea
+                  id="message"
+                  name="mensaje"
+                  required
+                  rows="5"
+                  data-i18n-attr="placeholder"
+                  data-i18n="form.msg"
+                  placeholder="Tell me about your project, role or idea…"
+                ></textarea>
+              </label>
+            </div>
+
+            <div class="contact__form__actions">
+              <button type="reset" class="btn btn--ghost btn--sm" data-i18n="form.reset">
+                RESET
+              </button>
+              <button type="submit" class="btn btn--primary">
+                <span data-i18n="form.send">SEND MESSAGE</span>
+                <svg class="brut-arrow brut-arrow--right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                  <path d="M4 12h16M13 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </form>
         </div>
       </section>
     </main>
 
     <footer class="footer" id="footer">
-      <nav class="footer__nav">
-        <ul class="footer__nav__ul">
-          <li class="footer__nav__ul__li">
-            <a href="#about" class="footer__nav__ul__li__anchor" lang="en"
-              >About</a
-            >
-            <a href="#about" class="footer__nav__ul__li__anchor" lang="es"
-              >Sobre</a
-            >
-          </li>
-          <li class="footer__nav__ul__li">
-            <a href="#skills" class="footer__nav__ul__li__anchor" lang="en"
-              >Skills</a
-            >
-            <a href="#skills" class="footer__nav__ul__li__anchor" lang="es"
-              >Habilidades</a
-            >
-          </li>
-          <li class="footer__nav__ul__li">
-            <a href="#works" class="footer__nav__ul__li__anchor" lang="en"
-              >Works</a
-            >
-            <a href="#works" class="footer__nav__ul__li__anchor" lang="es"
-              >Trabajos</a
-            >
-          </li>
-          <li class="footer__nav__ul__li">
-            <a href="#contact" class="footer__nav__ul__li__anchor" lang="en"
-              >Contact</a
-            >
-            <a href="#contact" class="footer__nav__ul__li__anchor" lang="es"
-              >Contacto</a
-            >
-          </li>
-        </ul>
-      </nav>
-
-      <div class="sectionTitle">
-        <div class="footer__hr" id="footer__hr"></div>
-        <div class="footer__santi">
-          <a
-            href="https://www.linkedin.com/in/santiago-olais-829542b9/"
-            target="_blank"
-            aria-label="LinkedIn"
-            ><i class="bi bi-linkedin"></i
-          ></a>
+      <div class="footer__top">
+        <a href="#hero" class="footer__brand">
+          <span class="footer__brand__a">SO</span>
+          <span class="footer__brand__b">/WEB</span>
+        </a>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <a href="#about" data-i18n="nav.about">ABOUT</a>
+          <a href="#skills" data-i18n="nav.skills">STACK</a>
+          <a href="#work" data-i18n="nav.work">WORK</a>
+          <a href="#experience" data-i18n="nav.exp">EXPERIENCE</a>
+          <a href="#contact" data-i18n="nav.contact">CONTACT</a>
+        </nav>
+        <div class="footer__socials">
           <a
             href="https://github.com/santio89"
             target="_blank"
+            rel="noopener"
             aria-label="GitHub"
-            ><i class="bi bi-github"></i
-          ></a>
-          <a href="#heroPage">santiWeb<i class="bi bi-arrow-up-short"></i></a>
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.95 3.21 9.14 7.66 10.62.56.1.77-.24.77-.54v-1.88c-3.12.68-3.78-1.5-3.78-1.5-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.55 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.97 0 0 .95-.3 3.1 1.15.9-.25 1.86-.38 2.83-.38s1.93.13 2.83.38c2.15-1.45 3.1-1.15 3.1-1.15.61 1.54.23 2.69.11 2.97.72.79 1.16 1.79 1.16 3.02 0 4.31-2.62 5.27-5.12 5.55.4.34.76 1.02.76 2.05v3.04c0 .3.21.65.78.54 4.45-1.49 7.66-5.68 7.66-10.62C23.25 5.48 18.27.5 12 .5z"/>
+            </svg>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/santiago-olais/"
+            target="_blank"
+            rel="noopener"
+            aria-label="LinkedIn"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/>
+            </svg>
+          </a>
+          <a href="mailto:santiolais1989@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14"/>
+              <path d="M3 7l9 7 9-7"/>
+            </svg>
+          </a>
         </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> SANTIAGO OLAIS</span>
+        <span>BUILT WITH HTML · CSS · JS</span>
       </div>
     </footer>
 
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-      AOS.init();
-    </script>
     <script src="js/scripts.js" type="module"></script>
   </body>
 </html>
