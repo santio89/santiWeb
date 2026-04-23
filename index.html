@@ -1035,11 +1035,14 @@
         >
           <svg
             class="doom-trigger__face"
-            viewBox="0 0 11 11"
+            viewBox="0 -1 11 11"
             shape-rendering="crispEdges"
             aria-hidden="true"
           >
-            <!-- 11x11 pixel angry marine face -->
+            <!-- 11x11 pixel angry marine face. The actual pixel art only
+                 occupies y=0..8 (9 rows), so the viewBox is shifted by
+                 -1 on the y axis to center those 9 rows inside the
+                 square button instead of hugging the top edge. -->
             <!-- hair -->
             <rect x="2" y="0" width="7" height="1" fill="#3a2415" />
             <rect x="1" y="1" width="9" height="1" fill="#3a2415" />

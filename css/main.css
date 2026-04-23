@@ -2033,7 +2033,7 @@ textarea:focus-visible {
   justify-content: center;
   width: 52px;
   height: 52px;
-  padding: 5px;
+  padding: 8px;
   border: 1.5px solid var(--line);
   background: transparent;
   color: inherit;
