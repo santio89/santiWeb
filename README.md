@@ -38,6 +38,24 @@ VS Code Live Server is also fine (`.vscode/settings.json` pins port 5503).
 - The cursor lives in `js/scripts.js` -> `initCursor()`
 - CVs sit at `media/cvs/santiago-olais-cv-eng.pdf` and `…-esp.pdf`
 
+## DOOM easter egg
+
+A small pixel DOOM-guy face in the footer opens a brutalist modal that
+boots **DOOM (shareware)** in-browser via [js-dos](https://js-dos.com/) v8.
+The library is lazy-loaded from the official CDN on first click - the
+rest of the page stays a couple of KB lighter.
+
+The bundle is loaded from `media/doom.jsdos` if present, otherwise from
+the public CDN. To self-host the bundle (recommended for offline /
+zero-third-party loads), run once:
+
+```bash
+python media/_make_doom.py
+```
+
+That writes `media/doom.jsdos` (~2 MB). Commit it (or upload it
+alongside the rest of `media/`) and the site stops talking to the CDN.
+
 ## Deploy
 
 Static site. Netlify picks it up on push. The 404 page is `404.html`.

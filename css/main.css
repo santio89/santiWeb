@@ -1483,12 +1483,23 @@ textarea:focus-visible {
   color: var(--fg-dim);
   text-transform: lowercase;
 }
-.work__item__frame iframe {
+/* static screenshot replaces the heavy live iframe preview - same slot,
+   filled with object-cover so the captured viewport tiles the area
+   without distortion regardless of the source aspect ratio. */
+.work__item__frame img {
   width: 100%;
   height: calc(100% - 30px);
-  border: 0;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
   background: var(--bg);
-  pointer-events: none;
+  transition: transform 480ms var(--ease), filter 240ms var(--ease);
+  filter: saturate(0.92);
+}
+.work__item__frame:hover img,
+.work__item__frame:focus-visible img {
+  transform: scale(1.03);
+  filter: saturate(1.05) brightness(1.02);
 }
 .work__item__overlay {
   position: absolute;
@@ -1817,7 +1828,12 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: 14px;
   transition: border-color 180ms, background 180ms;
-  resize: vertical;
+}
+.contact__form textarea {
+  resize: none;
+  min-height: 160px;
+  overflow-y: auto;
+  line-height: 1.5;
 }
 .contact__form input::placeholder,
 .contact__form textarea::placeholder {
@@ -1936,6 +1952,7 @@ textarea:focus-visible {
   padding-top: 24px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   gap: 12px;
   font-family: var(--font-mono);
@@ -2007,6 +2024,418 @@ textarea:focus-visible {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+}
+
+/* ---------- DOOM EASTER EGG ---------- */
+.doom-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 5px;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  transition:
+    border-color 200ms var(--ease),
+    transform 220ms var(--ease-snap),
+    background 200ms var(--ease),
+    box-shadow 200ms var(--ease);
+}
+.doom-trigger__face {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: saturate(0.55) brightness(0.92);
+  transition: filter 240ms var(--ease);
+}
+.doom-trigger:hover,
+.doom-trigger:focus-visible {
+  border-color: var(--accent);
+  transform: translate(-1px, -1px);
+  box-shadow:
+    3px 3px 0 0 var(--accent),
+    0 0 14px rgba(var(--accent-rgb), 0.35);
+}
+.doom-trigger:hover .doom-trigger__face,
+.doom-trigger:focus-visible .doom-trigger__face {
+  filter: saturate(1.25) brightness(1.05);
+  animation: doomFaceTwitch 1.6s steps(2, end) infinite;
+}
+.doom-trigger:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 0 var(--accent);
+}
+@keyframes doomFaceTwitch {
+  0%, 70%, 100% { transform: translate(0, 0); }
+  72% { transform: translate(-0.5px, 0.5px); }
+  74% { transform: translate(0.5px, -0.5px); }
+  76% { transform: translate(0, 0); }
+}
+
+/* modal */
+.doom-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 32px);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms var(--ease), visibility 220ms var(--ease);
+}
+.doom-modal.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+.doom-modal__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 5, 0.78);
+  backdrop-filter: blur(6px) saturate(1.1);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
+}
+:root[data-theme="light"] .doom-modal__scrim {
+  background: rgba(20, 18, 12, 0.72);
+}
+.doom-modal__panel {
+  position: relative;
+  /* width is the min of: max design width, available viewport width,
+     and what would let a 4:3 body still fit the viewport vertically.
+     The third clause keeps the modal tidy on short / landscape screens
+     by letting height drive the layout when it's the tighter axis. */
+  width: min(960px, 94vw, calc(82dvh * 4 / 3));
+  max-height: 92dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1.5px solid var(--line-fg);
+  /* layered shadow: brutalist offset + soft drop + warm accent halo so
+     the modal reads as a "device" sitting on top of the page */
+  box-shadow:
+    var(--shadow),
+    0 30px 60px -20px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(var(--accent-rgb), 0.18),
+    0 12px 80px -10px rgba(var(--accent-rgb), 0.22);
+  transform: translateY(12px) scale(0.98);
+  opacity: 0;
+  transition:
+    transform 320ms var(--ease-snap),
+    opacity 220ms var(--ease);
+}
+/* thin brand stripe across the very top of the modal (a brutalist
+   "device label" cue, in our accent so the panel reads as ours). */
+.doom-modal__panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 4;
+}
+.doom-modal.is-open .doom-modal__panel {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.doom-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-bottom: 1.5px solid var(--line-strong);
+  background: var(--bg-alt);
+}
+.doom-modal__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.doom-modal__face {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  border: 1.5px solid var(--line-strong);
+  padding: 2px;
+  flex: none;
+}
+.doom-modal__face svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.doom-modal__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(16px, 2.4vw, 22px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+  min-width: 0;
+  color: var(--accent);
+  /* tight neon hint to brand the title without screaming - matches the
+     accentBreathe treatment used elsewhere on the site */
+  text-shadow:
+    0 0 6px rgba(var(--accent-rgb), 0.4),
+    0 0 18px rgba(var(--accent-rgb), 0.22);
+}
+/* slim accent meta-tag printed inline next to the title, e.g. "1993" */
+.doom-modal__meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--fg-mute);
+  padding: 4px 8px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--bg);
+  white-space: nowrap;
+  flex: none;
+}
+.doom-modal__actions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+.doom-modal__btn {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--line-strong);
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  position: relative;
+  transition:
+    background 180ms var(--ease),
+    color 180ms var(--ease),
+    border-color 180ms var(--ease),
+    box-shadow 180ms var(--ease),
+    transform 180ms var(--ease-snap);
+}
+.doom-modal__btn svg { width: 16px; height: 16px; }
+.doom-modal__btn:hover,
+.doom-modal__btn:focus-visible {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+  box-shadow: 3px 3px 0 0 rgba(var(--accent-rgb), 0.35);
+  transform: translate(-1px, -1px);
+}
+.doom-modal__btn--close:hover,
+.doom-modal__btn--close:focus-visible {
+  background: #c8281f;
+  border-color: #c8281f;
+  color: #fff;
+}
+.doom-modal__body {
+  position: relative;
+  background: #000;
+  overflow: hidden;
+  /* DOOM renders 4:3 internally; locking the body to that ratio lets
+     js-dos scale the canvas to fill instead of letterboxing. We must
+     keep min-height: 0 so the grid row can shrink past intrinsic size
+     on short viewports without breaking the panel cap. */
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  /* subtle accent inset frame so the play area reads as the focus
+     of the panel without a hard / loud border */
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--accent-rgb), 0.32),
+    inset 0 0 24px rgba(var(--accent-rgb), 0.08);
+}
+/* tiny corner ticks on the play area - cheap but very brutalist;
+   sits above the iframe so they read on top of the rendered game */
+.doom-modal__body::before,
+.doom-modal__body::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--accent);
+  pointer-events: none;
+  z-index: 3;
+}
+.doom-modal__body::before {
+  top: 6px;
+  left: 6px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.doom-modal__body::after {
+  bottom: 6px;
+  right: 6px;
+  border-left: 0;
+  border-top: 0;
+}
+.doom-modal__mount {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+/* the iframe runs js-dos in its own document so its CSS / audio /
+   workers stay isolated and die cleanly when the modal closes. */
+.doom-modal__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+  color-scheme: dark;
+}
+.doom-modal__loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  align-content: center;
+  color: rgba(245, 245, 245, 0.78);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-align: center;
+  background: #000;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 280ms var(--ease);
+}
+.doom-modal__loader.is-hidden {
+  opacity: 0;
+}
+.doom-modal__loader__bar {
+  width: min(220px, 60%);
+  height: 4px;
+  border: 1.5px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.doom-modal__loader__bar > span {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.7);
+  animation: doomLoaderSlide 1.1s var(--ease) infinite;
+}
+@keyframes doomLoaderSlide {
+  0%   { left: -40%; }
+  100% { left: 100%; }
+}
+.doom-modal__loader__text {
+  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.45);
+}
+.doom-modal__foot {
+  padding: 10px 14px;
+  border-top: 1.5px solid var(--line-strong);
+  background: var(--bg-alt);
+  overflow-x: auto;
+}
+.doom-modal__keys {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+}
+.doom-modal__keys__group {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.doom-modal__keys__sep {
+  color: var(--fg-dim);
+  font-weight: 700;
+  padding: 0 1px;
+}
+.doom-modal__keys__divider {
+  width: 1.5px;
+  height: 14px;
+  background: var(--line-strong);
+  display: inline-block;
+}
+.doom-modal__keys__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 6px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+.doom-modal__keys__chip--arrows {
+  padding: 0 4px;
+  gap: 1px;
+}
+.doom-modal__keys__chip--arrows .brut-arrow {
+  width: 11px;
+  height: 11px;
+  display: block;
+  color: var(--fg);
+}
+.doom-modal__keys__label {
+  color: var(--fg-mute);
+}
+
+/* native fullscreen */
+.doom-modal__mount:fullscreen {
+  background: #000;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+}
+.doom-modal__mount:-webkit-full-screen {
+  background: #000;
+  width: 100vw;
+  height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doom-trigger:hover .doom-trigger__face,
+  .doom-trigger:focus-visible .doom-trigger__face { animation: none; }
+  .doom-modal,
+  .doom-modal__panel { transition: none; }
+  .doom-modal__loader__bar > span { animation: none; left: 0; width: 100%; }
 }
 
 /* ---------- RESPONSIVE ---------- */
@@ -2138,6 +2567,21 @@ textarea:focus-visible {
   .footer__nav { justify-content: center; }
   .footer__socials { justify-content: center; }
   .footer__bottom { justify-content: center; text-align: center; }
+
+  .doom-modal { padding: 8px; }
+  .doom-modal__panel {
+    /* match the modal's mobile padding (8px each side) so the panel
+       never spills over the scrim, while still letting height drive
+       the layout in landscape phones where vh is the tight axis. */
+    width: min(calc(100vw - 16px), calc(78dvh * 4 / 3));
+    max-height: calc(100dvh - 16px);
+  }
+  .doom-modal__head { padding: 10px 12px; gap: 10px; }
+  .doom-modal__face { width: 24px; height: 24px; }
+  .doom-modal__btn { width: 32px; height: 32px; }
+  .doom-modal__title { font-size: 16px; }
+  .doom-modal__foot { font-size: 9px; letter-spacing: 0.14em; padding: 8px 10px; }
+  .doom-modal__keys { gap: 6px 10px; }
 
   .contact__links a { grid-template-columns: auto 1fr auto; }
   .contact__links__cv { grid-template-columns: 1fr; }

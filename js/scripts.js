@@ -53,17 +53,17 @@ const I18N = {
     "work.title": "WORKS",
     "work.lede": "A small selection.",
     "work.gol":
-      "Interactive cellular automaton. Playback controls, presets, editable grid.",
+      "Interactive cellular automaton. Playback, presets, editable grid and history undo.",
     "work.sandbox":
-      "Code playground with auth, persistence and live preview - try ideas without the setup.",
+      "HTML/CSS/JS playground with Monaco, live preview, auth and shared snippets.",
     "work.taskboard":
-      "Kanban-style board with drag-and-drop, filtering and persistence.",
+      "Kanban board with drag-and-drop, filters, analytics and offline persistence.",
     "work.itdash":
-      "Inventory and ticket overview built from real-world ops experience.",
+      "Internal IT cockpit - auth, devices, contacts, tickets and admin in one place.",
     "work.syncle":
-      "Collaborative tooling and shared experiences. Built with Next.js.",
+      "4K rhythm game with random tracks, solo runs and realtime multiplayer rooms.",
     "work.playground":
-      "Cross-platform mobile playground built with React Native, Redux and Firebase.",
+      "Expo/RN multi-app sandbox - todo, memo game, calculator, weather and album.",
     "work.more": "SEE MORE ON GITHUB",
 
     "exp.title": "EXPERIENCE",
@@ -94,6 +94,19 @@ const I18N = {
       "The page you're trying to access is unavailable, was moved or never existed.",
     "404.cta1": "BACK HOME",
     "404.cta2": "CONTACT",
+
+    "doom.loading": "BOOTING DOS // PLEASE WAIT",
+    "doom.error":
+      "COULD NOT LOAD DOOM // CHECK YOUR CONNECTION AND TRY AGAIN",
+    "doom.k.move": "MOVE",
+    "doom.k.fire": "FIRE",
+    "doom.k.use": "USE",
+    "doom.k.strafe": "STRAFE",
+    "doom.k.run": "RUN",
+    "doom.k.map": "MAP",
+    "doom.k.weapon": "WEAPON",
+    "doom.k.size": "SIZE",
+    "doom.k.exit": "EXIT",
   },
   es: {
     "nav.skip": "OMITIR NAVEGACIÓN",
@@ -135,17 +148,17 @@ const I18N = {
     "work.title": "TRABAJOS",
     "work.lede": "Una pequeña selección.",
     "work.gol":
-      "Autómata celular interactivo. Controles de reproducción, presets, grilla editable.",
+      "Autómata celular interactivo. Reproducción, presets, grilla editable e historial.",
     "work.sandbox":
-      "Playground de código con auth, persistencia y preview en vivo - probar ideas sin el setup.",
+      "Playground HTML/CSS/JS con Monaco, preview en vivo, auth y snippets compartidos.",
     "work.taskboard":
-      "Tablero estilo Kanban con drag-and-drop, filtros y persistencia.",
+      "Tablero Kanban con drag-and-drop, filtros, analítica y persistencia offline.",
     "work.itdash":
-      "Inventario y vista de tickets construido desde la experiencia real de operaciones.",
+      "Cockpit IT interno - auth, equipos, contactos, tickets y admin en un solo lugar.",
     "work.syncle":
-      "Herramientas colaborativas y experiencias compartidas. Hecho con Next.js.",
+      "Rhythm game 4K con tracks random, partidas solo y salas multiplayer en tiempo real.",
     "work.playground":
-      "Playground móvil multiplataforma con React Native, Redux y Firebase.",
+      "Sandbox multi-app en Expo/RN - todo, memo game, calculadora, clima y álbum.",
     "work.more": "VER MÁS EN GITHUB",
 
     "exp.title": "EXPERIENCIA",
@@ -176,6 +189,19 @@ const I18N = {
       "La página a la que intentás acceder no está disponible, fue movida o nunca existió.",
     "404.cta1": "VOLVER AL INICIO",
     "404.cta2": "CONTACTO",
+
+    "doom.loading": "INICIANDO DOS // POR FAVOR ESPERA",
+    "doom.error":
+      "NO SE PUDO CARGAR DOOM // REVISA TU CONEXIÓN E INTENTA DE NUEVO",
+    "doom.k.move": "MOVER",
+    "doom.k.fire": "DISPARAR",
+    "doom.k.use": "USAR",
+    "doom.k.strafe": "STRAFE",
+    "doom.k.run": "CORRER",
+    "doom.k.map": "MAPA",
+    "doom.k.weapon": "ARMA",
+    "doom.k.size": "TAMAÑO",
+    "doom.k.exit": "SALIR",
   },
 };
 
@@ -1010,6 +1036,339 @@ function initHeroCells() {
 }
 
 /* -------------------------------------------------------------
+   DOOM EASTER EGG
+   - Boots js-dos v8 inside an <iframe srcdoc> so:
+     * the emulator's CSS doesn't leak into the host page
+     * removing the iframe on close kills its document, AudioContext,
+       workers and canvases - audio stops the moment the modal closes
+   - Tries a self-hosted bundle at media/doom.jsdos first, then falls
+     back to the official CDN bundle so the easter egg always works.
+   - Keyboard shortcuts (work even with the game focused, since the
+     iframe forwards them via postMessage):
+        Esc / Alt+X      -> close
+        Alt+F            -> toggle fullscreen
+   ------------------------------------------------------------- */
+const DOOM_BUNDLE_LOCAL = "media/doom.jsdos";
+// official js-dos v8 mirror; serves proper CORS headers (cdn.dos.zone
+// hosts the same file but doesn't, so browser fetch fails on it).
+const DOOM_BUNDLE_REMOTE = "https://v8.js-dos.com/bundles/doom.jsdos";
+const JSDOS_CSS = "https://v8.js-dos.com/latest/js-dos.css";
+const JSDOS_JS = "https://v8.js-dos.com/latest/js-dos.js";
+
+async function pickDoomBundle() {
+  // prefer self-hosted bundle if present; fall back to the maintained CDN
+  // copy. Inside the srcdoc iframe the document URL is "about:srcdoc",
+  // so relative paths don't resolve - we must hand it an absolute URL.
+  try {
+    const res = await fetch(DOOM_BUNDLE_LOCAL, { method: "HEAD" });
+    if (res.ok) return new URL(DOOM_BUNDLE_LOCAL, location.href).href;
+  } catch (_) {
+    // network/CORS errors fall through to the remote URL
+  }
+  return DOOM_BUNDLE_REMOTE;
+}
+
+// Brutalist palette mapped onto the js-dos chrome inside the iframe.
+// Keeping this here (not in CSS) so the srcdoc can be self-contained
+// and so we can swap palettes live via postMessage when the user
+// toggles the host theme.
+const DOOM_PALETTES = {
+  dark: {
+    bg: "#0a0a0a",
+    bg2: "#111111",
+    panel: "#161616",
+    elev: "#1c1c1c",
+    fg: "#f5f5f5",
+    fgMute: "rgba(245, 245, 245, 0.62)",
+    line: "#2a2a2a",
+    accent: "#f5901c",
+    accentFg: "#0a0a0a",
+  },
+  light: {
+    bg: "#ebe7da",
+    bg2: "#e5e0cf",
+    panel: "#ffffff",
+    elev: "#ffffff",
+    fg: "#0a0a0a",
+    fgMute: "rgba(10, 10, 10, 0.6)",
+    line: "#0a0a0a",
+    accent: "#f5901c",
+    accentFg: "#0a0a0a",
+  },
+};
+
+function getHostTheme() {
+  return document.documentElement.getAttribute("data-theme") === "light"
+    ? "light"
+    : "dark";
+}
+
+// Minimal CSS for the iframe. With js-dos in `kiosk: true` mode the
+// sidebar / settings chrome is gone, so all we need is to make the host
+// background match our theme (so loaders / letterboxing don't flash a
+// different color) and keep the canvas filling the iframe.
+function doomThemeCss(theme) {
+  const p = DOOM_PALETTES[theme] || DOOM_PALETTES.dark;
+  return `
+    :root, html, body {
+      color-scheme: ${theme};
+      background: ${p.bg} !important;
+      color: ${p.fg} !important;
+      font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace !important;
+    }
+  `;
+}
+
+function buildDoomFrameDoc(bundleUrl, theme) {
+  // Self-contained srcdoc that loads js-dos and boots DOOM. It also:
+  //  - relays our shortcut keys (Esc, Alt+F, Alt+X) to the parent so
+  //    the modal can react even while js-dos owns keyboard focus
+  //  - listens for "doom:theme" messages from the parent and swaps the
+  //    palette live without restarting the game
+  const url = JSON.stringify(bundleUrl);
+  const jsDosTheme = theme === "light" ? "light" : "dark";
+  const palettesJson = JSON.stringify(DOOM_PALETTES);
+  // doomThemeCss() must round-trip through the iframe untouched, so
+  // serialize the function as a string literal.
+  const themeCssFn = doomThemeCss.toString();
+  return `<!doctype html>
+<html lang="en" data-theme="${jsDosTheme}">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="${JSDOS_CSS}">
+  <style id="doom-theme">${doomThemeCss(theme)}</style>
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      overflow: hidden;
+      font-family: ui-monospace, monospace;
+    }
+    #dos { position: absolute; inset: 0; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="dos"></div>
+  <script src="${JSDOS_JS}"></script>
+  <script>
+    (function () {
+      var DOOM_PALETTES = ${palettesJson};
+      ${themeCssFn}
+
+      function applyTheme(name) {
+        var el = document.getElementById("doom-theme");
+        if (!el) return;
+        document.documentElement.setAttribute("data-theme", name);
+        el.textContent = doomThemeCss(name);
+      }
+
+      window.addEventListener("message", function (e) {
+        if (!e.data || e.data.type !== "doom:theme") return;
+        applyTheme(e.data.theme === "light" ? "light" : "dark");
+      });
+
+      window.addEventListener("keydown", function (e) {
+        var isShortcut =
+          e.key === "Escape" ||
+          (e.altKey && (e.key === "f" || e.key === "F" ||
+                        e.key === "x" || e.key === "X"));
+        if (!isShortcut) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        try {
+          parent.postMessage({
+            type: "doom:key",
+            key: e.key,
+            alt: !!e.altKey,
+          }, "*");
+        } catch (_) {}
+      }, true);
+
+      // Boot js-dos in kiosk mode - that hides its sidebar / settings
+      // chrome entirely, so we get just the game canvas and js-dos's own
+      // capture / loader overlays. No DOM trimming or DaisyUI overrides
+      // needed; the host modal already provides our brutalist frame.
+      if (typeof Dos === "function") {
+        try {
+          Dos(document.getElementById("dos"), {
+            url: ${url},
+            theme: ${JSON.stringify(jsDosTheme)},
+            backend: "dosbox",
+            autoStart: true,
+            kiosk: true,
+            noCloud: true,
+            noNetworking: true,
+          });
+        } catch (err) {
+          console.error("[doom]", err);
+          parent.postMessage({ type: "doom:error", message: String(err) }, "*");
+        }
+      } else {
+        parent.postMessage({ type: "doom:error", message: "js-dos failed to load" }, "*");
+      }
+    })();
+  </script>
+</body>
+</html>`;
+}
+
+function initDoom() {
+  const trigger = document.getElementById("doomTrigger");
+  const modal = document.getElementById("doomModal");
+  if (!trigger || !modal) return;
+
+  const mount = document.getElementById("doomMount");
+  const closeBtn = document.getElementById("doomClose");
+  const fsBtn = document.getElementById("doomFullscreen");
+  if (!mount) return;
+
+  // snapshot the loader markup so we can rebuild a clean mount on close
+  const initialMountHTML = mount.innerHTML;
+
+  let frame = null;
+  let booting = false;
+  let lastFocus = null;
+
+  const setOpen = (open) => {
+    modal.classList.toggle("is-open", open);
+    modal.setAttribute("aria-hidden", String(!open));
+    document.body.style.overflow = open ? "hidden" : "";
+    if (open) {
+      lastFocus = document.activeElement;
+      requestAnimationFrame(() => closeBtn?.focus({ preventScroll: true }));
+    } else if (lastFocus && typeof lastFocus.focus === "function") {
+      lastFocus.focus({ preventScroll: true });
+    }
+  };
+
+  const showError = (msg) => {
+    mount.innerHTML =
+      '<div class="doom-modal__loader is-error">' +
+        '<span class="doom-modal__loader__text" style="color:#ff5b48">' +
+          msg +
+        '</span>' +
+      '</div>';
+  };
+
+  const teardown = () => {
+    // dropping the iframe destroys its document - audio context, web
+    // workers, canvases and event listeners all go with it.
+    if (frame && frame.parentNode) frame.parentNode.removeChild(frame);
+    frame = null;
+    booting = false;
+    mount.innerHTML = initialMountHTML;
+  };
+
+  const close = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.().catch(() => {});
+    }
+    teardown();
+    setOpen(false);
+  };
+
+  const open = async () => {
+    setOpen(true);
+    if (frame || booting) return;
+    booting = true;
+    let bundleUrl;
+    try {
+      bundleUrl = await pickDoomBundle();
+    } catch (err) {
+      console.error("[doom]", err);
+      const dict = I18N[currentLang] || I18N.en;
+      showError(dict["doom.error"]);
+      booting = false;
+      return;
+    }
+    // wipe the loader; the iframe (with the matched theme bg) takes over
+    mount.innerHTML = "";
+    frame = document.createElement("iframe");
+    frame.className = "doom-modal__frame";
+    frame.title = "DOOM";
+    frame.allow = "autoplay; fullscreen; gamepad; cross-origin-isolated";
+    frame.setAttribute("allowfullscreen", "true");
+    frame.srcdoc = buildDoomFrameDoc(bundleUrl, getHostTheme());
+    mount.appendChild(frame);
+    booting = false;
+  };
+
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.().catch(() => {});
+      return;
+    }
+    const target = mount;
+    if (target.requestFullscreen) {
+      target.requestFullscreen().catch(() => {});
+    } else if (target.webkitRequestFullscreen) {
+      target.webkitRequestFullscreen();
+    }
+  };
+
+  trigger.addEventListener("click", open);
+  modal.querySelectorAll("[data-doom-close]").forEach((el) =>
+    el.addEventListener("click", close)
+  );
+  if (fsBtn) fsBtn.addEventListener("click", toggleFullscreen);
+
+  // shortcuts pressed while focus is in the host page
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (!modal.classList.contains("is-open")) return;
+      if (e.key === "Escape") {
+        // browser handles ESC for fullscreen first; close on the second press
+        if (document.fullscreenElement) return;
+        e.preventDefault();
+        close();
+      } else if (e.altKey && (e.key === "f" || e.key === "F")) {
+        e.preventDefault();
+        toggleFullscreen();
+      } else if (e.altKey && (e.key === "x" || e.key === "X")) {
+        e.preventDefault();
+        close();
+      }
+    },
+    true
+  );
+
+  // shortcuts forwarded from inside the iframe
+  window.addEventListener("message", (e) => {
+    if (!e.data || typeof e.data !== "object") return;
+    if (frame && e.source !== frame.contentWindow) return;
+    if (e.data.type === "doom:error") {
+      const dict = I18N[currentLang] || I18N.en;
+      showError(dict["doom.error"]);
+      return;
+    }
+    if (e.data.type !== "doom:key") return;
+    if (!modal.classList.contains("is-open")) return;
+    const { key, alt } = e.data;
+    if (key === "Escape" || (alt && (key === "x" || key === "X"))) {
+      close();
+    } else if (alt && (key === "f" || key === "F")) {
+      toggleFullscreen();
+    }
+  });
+
+  // re-skin the live game when the user toggles the host theme so the
+  // js-dos chrome stays in sync without restarting DOOM.
+  const themeObserver = new MutationObserver(() => {
+    if (!frame) return;
+    try {
+      frame.contentWindow?.postMessage(
+        { type: "doom:theme", theme: getHostTheme() },
+        "*"
+      );
+    } catch (_) {}
+  });
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+}
+
+/* -------------------------------------------------------------
    INIT
    ------------------------------------------------------------- */
 function init() {
@@ -1025,6 +1384,7 @@ function init() {
   initHeroCells();
   initYear();
   initForm();
+  initDoom();
 }
 
 if (document.readyState === "loading") {
