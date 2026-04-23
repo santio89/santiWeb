@@ -659,6 +659,101 @@ textarea:focus-visible {
   to { background-position: 80px 80px; }
 }
 
+/* ---- ANIMATED HERO CELLS ----
+   JS sprinkles small accent shapes at random snapped 80px grid cells, each
+   playing one of several brutalist micro-animations. Lives in its own layer
+   (sibling of .hero__grid) so cell opacity isn't multiplied by the line
+   layer's per-theme opacity. */
+.hero__cells {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: radial-gradient(ellipse at 30% 50%, #000 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 30% 50%, #000 0%, transparent 75%);
+  z-index: 0;
+}
+.hero__cells__cell {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  perspective: 320px;
+  will-change: transform, opacity;
+}
+.hero__cells__cell::before {
+  content: "";
+  position: absolute;
+  inset: 28px;
+  transform-origin: 50% 50%;
+  opacity: 0;
+  will-change: transform, opacity, background-color;
+}
+
+/* variant 1: orange fill flash */
+.hero__cells__cell--fill::before {
+  inset: 8px;
+  background: var(--accent);
+  animation: gridCellFill var(--cell-dur, 5s) ease-in-out var(--cell-delay, 0s) infinite;
+}
+@keyframes gridCellFill {
+  0%, 88%, 100% { opacity: 0; }
+  44%           { opacity: 0.22; }
+}
+
+/* variant 2: small dot scales up and out */
+.hero__cells__cell--pulse::before {
+  inset: 32px;
+  background: var(--fg);
+  border-radius: 0;
+  transform: scale(0.4);
+  animation: gridCellPulse var(--cell-dur, 6s) ease-in-out var(--cell-delay, 0s) infinite;
+}
+@keyframes gridCellPulse {
+  0%, 88%, 100% { transform: scale(0.4); opacity: 0; }
+  44%           { transform: scale(1.2); opacity: 0.28; }
+}
+
+/* variant 3: outlined accent square spins 180deg */
+.hero__cells__cell--spin::before {
+  inset: 18px;
+  border: 1.5px solid var(--accent);
+  background: transparent;
+  animation: gridCellSpin var(--cell-dur, 7s) ease-in-out var(--cell-delay, 0s) infinite;
+}
+@keyframes gridCellSpin {
+  0%, 88%, 100% { transform: rotate(0deg); opacity: 0; }
+  44%           { transform: rotate(180deg); opacity: 0.4; }
+}
+
+/* variant 4: 3D Y-axis flip - outlined fg */
+.hero__cells__cell--flipy::before {
+  inset: 14px;
+  border: 1.5px solid var(--fg);
+  background: transparent;
+  animation: gridCellFlipY var(--cell-dur, 5.5s) ease-in-out var(--cell-delay, 0s) infinite;
+}
+@keyframes gridCellFlipY {
+  0%, 88%, 100% { transform: rotateY(0deg); opacity: 0; }
+  44%           { transform: rotateY(360deg); opacity: 0.32; }
+}
+
+/* variant 5: 3D X-axis flip - solid accent */
+.hero__cells__cell--flipx::before {
+  inset: 22px;
+  background: var(--accent);
+  animation: gridCellFlipX var(--cell-dur, 5s) ease-in-out var(--cell-delay, 0s) infinite;
+}
+@keyframes gridCellFlipX {
+  0%, 88%, 100% { transform: rotateX(0deg); opacity: 0; }
+  44%           { transform: rotateX(360deg); opacity: 0.28; }
+}
+
+/* respect reduced motion - drop the cell layer entirely */
+@media (prefers-reduced-motion: reduce) {
+  .hero__cells { display: none; }
+}
+
 .hero__meta {
   display: inline-flex;
   align-items: center;

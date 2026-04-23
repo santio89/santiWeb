@@ -48,10 +48,10 @@ const I18N = {
     "about.contact": "CONTACT",
 
     "skills.title": "STACK",
-    "skills.lede": "The tools I reach for. Sharp, opinionated, kept current.",
+    "skills.lede": "Tools I reach for.",
 
     "work.title": "WORKS",
-    "work.lede": "A small selection. The full archive lives on GitHub.",
+    "work.lede": "A small selection.",
     "work.gol":
       "Interactive cellular automaton. Playback controls, presets, editable grid.",
     "work.sandbox":
@@ -82,7 +82,7 @@ const I18N = {
     "contact.title": "CONTACT",
     "contact.pitch":
       "Got a project in mind, a role to fill, or just want to say hi?",
-    "contact.pitchSub": "I read every message. Replies usually within 24h.",
+    "contact.pitchSub": "Don't hesitate to reach out!",
     "contact.cv": "DOWNLOAD PDF",
 
     "form.name": "Your name",
@@ -130,11 +130,10 @@ const I18N = {
     "about.contact": "CONTACTAR",
 
     "skills.title": "STACK",
-    "skills.lede":
-      "Las herramientas que uso. Afiladas, con criterio, al día.",
+    "skills.lede": "Herramientas que uso.",
 
     "work.title": "TRABAJOS",
-    "work.lede": "Una pequeña selección. El archivo completo vive en GitHub.",
+    "work.lede": "Una pequeña selección.",
     "work.gol":
       "Autómata celular interactivo. Controles de reproducción, presets, grilla editable.",
     "work.sandbox":
@@ -165,7 +164,7 @@ const I18N = {
     "contact.title": "CONTACTO",
     "contact.pitch":
       "¿Tenés un proyecto en mente, una posición para cubrir o solo querés saludar?",
-    "contact.pitchSub": "Leo cada mensaje. Respondo dentro de las 24h.",
+    "contact.pitchSub": "¡No dudes en escribirme!",
     "contact.cv": "DESCARGAR PDF",
 
     "form.name": "Tu nombre",
@@ -862,6 +861,78 @@ function initForm() {
 /* -------------------------------------------------------------
    INIT
    ------------------------------------------------------------- */
+/* -------------------------------------------------------------
+   ANIMATED HERO GRID CELLS
+   Sprinkles brutalist micro-animations across random snapped grid cells
+   so the background grid feels alive instead of static.
+   ------------------------------------------------------------- */
+function initHeroCells() {
+  const layer = document.getElementById("heroCells");
+  if (!layer) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const CELL = 80;
+  const TYPES = ["fill", "pulse", "spin", "flipy", "flipx"];
+  const COUNT_BASE = 7;
+
+  const populate = () => {
+    layer.replaceChildren();
+    const w = layer.clientWidth;
+    const h = layer.clientHeight;
+    if (w < CELL || h < CELL) return;
+
+    const cols = Math.floor(w / CELL);
+    const rows = Math.floor(h / CELL);
+    if (!cols || !rows) return;
+
+    // scale count with viewport so a wide hero gets more sparkle, mobile less
+    const count = Math.min(
+      COUNT_BASE,
+      Math.max(3, Math.floor((cols * rows) / 14))
+    );
+
+    const used = new Set();
+    let placed = 0;
+    let attempts = 0;
+    const offsetX = (w - cols * CELL) / 2;
+    const offsetY = (h - rows * CELL) / 2;
+
+    while (placed < count && attempts < count * 8) {
+      attempts++;
+      const c = Math.floor(Math.random() * cols);
+      const r = Math.floor(Math.random() * rows);
+      const key = `${c},${r}`;
+      if (used.has(key)) continue;
+      used.add(key);
+
+      const type = TYPES[Math.floor(Math.random() * TYPES.length)];
+      const el = document.createElement("div");
+      el.className = `hero__cells__cell hero__cells__cell--${type}`;
+      el.style.left = `${offsetX + c * CELL}px`;
+      el.style.top = `${offsetY + r * CELL}px`;
+      // CSS reads these via var() to drive the ::before animation timing
+      // wide delay + long duration = sparse, asynchronous twinkles. First cell
+      // gets a near-zero delay so something fires shortly after page load.
+      const delay = placed === 0 ? Math.random() * 0.6 : Math.random() * 7;
+      el.style.setProperty("--cell-delay", `${delay.toFixed(2)}s`);
+      el.style.setProperty("--cell-dur", `${(8 + Math.random() * 8).toFixed(2)}s`);
+      layer.appendChild(el);
+      placed++;
+    }
+  };
+
+  populate();
+
+  let resizeTimer = 0;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(populate, 220);
+  });
+
+  // periodically reshuffle so the same cells aren't always the lucky ones
+  setInterval(populate, 22000);
+}
+
 function init() {
   initTheme();
   initLang();
@@ -871,6 +942,7 @@ function init() {
   initTilt();
   initCursor();
   initMarquee();
+  initHeroCells();
   initYear();
   initForm();
 }
