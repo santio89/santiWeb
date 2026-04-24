@@ -1419,11 +1419,15 @@ textarea:focus-visible {
   border: 1.5px solid var(--line-strong);
   padding: 24px;
   transform-style: preserve-3d;
-  transition: box-shadow 220ms var(--ease), transform 220ms var(--ease);
+  /* NOTE: don't transition `transform` here. The element owns its
+     transform via the JS tilt (initTilt), and a CSS transform
+     transition would fight the per-frame inline style updates,
+     making the tilt feel laggy / sticky. Hover feedback comes from
+     the box-shadow change below instead. */
+  transition: box-shadow 220ms var(--ease);
 }
 .skills__col:hover {
   box-shadow: var(--shadow);
-  transform: translate(-3px, -3px);
 }
 :root[data-theme="light"] .skills__col:hover {
   box-shadow: var(--shadow);
@@ -1490,10 +1494,12 @@ textarea:focus-visible {
   aspect-ratio: 16 / 10;
   overflow: hidden;
   isolation: isolate;
-  transition: transform 240ms var(--ease-snap), box-shadow 240ms var(--ease);
+  transform-style: preserve-3d;
+  /* see .skills__col note - JS tilt owns transform; the box-shadow
+     punch on hover is what carries the lift feedback now. */
+  transition: box-shadow 240ms var(--ease);
 }
 .work__item__frame:hover {
-  transform: translate(-4px, -4px);
   box-shadow: 12px 12px 0 0 rgba(0, 0, 0, 0.85);
 }
 :root[data-theme="light"] .work__item__frame:hover {
@@ -1714,11 +1720,12 @@ textarea:focus-visible {
   border: 1.5px solid var(--line-strong);
   padding: 24px;
   transform-style: preserve-3d;
-  transition: box-shadow 220ms var(--ease), transform 220ms var(--ease);
+  /* see .skills__col note - JS tilt owns transform; CSS hover lift
+     would fight the inline-style updates and produce stutter. */
+  transition: box-shadow 220ms var(--ease);
 }
 .exp__item__body:hover {
   box-shadow: var(--shadow);
-  transform: translate(-3px, -3px);
 }
 .exp__item__head {
   display: flex;

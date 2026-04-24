@@ -467,6 +467,17 @@ function initTilt() {
   if (prefersReducedMotion) return;
   if (window.matchMedia("(pointer: coarse)").matches) return;
 
+  // IMPORTANT: only attach to elements whose CSS does NOT also transition
+  // `transform`. A CSS `transition: transform ...ms` rule fights the
+  // per-frame inline `style.transform` writes below - the browser tries
+  // to interpolate to each new value over the transition duration, but
+  // the next rAF tick overwrites it, producing the laggy "sometimes
+  // works, sometimes sticks" behaviour. The four selectors that opt in
+  // (.about__card, .skills__col, .exp__item__body, .work__item__frame,
+  // .contact__form) have all been audited to NOT transition transform.
+  const max = 4; // degrees - kept low for a subtle, brutalist feel
+  const ease = 0.18;
+
   const els = document.querySelectorAll("[data-tilt]");
   els.forEach((el) => {
     let raf = 0;
@@ -475,11 +486,9 @@ function initTilt() {
     let curX = 0;
     let curY = 0;
 
-    const max = 6; // degrees
-
     const animate = () => {
-      curX += (targetX - curX) * 0.12;
-      curY += (targetY - curY) * 0.12;
+      curX += (targetX - curX) * ease;
+      curY += (targetY - curY) * ease;
       el.style.transform = `perspective(1000px) rotateX(${curY}deg) rotateY(${curX}deg) translateZ(0)`;
       if (
         Math.abs(targetX - curX) > 0.01 ||
