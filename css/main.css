@@ -2400,7 +2400,7 @@ textarea:focus-visible {
   text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.45);
 }
 .doom-modal__foot {
-  padding: 12px 16px;
+  padding: 9px 16px;
   border-top: 1.5px solid var(--line-strong);
   background: var(--bg-alt);
   overflow-x: auto;
@@ -2413,10 +2413,11 @@ textarea:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  /* generous row gap so the keys line and the sliders line never read
-     as cramped if the panel is too narrow to fit them on one row */
+  /* tight but breathable row gap - keeps the two key rows + slider row
+     from feeling cramped while still giving the gameplay area more
+     vertical real estate. */
   column-gap: 14px;
-  row-gap: 14px;
+  row-gap: 9px;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
