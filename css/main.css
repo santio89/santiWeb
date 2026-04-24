@@ -658,6 +658,7 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.16em;
   display: inline-flex;
   align-items: center;
@@ -903,6 +904,7 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg-mute);
@@ -1001,6 +1003,7 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   border: 2px solid var(--line-fg);
@@ -1078,6 +1081,7 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--fg-dim);
@@ -1317,6 +1321,7 @@ textarea:focus-visible {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  line-height: 1;
   padding-bottom: 16px;
   border-bottom: 1.5px solid var(--line);
 }
@@ -1356,6 +1361,7 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.18em;
   color: var(--accent);
   transition: gap 180ms var(--ease);
@@ -1602,6 +1608,7 @@ textarea:focus-visible {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.18em;
   color: var(--fg);
   background: transparent;
@@ -1761,6 +1768,7 @@ textarea:focus-visible {
   grid-template-columns: 100px 1fr auto;
   gap: 16px;
   align-items: center;
+  line-height: 1;
   padding: 18px 20px;
   background: var(--bg-panel);
   border: 1.5px solid var(--line-strong);
