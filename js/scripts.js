@@ -1177,21 +1177,41 @@ function buildDoomFrameDoc(bundleUrl, theme) {
         applyTheme(e.data.theme === "light" ? "light" : "dark");
       });
 
+      // Keys DOOM uses where the browser's default action (scrolling,
+      // tabbing focus away, quick-find etc.) would otherwise eat the press
+      // before js-dos sees it. We preventDefault but DON'T stop propagation,
+      // so js-dos still receives the keydown via its own listeners.
+      // ArrowUp/ArrowDown are the worst offenders: even with overflow:hidden
+      // some browsers (notably Chrome on Windows) still consume them as
+      // "scroll by line" inside the iframe, which is why up/down feels dead
+      // in DOOM while WASD and Left/Right work fine.
+      var GAME_KEYS = {
+        "ArrowUp": 1, "ArrowDown": 1, "ArrowLeft": 1, "ArrowRight": 1,
+        " ": 1, "Spacebar": 1, "Tab": 1,
+        "PageUp": 1, "PageDown": 1, "Home": 1, "End": 1,
+        "/": 1, "'": 1
+      };
+
       window.addEventListener("keydown", function (e) {
         var isShortcut =
           e.key === "Escape" ||
           (e.altKey && (e.key === "f" || e.key === "F" ||
                         e.key === "x" || e.key === "X"));
-        if (!isShortcut) return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        try {
-          parent.postMessage({
-            type: "doom:key",
-            key: e.key,
-            alt: !!e.altKey,
-          }, "*");
-        } catch (_) {}
+        if (isShortcut) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          try {
+            parent.postMessage({
+              type: "doom:key",
+              key: e.key,
+              alt: !!e.altKey,
+            }, "*");
+          } catch (_) {}
+          return;
+        }
+        if (GAME_KEYS[e.key] || GAME_KEYS[e.code]) {
+          e.preventDefault();
+        }
       }, true);
 
       // Boot js-dos in kiosk mode - that hides its sidebar / settings
@@ -1210,6 +1230,11 @@ function buildDoomFrameDoc(bundleUrl, theme) {
             noCloud: true,
             noNetworking: true,
           });
+          // Tell the host the iframe + js-dos instance are live so it can
+          // push initial slider values (volume / sensitivity). Without this
+          // the in-game defaults (e.g. mouseSensitivity = 0.5) would stay
+          // active even though our footer sliders read 1.00.
+          try { parent.postMessage({ type: "doom:ready" }, "*"); } catch (_) {}
         } catch (err) {
           console.error("[doom]", err);
           parent.postMessage({ type: "doom:error", message: String(err) }, "*");
@@ -1366,6 +1391,11 @@ function initDoom() {
     true
   );
 
+  // wireSliderPair() registers a callback here that re-posts the current
+  // slider value into the iframe. On "doom:ready" we run them all so the
+  // game starts at the values shown in the UI instead of js-dos defaults.
+  const initialSyncs = [];
+
   // shortcuts forwarded from inside the iframe
   window.addEventListener("message", (e) => {
     if (!e.data || typeof e.data !== "object") return;
@@ -1373,6 +1403,12 @@ function initDoom() {
     if (e.data.type === "doom:error") {
       const dict = I18N[currentLang] || I18N.en;
       showError(dict["doom.error"]);
+      return;
+    }
+    if (e.data.type === "doom:ready") {
+      initialSyncs.forEach((fn) => {
+        try { fn(); } catch (_) {}
+      });
       return;
     }
     if (e.data.type !== "doom:key") return;
@@ -1444,6 +1480,9 @@ function initDoom() {
     });
     // initial paint
     number.value = fmt(Number(slider.value));
+    // register an initial-sync callback that the iframe will trigger via
+    // its "doom:ready" message once js-dos has booted and can accept setters
+    initialSyncs.push(() => post(clamp(Number(slider.value))));
   };
   wireSliderPair("doomVol", "doomVolVal", "volume", (v) => v.toFixed(2));
   wireSliderPair("doomSens", "doomSensVal", "mouseSensitivity", (v) =>
