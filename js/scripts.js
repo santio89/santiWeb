@@ -1219,6 +1219,7 @@ function buildDoomFrameDoc(bundleUrl, theme) {
       // capture / loader overlays. No DOM trimming or DaisyUI overrides
       // needed; the host modal already provides our brutalist frame.
       var dosProps = null;
+      var dosCI = null; // CommandInterface, populated on "ci-ready"
       if (typeof Dos === "function") {
         try {
           dosProps = Dos(document.getElementById("dos"), {
@@ -1229,6 +1230,13 @@ function buildDoomFrameDoc(bundleUrl, theme) {
             kiosk: true,
             noCloud: true,
             noNetworking: true,
+            // Capture the CommandInterface as soon as DOSBox is live so
+            // we can synthesize key events for the ArrowUp/Down remap below.
+            onEvent: function (event, ci) {
+              if (event === "ci-ready" && ci) {
+                dosCI = ci;
+              }
+            },
           });
           // Tell the host the iframe + js-dos instance are live so it can
           // push initial slider values (volume / sensitivity). Without this
@@ -1242,6 +1250,28 @@ function buildDoomFrameDoc(bundleUrl, theme) {
       } else {
         parent.postMessage({ type: "doom:error", message: "js-dos failed to load" }, "*");
       }
+
+      // The official js-dos DOOM bundle binds Up/Down arrows to "look
+      // up/down" (a no-op in vanilla DOOM since there's no mouselook), so
+      // pressing them does nothing in-game even though they reach DOSBox.
+      // Intercept ArrowUp/ArrowDown here and inject the matching WASD
+      // movement key via the CommandInterface so arrows feel natural again.
+      // Left/Right arrows already work for turning so we leave them alone.
+      var KEY_REMAP = { "ArrowUp": 87 /* W */, "ArrowDown": 83 /* S */ };
+      window.addEventListener("keydown", function (e) {
+        var code = KEY_REMAP[e.key];
+        if (code === undefined || !dosCI) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        try { dosCI.sendKeyEvent(code, true); } catch (_) {}
+      }, true);
+      window.addEventListener("keyup", function (e) {
+        var code = KEY_REMAP[e.key];
+        if (code === undefined || !dosCI) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        try { dosCI.sendKeyEvent(code, false); } catch (_) {}
+      }, true);
 
       // The parent posts {type:"doom:set", prop:"volume"|"mouseSensitivity",
       // value:n} when the user drags one of our footer sliders. We try
