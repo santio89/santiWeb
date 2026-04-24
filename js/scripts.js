@@ -271,16 +271,34 @@ function initTheme() {
   root.setAttribute("data-theme", theme);
   updateThemeColorMeta(theme);
 
-  // Briefly enable a global color/border/shadow transition only during a
-  // user-driven theme swap, so the cross-fade is smooth without polluting
-  // initial paint or per-element hover transitions.
+  // Theme swap. We try the View Transitions API first because it does
+  // a single GPU-composited cross-fade between an "old state" and a
+  // "new state" snapshot of the page, instead of asking every element
+  // to color-tween simultaneously. That removes two big sources of
+  // jank: (a) the header's backdrop-filter doesn't have to re-blur
+  // the underlying body once per frame while the body's background
+  // is mid-tween, and (b) hundreds of elements aren't repainting at
+  // the same time. Falls back to the legacy class-based tween on
+  // Firefox / older Safari (and is skipped entirely for users with
+  // reduced-motion preference).
   let swapTimer = 0;
-  const TWEEN_MS = 420;
-  const swapTheme = (next) => {
-    root.classList.add("theme-transitioning");
+  const TWEEN_MS = 380;
+  const apply = (next) => {
     root.setAttribute("data-theme", next);
     localStorage.setItem("sw.theme", next);
     updateThemeColorMeta(next);
+  };
+  const swapTheme = (next) => {
+    if (prefersReducedMotion) {
+      apply(next);
+      return;
+    }
+    if (typeof document.startViewTransition === "function") {
+      document.startViewTransition(() => apply(next));
+      return;
+    }
+    root.classList.add("theme-transitioning");
+    apply(next);
     clearTimeout(swapTimer);
     swapTimer = setTimeout(() => {
       root.classList.remove("theme-transitioning");
@@ -308,7 +326,7 @@ function initTheme() {
 
 function updateThemeColorMeta(theme) {
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", theme === "dark" ? "#0a0a0a" : "#ebe7da");
+  if (meta) meta.setAttribute("content", theme === "dark" ? "#0a0a0a" : "#f5f4f0");
 }
 
 /* -------------------------------------------------------------

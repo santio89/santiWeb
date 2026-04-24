@@ -46,11 +46,11 @@
 }
 
 :root[data-theme="light"] {
-  --bg: #ebe7da;
-  --bg-alt: #e5e0cf;
+  --bg: #f5f4f0;
+  --bg-alt: #eceae4;
   --bg-panel: #ffffff;
   --bg-elev: #ffffff;
-  --bg-inset: #f0ebd9;
+  --bg-inset: #f0eee8;
   --fg: #0a0a0a;
   --fg-mute: #3a3a3a;
   --fg-dim: #6b6b6b;
@@ -88,6 +88,40 @@
 .theme-transitioning .cursor-core,
 .theme-transitioning .cursor-core * {
   transition: none !important;
+}
+/* In the legacy fallback path the .header's backdrop-filter is the
+   single biggest source of jank during a theme swap - the browser has
+   to re-blur the body underneath the header on every paint frame while
+   the body itself is color-tweening, which is what made the header
+   visually feel like it was lagging behind the rest of the page.
+   Dropping the blur for the duration of the tween reads almost
+   identically and eliminates the per-frame paint cost. */
+.theme-transitioning .header {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--bg) !important;
+}
+
+/* ---------- VIEW TRANSITIONS (theme swap) ----------
+   Modern Chromium / Safari 18+ run the theme swap through the View
+   Transitions API instead of the class-based color tween above. The
+   browser snapshots the page before/after the swap and cross-fades
+   them on the GPU compositor in a single pass, so:
+     - the header's backdrop-filter doesn't re-blur every frame,
+     - per-element color/border/shadow transitions don't all fire,
+     - cursor + DOOM iframe stay live during the fade. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 380ms;
+  animation-timing-function: var(--ease);
+}
+/* Live overlays opt out of being snapshot - they keep painting in
+   real time on top of the cross-fade so the cursor doesn't freeze
+   and the DOOM frame keeps drawing. */
+.cursor-canvas,
+.cursor-core,
+.doom-modal {
+  view-transition-name: none;
 }
 
 /* ---------- RESET ---------- */
