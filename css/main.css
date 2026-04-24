@@ -2406,6 +2406,16 @@ textarea:focus-visible {
   list-style: none;
   opacity: 0.55;
 }
+/* Invisible flex-break used to balance the two key rows. Without this
+   the chips wrap greedily and leave an orphan group (e.g. ESC EXIT) on
+   the second row by itself; this forces a split at the midpoint so the
+   rows are roughly evenly filled. The dashed border + margin from the
+   base class are stripped so it reads as pure layout, not a divider. */
+.doom-modal__keys__break--ghost {
+  border-top: none;
+  margin: 0;
+  opacity: 1;
+}
 .doom-modal__keys__group {
   display: inline-flex;
   align-items: center;
