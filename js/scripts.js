@@ -109,6 +109,7 @@ const I18N = {
     "doom.k.exit": "EXIT",
     "doom.k.vol": "VOL",
     "doom.k.sens": "SENS",
+    "doom.k.reset": "RESET",
   },
   es: {
     "nav.skip": "OMITIR NAVEGACIÓN",
@@ -206,6 +207,7 @@ const I18N = {
     "doom.k.exit": "SALIR",
     "doom.k.vol": "VOL",
     "doom.k.sens": "SENS",
+    "doom.k.reset": "RESET",
   },
 };
 
@@ -1472,12 +1474,18 @@ function initDoom() {
   // Either control can drive the value; the other mirrors it. The
   // number input commits on blur or Enter so partial typing (e.g. "0.")
   // doesn't immediately rewrite back.
-  const wireSliderPair = (sliderId, numberId, prop, fmt) => {
+  // Values are also persisted to localStorage under `storageKey` so the
+  // user's tweaked vol / sens carry across reloads. A registry of the
+  // wired controls is returned so the RESET button can reach into them
+  // without re-querying the DOM.
+  const sliderControls = [];
+  const wireSliderPair = (sliderId, numberId, prop, fmt, storageKey) => {
     const slider = document.getElementById(sliderId);
     const number = document.getElementById(numberId);
     if (!slider || !number) return;
     const min = Number(slider.min);
     const max = Number(slider.max);
+    const defaultValue = Number(slider.value);
     const clamp = (v) => Math.min(max, Math.max(min, v));
     const post = (v) => {
       if (!frame || !frame.contentWindow) return;
@@ -1488,14 +1496,27 @@ function initDoom() {
         );
       } catch (_) {}
     };
-    const apply = (raw, source) => {
+    const save = (v) => {
+      try { localStorage.setItem(storageKey, String(v)); } catch (_) {}
+    };
+    const apply = (raw, source, persist = true) => {
       const n = Number(raw);
       if (!isFinite(n)) return;
       const v = clamp(n);
       if (source !== slider) slider.value = String(v);
       if (source !== number) number.value = fmt(v);
       post(v);
+      if (persist) save(v);
     };
+    // restore persisted value (silently — don't post yet, the iframe
+    // isn't booted; doom:ready will trigger the initial sync below)
+    try {
+      const stored = localStorage.getItem(storageKey);
+      if (stored !== null && isFinite(Number(stored))) {
+        const v = clamp(Number(stored));
+        slider.value = String(v);
+      }
+    } catch (_) {}
     slider.addEventListener("input", () => apply(slider.value, slider));
     slider.addEventListener("change", () => apply(slider.value, slider));
     // typing in the number field: only commit on Enter or blur so the
@@ -1513,11 +1534,31 @@ function initDoom() {
     // register an initial-sync callback that the iframe will trigger via
     // its "doom:ready" message once js-dos has booted and can accept setters
     initialSyncs.push(() => post(clamp(Number(slider.value))));
+    sliderControls.push({
+      slider, number, defaultValue, storageKey,
+      reset: () => {
+        try { localStorage.removeItem(storageKey); } catch (_) {}
+        apply(defaultValue, null, false);
+      },
+    });
   };
-  wireSliderPair("doomVol", "doomVolVal", "volume", (v) => v.toFixed(2));
-  wireSliderPair("doomSens", "doomSensVal", "mouseSensitivity", (v) =>
-    v.toFixed(2)
+  wireSliderPair(
+    "doomVol", "doomVolVal", "volume",
+    (v) => v.toFixed(2), "doom:vol"
   );
+  wireSliderPair(
+    "doomSens", "doomSensVal", "mouseSensitivity",
+    (v) => v.toFixed(2), "doom:sens"
+  );
+
+  // RESET button — wipes persisted vol/sens, restores the HTML defaults
+  // (vol 1.00, sens 0.50) and pushes them straight into the running game.
+  const resetBtn = document.getElementById("doomReset");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      sliderControls.forEach((c) => c.reset());
+    });
+  }
 }
 
 /* -------------------------------------------------------------
