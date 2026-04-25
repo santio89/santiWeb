@@ -1348,8 +1348,7 @@ textarea:focus-visible {
   border: 1.5px solid var(--line-strong);
   box-shadow: var(--shadow);
   padding: 24px;
-  transform-style: preserve-3d;
-  transition: box-shadow 200ms var(--ease);
+  /* tilt + transition + 3D context come from the shared [data-tilt] rule */
 }
 .about__card__head {
   display: flex;
@@ -1418,13 +1417,7 @@ textarea:focus-visible {
   background: var(--bg-panel);
   border: 1.5px solid var(--line-strong);
   padding: 24px;
-  transform-style: preserve-3d;
-  /* NOTE: don't transition `transform` here. The element owns its
-     transform via the JS tilt (initTilt), and a CSS transform
-     transition would fight the per-frame inline style updates,
-     making the tilt feel laggy / sticky. Hover feedback comes from
-     the box-shadow change below instead. */
-  transition: box-shadow 220ms var(--ease);
+  /* tilt + transition + 3D context come from the shared [data-tilt] rule */
 }
 .skills__col:hover {
   box-shadow: var(--shadow);
@@ -1493,11 +1486,9 @@ textarea:focus-visible {
   box-shadow: var(--shadow);
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  isolation: isolate;
-  transform-style: preserve-3d;
-  /* see .skills__col note - JS tilt owns transform; the box-shadow
-     punch on hover is what carries the lift feedback now. */
-  transition: box-shadow 240ms var(--ease);
+  /* tilt + transition + 3D context come from the shared [data-tilt] rule.
+     overflow:hidden is kept locally because the frame clips its own
+     image scale-on-hover. */
 }
 .work__item__frame:hover {
   box-shadow: 12px 12px 0 0 rgba(0, 0, 0, 0.85);
@@ -1719,10 +1710,7 @@ textarea:focus-visible {
   background: var(--bg-panel);
   border: 1.5px solid var(--line-strong);
   padding: 24px;
-  transform-style: preserve-3d;
-  /* see .skills__col note - JS tilt owns transform; CSS hover lift
-     would fight the inline-style updates and produce stutter. */
-  transition: box-shadow 220ms var(--ease);
+  /* tilt + transition + 3D context come from the shared [data-tilt] rule */
 }
 .exp__item__body:hover {
   box-shadow: var(--shadow);
@@ -1853,7 +1841,7 @@ textarea:focus-visible {
   gap: 20px;
   position: relative;
   box-shadow: var(--shadow);
-  transform-style: preserve-3d;
+  /* tilt + transition + 3D context come from the shared [data-tilt] rule */
 }
 .contact__form__bot {
   position: absolute;
@@ -2022,6 +2010,49 @@ textarea:focus-visible {
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+/* Once the entrance animation has played, drop `transform` from the
+   transition list - but ONLY for [data-tilt] elements. Otherwise
+   skills cols, about card, contact form (which are both .reveal AND
+   [data-tilt]) keep a permanent 700ms transform interpolation that
+   fights the per-frame inline transform set by initTilt - making the
+   tilt feel laggy, sticky, or visually "snap" between angles.
+   We deliberately do NOT touch reveal elements that lack [data-tilt]
+   (like .work__item, whose tilt lives on a child .work__item__frame),
+   because clearing their will-change / dropping the transform
+   transition on a 3D-context parent can demote its compositor layer
+   and break the child's perspective tilt rendering.
+   JS adds .reveal-done shortly after the entrance completes
+   (see initReveal in scripts.js). */
+.reveal.reveal-done[data-tilt] {
+  transition: opacity 700ms var(--ease);
+  will-change: opacity;
+}
+
+/* ---------- TILT (shared base for every [data-tilt] element) ----------
+   Single source of truth so every card with a JS tilt feels identical.
+   Contract:
+   - transform-style: preserve-3d so the perspective() in the inline
+     transform set by initTilt actually renders in 3D.
+   - will-change: transform tells the compositor to keep this element
+     on its own GPU layer, which is what makes the per-frame inline
+     transform writes cheap and stutter-free.
+   - isolation: isolate creates a stacking context so the box-shadow
+     paints relative to this card and doesn't bleed into siblings
+     when the card is rotated.
+   - transition is restricted to box-shadow (NO `transform`). Any
+     `transition: transform` here would fight the inline transform
+     written every animation frame by initTilt - the symptom is the
+     "sometimes works, sometimes sticks" laggy tilt that bit us
+     before on .skills__col, .exp__item__body and .work__item__frame.
+   Per-element rules below set their own background / border / shadow,
+   but they must NOT add `transform` to their transition list and
+   must NOT set a `transform` on :hover / :focus / :focus-within. */
+[data-tilt] {
+  transform-style: preserve-3d;
+  will-change: transform;
+  isolation: isolate;
+  transition: box-shadow 220ms var(--ease);
 }
 
 /* stagger inside grids */

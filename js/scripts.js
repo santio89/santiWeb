@@ -442,8 +442,24 @@ function initHeader() {
    ------------------------------------------------------------- */
 function initReveal() {
   const els = document.querySelectorAll(".reveal");
+  // Once the entrance animation finishes we mark the element with
+  // .reveal-done so CSS can drop `transform` from its transition list.
+  // Why: .reveal transitions both opacity AND transform for 700ms, and
+  // any element that's also [data-tilt] would otherwise have its
+  // JS-driven inline transform fighting that 700ms interpolation
+  // forever (the symptom: skills/about/contact tilt feeling laggy or
+  // sticking at weird angles). Allow up to 700ms transition + 160ms
+  // stagger + a small buffer.
+  const REVEAL_DONE_MS = 1000;
+  const markDone = (el) => {
+    setTimeout(() => el.classList.add("reveal-done"), REVEAL_DONE_MS);
+  };
+
   if (!("IntersectionObserver" in window)) {
-    els.forEach((el) => el.classList.add("is-visible"));
+    els.forEach((el) => {
+      el.classList.add("is-visible");
+      markDone(el);
+    });
     return;
   }
   const io = new IntersectionObserver(
@@ -451,6 +467,7 @@ function initReveal() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
+          markDone(entry.target);
           io.unobserve(entry.target);
         }
       });
@@ -475,7 +492,7 @@ function initTilt() {
   // works, sometimes sticks" behaviour. The four selectors that opt in
   // (.about__card, .skills__col, .exp__item__body, .work__item__frame,
   // .contact__form) have all been audited to NOT transition transform.
-  const max = 4; // degrees - kept low for a subtle, brutalist feel
+  const max = 2; // degrees - kept low for a subtle, brutalist feel
   const ease = 0.18;
 
   const els = document.querySelectorAll("[data-tilt]");
