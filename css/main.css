@@ -1835,7 +1835,6 @@ textarea:focus-visible {
 /* per-direction hover nudge - arrows lean the way they point */
 .contact__links a:hover .brut-arrow--right { transform: translateX(4px); }
 .contact__links a:hover .brut-arrow--upright { transform: translate(4px, -4px); }
-.contact__links a:hover .brut-arrow--down { transform: translateY(4px); }
 .contact__links__cv {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2526,15 +2525,30 @@ textarea:focus-visible {
   gap: 2px;
   min-width: 22px;
   height: 20px;
-  padding: 0 6px;
+  /* asymmetric top padding optically centers all-caps monospace text:
+     JetBrains Mono (and most monospace faces) have ascender-heavy
+     vertical metrics, so flex-centering a label like "WASD" or "RESET"
+     in a fixed-height box drifts visually high by ~1px. The 1px top
+     pad pushes the cap-height onto the chip's geometric center. */
+  padding: 1px 6px 0;
   border: 1.5px solid var(--line-strong);
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  /* 10px (matches the label text in .doom-modal__keys above) grids onto
+     sub-pixel boundaries cleaner than 9.5px and gives the cap-height a
+     tidier divisor of the 17px content area, so optical centering is
+     more forgiving at this size. */
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.06em;
   line-height: 1;
+  /* strip platform-default chrome from <button> and <input> variants
+     so they share this exact box model with the <span> chips - without
+     this, browsers add their own internal padding/baseline that makes
+     the three chip flavors drift apart vertically. */
+  appearance: none;
+  -webkit-appearance: none;
 }
 .doom-modal__keys__chip--arrows {
   padding: 0 4px;
@@ -2560,15 +2574,20 @@ textarea:focus-visible {
 .doom-modal__keys__chip--val {
   min-width: 42px;
   width: 42px;
-  font-size: 9px;
+  /* match the base chip font-size (10px) - the previous 9px was a
+     legacy fudge to compensate for the input's platform-default text
+     rendering, which is no longer a factor now that the base chip
+     uses appearance: none. */
+  font-size: 10px;
   letter-spacing: 0.08em;
   font-variant-numeric: tabular-nums;
   color: var(--accent);
   /* override the browser's default number-input chrome so it reads as
      a brutalist key chip, while still being editable from the keyboard */
   text-align: center;
+  /* base chip rule already strips appearance; reaffirm the Firefox
+     prefix here so the number-input chrome doesn't sneak back in. */
   -moz-appearance: textfield;
-  appearance: textfield;
   cursor: text;
   transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
 }
@@ -2586,7 +2605,9 @@ textarea:focus-visible {
    shares the chip frame so it sits flush with the slider value chips. */
 .doom-modal__keys__chip--btn {
   cursor: pointer;
-  padding: 0 8px;
+  /* preserve the base chip's 1px top nudge while bumping horizontal
+     padding for the wider RESET label */
+  padding: 1px 8px 0;
   font-weight: 800;
   letter-spacing: 0.1em;
   transition: border-color 140ms, color 140ms, background 140ms;
