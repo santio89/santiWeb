@@ -482,7 +482,7 @@ export function initDoom({ getDict, openImmediately = false } = {}) {
       post(v);
       if (persist) save(v);
     };
-    // restore persisted value (silently — don't post yet, the iframe
+    // restore persisted value (silently - don't post yet, the iframe
     // isn't booted; doom:ready will trigger the initial sync below)
     try {
       const stored = localStorage.getItem(storageKey);
@@ -525,7 +525,7 @@ export function initDoom({ getDict, openImmediately = false } = {}) {
     (v) => v.toFixed(2), "doom:sens"
   );
 
-  // RESET button — wipes persisted vol/sens, restores the HTML defaults
+  // RESET button - wipes persisted vol/sens, restores the HTML defaults
   // (vol 1.00, sens 0.50) and pushes them straight into the running game.
   const resetBtn = document.getElementById("doomReset");
   if (resetBtn) {

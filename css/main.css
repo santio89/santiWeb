@@ -2650,7 +2650,7 @@ textarea:focus-visible {
   border-color: var(--accent);
   outline: none;
 }
-/* clickable variant of the chip — used for the RESET-defaults button.
+/* clickable variant of the chip - used for the RESET-defaults button.
    shares the chip frame so it sits flush with the slider value chips. */
 .doom-modal__keys__chip--btn {
   cursor: pointer;

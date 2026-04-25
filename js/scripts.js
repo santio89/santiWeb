@@ -17,7 +17,7 @@ const I18N = {
     "nav.skip": "SKIP NAVIGATION",
     "nav.about": "ABOUT",
     "nav.skills": "STACK",
-    "nav.work": "WORK",
+    "nav.work": "WORKS",
     "nav.exp": "EXPERIENCE",
     "nav.contact": "CONTACT",
 
