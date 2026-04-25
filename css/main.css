@@ -81,7 +81,24 @@
     stroke 380ms var(--ease),
     box-shadow 380ms var(--ease),
     text-shadow 380ms var(--ease),
-    caret-color 380ms var(--ease) !important;
+    caret-color 380ms var(--ease),
+    scrollbar-color 380ms var(--ease) !important;
+}
+/* Scrollbar pseudo-elements aren't reachable through the `*` selector
+   above (they're not real DOM children), so the global tween skips
+   them and they snap to the new theme while the rest of the page
+   cross-fades. Declare the same fade explicitly here.
+   - WebKit (Chrome / Safari) honors `transition` on these pseudo-
+     elements, so background animates cleanly.
+   - Firefox uses `scrollbar-color` on <html> instead; that's already
+     covered by the property list above. The spec marks it
+     non-animatable but current Firefox does interpolate it. */
+.theme-transitioning ::-webkit-scrollbar-track {
+  transition: background 380ms var(--ease) !important;
+}
+.theme-transitioning ::-webkit-scrollbar-thumb {
+  transition: background 380ms var(--ease),
+              border-color 380ms var(--ease) !important;
 }
 /* never tween live canvases / cursor layers - they draw their own pixels */
 .theme-transitioning .cursor-canvas,
@@ -89,25 +106,11 @@
 .theme-transitioning .cursor-core * {
   transition: none !important;
 }
-/* In the legacy fallback path the .header's backdrop-filter is the
-   single biggest source of jank during a theme swap - the browser has
-   to re-blur the body underneath the header on every paint frame while
-   the body itself is color-tweening, which is what made the header
-   visually feel like it was lagging behind the rest of the page.
-   Dropping the blur for the duration of the tween reads almost
-   identically and eliminates the per-frame paint cost. */
-.theme-transitioning .header {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  background: var(--bg) !important;
-}
-
 /* ---------- VIEW TRANSITIONS (theme swap) ----------
    Modern Chromium / Safari 18+ run the theme swap through the View
    Transitions API instead of the class-based color tween above. The
    browser snapshots the page before/after the swap and cross-fades
    them on the GPU compositor in a single pass, so:
-     - the header's backdrop-filter doesn't re-blur every frame,
      - per-element color/border/shadow transitions don't all fire,
      - cursor + DOOM iframe stay live during the fade. */
 ::view-transition-old(root),
@@ -138,7 +141,7 @@ html {
   -webkit-text-size-adjust: 100%;
   background: var(--bg);
   scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) var(--bg-inset);
+  scrollbar-color: var(--line-strong) var(--bg);
   scroll-padding-top: calc(var(--header-h) + 16px);
 }
 
@@ -253,11 +256,11 @@ textarea:focus-visible {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-inset);
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--line-strong);
-  border: 2px solid var(--bg-inset);
+  border: 2px solid var(--bg);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
@@ -608,14 +611,11 @@ textarea:focus-visible {
   align-items: center;
   gap: 32px;
   z-index: 100;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  backdrop-filter: saturate(140%) blur(10px);
-  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  background: var(--bg);
   border-bottom: 1.5px solid var(--line);
-  transition: background 200ms var(--ease), border-color 200ms var(--ease);
+  transition: border-color 200ms var(--ease);
 }
 .header.is-scrolled {
-  background: color-mix(in srgb, var(--bg) 96%, transparent);
   border-bottom-color: var(--line-strong);
 }
 
@@ -2699,11 +2699,13 @@ textarea:focus-visible {
   .nav-scrim { display: block; }
 
   .header { gap: 12px; }
-  /* IMPORTANT: the header has `backdrop-filter`, which per CSS spec makes
-     it the containing block for any `position: fixed` descendants. So the
-     nav is sized with viewport units (dvh/vw) instead of `bottom: 0` /
-     `right: 0`, and offset from the right with vw, so neither the panel
-     height nor its position depends on the broken containing block. */
+  /* The mobile nav is sized with viewport units (dvh/vw) so it doesn't
+     depend on the header being a normal containing block. (Historic
+     note: this was originally needed because the header used
+     `backdrop-filter`, which per CSS spec makes the element a
+     containing block for `position: fixed` descendants. The blur is
+     gone now, but the viewport-unit sizing is still the right call -
+     keeps the nav decoupled from the header layout entirely.) */
   .header__nav {
     position: fixed;
     top: var(--header-h);

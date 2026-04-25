@@ -75,9 +75,9 @@ const I18N = {
     "exp.p2":
       "Answer student questions, review challenges and projects, run after-class tutoring sessions.",
     "exp.p3":
-      "Configuration and maintenance of Windows Server, VMs (Hyper-V, VMware, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) and VPNs. Implemented and maintained the GLPI inventory/ticketing system. ~80 workstations.",
+      "Installation, configuration and maintenance of Windows Server, VMs (Hyper-V, VMware, Proxmox, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) and VPNs. Implemented and maintained the GLPI inventory/ticketing system. In charge of the company website (WordPress on cPanel hosting, including DNS records). Built an internal IT management app in React + Node. ~100 workstations.",
     "exp.p4":
-      "Support across PCs, notebooks, Raspberry Pis, networking, CCTV, printers, labelers and mobiles. Installation and configuration of Windows Server, Active Directory, Hyper-V virtualization and backups. ~120 workstations.",
+      "Support across PCs, notebooks, Raspberry Pis, networking, CCTV, printers, labelers and mobiles. Installation and configuration of Windows Server, Active Directory, Hyper-V virtualization and backups. ~150 workstations.",
 
     "contact.title": "CONTACT",
     "contact.pitch":
@@ -173,9 +173,9 @@ const I18N = {
     "exp.p2":
       "Resolver consultas de estudiantes, revisar desafíos y proyectos, dictar clases de apoyo.",
     "exp.p3":
-      "Configuración y mantenimiento de Windows Server, VMs (Hyper-V, VMware, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) y VPNs. Implementación y mantenimiento del sistema GLPI de inventario y ticketing. ~80 puestos.",
+      "Instalación, configuración y mantenimiento de Windows Server, VMs (Hyper-V, VMware, Proxmox, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) y VPNs. Implementación y mantenimiento del sistema GLPI de inventario y ticketing. A cargo del sitio web de la empresa (WordPress sobre hosting cPanel, incluyendo registros DNS). Desarrollo de una app interna de gestión IT en React + Node. ~100 puestos.",
     "exp.p4":
-      "Soporte sobre PCs, notebooks, Raspberry Pis, redes, CCTV, impresoras, etiquetadoras y móviles. Instalación y configuración de Windows Server, Active Directory, virtualización Hyper-V y backups. ~120 puestos.",
+      "Soporte sobre PCs, notebooks, Raspberry Pis, redes, CCTV, impresoras, etiquetadoras y móviles. Instalación y configuración de Windows Server, Active Directory, virtualización Hyper-V y backups. ~150 puestos.",
 
     "contact.title": "CONTACTO",
     "contact.pitch":
