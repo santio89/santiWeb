@@ -839,12 +839,12 @@ textarea:focus-visible {
 /* dark needs both higher opacity AND a lighter line color since the
    default --line is so close to the bg it disappears at low opacity. */
 :root[data-theme="dark"] .hero__grid {
-  --hero-grid-opacity: 0.65;
+  --hero-grid-opacity: 0.6;
   background-image:
     linear-gradient(to right, var(--line-strong) 1px, transparent 1px),
     linear-gradient(to bottom, var(--line-strong) 1px, transparent 1px);
 }
-:root[data-theme="light"] .hero__grid { --hero-grid-opacity: 0.16; }
+:root[data-theme="light"] .hero__grid { --hero-grid-opacity: 0.1; }
 @keyframes gridDrift {
   to { background-position: 80px 80px; }
 }
