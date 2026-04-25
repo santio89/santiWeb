@@ -46,11 +46,11 @@
 }
 
 :root[data-theme="light"] {
-  --bg: #f5f4f0;
-  --bg-alt: #eceae4;
+  --bg: #f9f8f5;
+  --bg-alt: #f1f0eb;
   --bg-panel: #ffffff;
   --bg-elev: #ffffff;
-  --bg-inset: #f0eee8;
+  --bg-inset: #f4f2ed;
   --fg: #0a0a0a;
   --fg-mute: #3a3a3a;
   --fg-dim: #6b6b6b;
