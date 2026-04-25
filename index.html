@@ -62,12 +62,28 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Non-blocking webfont CSS load: preload as a stylesheet, then swap rel
+         to "stylesheet" once it arrives. Falls back inside <noscript> for users
+         without JS so the fonts still apply. Combined with display=swap this
+         removes the Google Fonts CSS from the critical render path. -->
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      />
+    </noscript>
 
     <link rel="stylesheet" href="css/main.css" />
+    <!-- Start fetching the main JS module in parallel with CSS instead of
+         waiting until the closing body tag is parsed. The script element
+         that actually executes it still lives at the bottom of the body. -->
+    <link rel="modulepreload" href="js/scripts.js" />
 
     <!-- Google Analytics -->
     <script
@@ -383,7 +399,6 @@
             <ul class="skills__list">
               <li>Node</li>
               <li>Express</li>
-              <li>PHP</li>
               <li>Python</li>
               <li>WebSockets</li>
               <li>JWT / OAuth</li>
@@ -443,7 +458,7 @@
               <li>Git</li>
               <li>GitHub</li>
               <li>Linux · Ubuntu / Debian</li>
-              <li>Bash / Shell scripting</li>
+              <li>Bash / Shell</li>
               <li>PowerShell</li>
               <li>Nginx</li>
               <li>Apache</li>
@@ -491,14 +506,17 @@
                 <span></span><span></span><span></span>
                 <em>gol-automaton.vercel.app</em>
               </div>
-              <img
-                src="media/works/game-of-life.png"
-                alt="Conway's Game of Life - cells animating on a brutalist grid"
-                loading="lazy"
-                decoding="async"
-                width="1024"
-                height="489"
-              />
+              <picture>
+                <source srcset="media/works/game-of-life.webp" type="image/webp" />
+                <img
+                  src="media/works/game-of-life.png"
+                  alt="Conway's Game of Life - cells animating on a brutalist grid"
+                  loading="lazy"
+                  decoding="async"
+                  width="1024"
+                  height="489"
+                />
+              </picture>
               <span class="work__item__overlay">
                 <span>OPEN</span>
                 <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
@@ -518,7 +536,7 @@
                 <li>REACT</li>
                 <li>VITE</li>
                 <li>REDUX</li>
-                <li>SCSS</li>
+                <li>SASS</li>
               </ul>
             </div>
           </article>
@@ -536,14 +554,17 @@
                 <span></span><span></span><span></span>
                 <em>sandbox--code.vercel.app</em>
               </div>
-              <img
-                src="media/works/sandbox.png"
-                alt="SandBox - HTML, CSS and JS playground with live preview running Space Invaders"
-                loading="lazy"
-                decoding="async"
-                width="1024"
-                height="490"
-              />
+              <picture>
+                <source srcset="media/works/sandbox.webp" type="image/webp" />
+                <img
+                  src="media/works/sandbox.png"
+                  alt="SandBox - HTML, CSS and JS playground with live preview running Space Invaders"
+                  loading="lazy"
+                  decoding="async"
+                  width="1024"
+                  height="490"
+                />
+              </picture>
               <span class="work__item__overlay">
                 <span>OPEN</span>
                 <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
@@ -582,14 +603,17 @@
                 <span></span><span></span><span></span>
                 <em>taskboard-v0.vercel.app</em>
               </div>
-              <img
-                src="media/works/taskboard.png"
-                alt="TaskBoard - dark Kanban with backlog, in progress, done, QA, deployed and blocked columns"
-                loading="lazy"
-                decoding="async"
-                width="1024"
-                height="490"
-              />
+              <picture>
+                <source srcset="media/works/taskboard.webp" type="image/webp" />
+                <img
+                  src="media/works/taskboard.png"
+                  alt="TaskBoard - dark Kanban with backlog, in progress, done, QA, deployed and blocked columns"
+                  loading="lazy"
+                  decoding="async"
+                  width="1024"
+                  height="490"
+                />
+              </picture>
               <span class="work__item__overlay">
                 <span>OPEN</span>
                 <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
@@ -627,14 +651,17 @@
                 <span></span><span></span><span></span>
                 <em>it-board.vercel.app</em>
               </div>
-              <img
-                src="media/works/it-dashboard.png"
-                alt="IT Dashboard - sidebar with home, contacts, devices, tasks, support, admin and four entry tiles"
-                loading="lazy"
-                decoding="async"
-                width="1024"
-                height="490"
-              />
+              <picture>
+                <source srcset="media/works/it-dashboard.webp" type="image/webp" />
+                <img
+                  src="media/works/it-dashboard.png"
+                  alt="IT Dashboard - sidebar with home, contacts, devices, tasks, support, admin and four entry tiles"
+                  loading="lazy"
+                  decoding="async"
+                  width="1024"
+                  height="490"
+                />
+              </picture>
               <span class="work__item__overlay">
                 <span>OPEN</span>
                 <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
@@ -672,14 +699,17 @@
                 <span></span><span></span><span></span>
                 <em>syncle-v0.vercel.app</em>
               </div>
-              <img
-                src="media/works/syncle.png"
-                alt="Syncle - blue rhythm-game home screen with track preview and player stats"
-                loading="lazy"
-                decoding="async"
-                width="1024"
-                height="490"
-              />
+              <picture>
+                <source srcset="media/works/syncle.webp" type="image/webp" />
+                <img
+                  src="media/works/syncle.png"
+                  alt="Syncle - blue rhythm-game home screen with track preview and player stats"
+                  loading="lazy"
+                  decoding="async"
+                  width="1024"
+                  height="490"
+                />
+              </picture>
               <span class="work__item__overlay">
                 <span>OPEN</span>
                 <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
@@ -717,14 +747,17 @@
                 <span></span><span></span><span></span>
                 <em>pg-rn.netlify.app</em>
               </div>
-              <img
-                src="media/works/playground.png"
-                alt="Playground - purple mobile-style app launcher with todo, memo game, calculator, weather and album"
-                loading="lazy"
-                decoding="async"
-                width="1024"
-                height="490"
-              />
+              <picture>
+                <source srcset="media/works/playground.webp" type="image/webp" />
+                <img
+                  src="media/works/playground.png"
+                  alt="Playground - purple mobile-style app launcher with todo, memo game, calculator, weather and album"
+                  loading="lazy"
+                  decoding="async"
+                  width="1024"
+                  height="490"
+                />
+              </picture>
               <span class="work__item__overlay">
                 <span>OPEN</span>
                 <svg class="brut-arrow brut-arrow--upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">

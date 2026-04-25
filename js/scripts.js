@@ -817,21 +817,124 @@ function initCursor() {
 }
 
 /* -------------------------------------------------------------
-   MARQUEE - drag/touch scrollable, with auto-scroll + inertia
+   MARQUEE - infinite linear scroll (pure CSS) + drag/touch override
+
+   Auto-scroll is a plain CSS `@keyframes` animation (defined in
+   main.css), running on the compositor thread - zero per-frame JS,
+   zero main-thread cost in the steady state. Items use
+   `padding-inline` instead of flex `gap` so the cycle distance is
+   exactly `scrollWidth/2` and the CSS `translateX(-50%)` loop is
+   visually seamless.
+
+   JS does three things:
+   1. After webfonts are ready (so widths are final), set
+      `--marquee-duration = scrollWidth / 2 / PX_PER_SEC` so the
+      scroll speed stays constant regardless of viewport / content
+      width. Then add `.is-ready` to start the animation.
+   2. Re-measure on resize so the speed stays constant.
+   3. Drag/touch: pause the CSS animation by adding `.is-paused`
+      (which sets `animation: none`, letting the inline `transform`
+      take effect), update the inline `transform` while the user is
+      dragging, then on release compute the `animation-delay` that
+      corresponds to the current visual offset and remove
+      `.is-paused` to hand back to the compositor seamlessly.
    ------------------------------------------------------------- */
 function initMarquee() {
-  const marquees = document.querySelectorAll(".marquee");
-  marquees.forEach((m) => {
+  const PX_PER_SEC = 30;
+
+  document.querySelectorAll(".marquee").forEach((m) => {
     const track = m.querySelector(".marquee__track");
     if (!track) return;
 
-    m.classList.add("is-js");
+    // Reduced motion: a CSS media query already disables the keyframes
+    // and we skip the drag plumbing too (nothing meaningful to drag).
+    if (prefersReducedMotion) return;
 
-    let offset = 0;
-    // time-based speed - immune to display refresh rate (60/120/144Hz) and
-    // frame drops. 30 px/sec matches the previous "0.5 px/frame @ 60fps" feel.
-    const PX_PER_SEC = prefersReducedMotion ? 0 : 30;
-    let trackHalf = 0;
+    let durationS = 50; // kept in sync with the --marquee-duration var
+    let halfWidth = 0; // scrollWidth / 2 (one full cycle distance)
+
+    const apply = () => {
+      const half = track.scrollWidth / 2;
+      if (half <= 0) return;
+      halfWidth = half;
+      durationS = half / PX_PER_SEC;
+      track.style.setProperty("--marquee-duration", `${durationS.toFixed(2)}s`);
+    };
+
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(apply).observe(track);
+    } else {
+      window.addEventListener("resize", apply);
+    }
+
+    // Defer until webfonts are ready so our first measurement uses the
+    // final widths. Safety timeout for missing/slow Fonts API.
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      apply();
+      m.classList.add("is-ready");
+    };
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(start, start);
+      setTimeout(start, 800);
+    } else {
+      start();
+    }
+
+    /* ---------- drag / touch ---------- */
+
+    // Read the CURRENT visual translateX in CSS px from the live
+    // computed style. Works whether the value is being driven by the
+    // running CSS animation, by an inline `transform`, or by nothing.
+    const readVisualOffset = () => {
+      const t = getComputedStyle(track).transform;
+      if (!t || t === "none") return 0;
+      try {
+        return new DOMMatrix(t).m41;
+      } catch (_) {
+        return 0;
+      }
+    };
+
+    // Normalize any offset into the natural cycle range [-halfWidth, 0].
+    // Because the markup duplicates its items, any value modulo halfWidth
+    // is visually identical to the original - so wrapping during drag /
+    // fling keeps the track visually continuous no matter how far the
+    // user drags or flings past the boundary.
+    const wrap = (off) => {
+      if (halfWidth <= 0) return off;
+      let v = off % halfWidth;
+      if (v > 0) v -= halfWidth;
+      return v;
+    };
+
+    // Hand control back to the CSS animation, picking up from
+    // `visualOffset` (a negative pixel value in [-halfWidth, 0]). The
+    // trick: a CSS animation with `animation-delay: -t` behaves as if
+    // it has already been running for t seconds, so we can teleport
+    // the animation's "current time" by setting the right negative
+    // delay. Because the duplicated content makes 0 and -halfWidth
+    // visually identical, looping is invisible regardless of where we
+    // resume.
+    const resumeCss = (visualOffset) => {
+      if (halfWidth <= 0) {
+        m.classList.remove("is-paused");
+        return;
+      }
+      // Normalize to [-halfWidth, 0].
+      let v = visualOffset % halfWidth;
+      if (v > 0) v -= halfWidth;
+      const fraction = -v / halfWidth; // [0, 1]
+      const delay = -(fraction * durationS); // negative seconds
+      // Set the delay BEFORE removing .is-paused so the animation
+      // re-applies with the correct phase on its very first frame
+      // (no flicker back to translateX(0)).
+      track.style.animationDelay = `${delay.toFixed(3)}s`;
+      track.style.removeProperty("transform");
+      m.classList.remove("is-paused");
+    };
 
     let dragging = false;
     let pointerId = null;
@@ -840,66 +943,34 @@ function initMarquee() {
     let startOffset = 0;
     let lastX = 0;
     let lastTime = 0;
-    let velocity = 0; // user-input fling, px / frame
+    let velocity = 0; // px / 16ms - feel matches the previous fling tuning
     let axis = null; // "h" | "v" | null
+    let flingRaf = 0;
 
-    const measure = () => {
-      // markup duplicates the content inside .marquee__track,
-      // so half-width gives us a seamless wrap point
-      trackHalf = track.scrollWidth / 2;
-    };
-    measure();
-
-    if ("ResizeObserver" in window) {
-      new ResizeObserver(measure).observe(track);
-    } else {
-      window.addEventListener("resize", measure);
-    }
-    // also re-measure once webfonts have loaded
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(measure).catch(() => {});
-    }
-
-    let lastFrame = 0;
-    const tick = (now) => {
-      // first frame: seed lastFrame so we don't get a huge dt jump
-      if (lastFrame === 0) lastFrame = now;
-      // cap dt so coming back from a hidden tab / long pause doesn't fling
-      // the track halfway across the screen in a single frame
-      const dt = Math.min(64, now - lastFrame);
-      lastFrame = now;
-
-      if (!dragging) {
-        // perfectly linear auto-scroll, in real-time units
-        offset -= (PX_PER_SEC * dt) / 1000;
-        // residual fling from a user drag - decay is also time-based so the
-        // inertia feels identical at 60Hz, 120Hz and 144Hz
-        if (velocity !== 0) {
-          offset -= velocity * (dt / 16);
-          velocity *= Math.pow(0.93, dt / 16);
-          if (Math.abs(velocity) < 0.02) velocity = 0;
-        }
+    const cancelFling = () => {
+      if (flingRaf) {
+        cancelAnimationFrame(flingRaf);
+        flingRaf = 0;
       }
-      if (trackHalf > 0) {
-        // wrap modulo, both directions
-        if (offset <= -trackHalf) offset += trackHalf;
-        else if (offset > 0) offset -= trackHalf;
-      }
-      track.style.transform = `translate3d(${offset}px, 0, 0)`;
-      requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
 
     m.addEventListener("pointerdown", (e) => {
-      // ignore secondary buttons
       if (e.button !== undefined && e.button !== 0) return;
+      cancelFling();
+      // Snapshot where the animation visually is right now, then pin
+      // the inline transform to that exact pixel and pause the CSS
+      // animation. The hand-off is invisible because we set the inline
+      // transform to the same value the animation was painting.
+      const visual = readVisualOffset();
+      track.style.transform = `translate3d(${visual}px, 0, 0)`;
+      m.classList.add("is-paused");
+      startOffset = visual;
       dragging = true;
       pointerId = e.pointerId;
       startX = e.clientX;
       startY = e.clientY;
       lastX = e.clientX;
       lastTime = performance.now();
-      startOffset = offset;
       velocity = 0;
       axis = null;
       m.classList.add("is-dragging");
@@ -913,25 +984,25 @@ function initMarquee() {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
 
-      // axis lock: pick direction on first significant move
+      // axis lock on first significant move
       if (axis === null) {
         if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
         if (Math.abs(dx) >= Math.abs(dy)) {
           axis = "h";
         } else {
-          // vertical intent - bow out and let the page scroll
+          // vertical intent - bow out, let the page scroll, restore CSS auto.
           axis = "v";
           dragging = false;
           pointerId = null;
           m.classList.remove("is-dragging");
+          resumeCss(startOffset);
           return;
         }
       }
 
-      offset = startOffset + dx;
+      track.style.transform = `translate3d(${wrap(startOffset + dx)}px, 0, 0)`;
       const now = performance.now();
       const dt = Math.max(1, now - lastTime);
-      // velocity in "px per frame" (assuming ~16ms / frame)
       velocity = -((e.clientX - lastX) / dt) * 16;
       lastX = e.clientX;
       lastTime = now;
@@ -945,6 +1016,35 @@ function initMarquee() {
       pointerId = null;
       axis = null;
       m.classList.remove("is-dragging");
+
+      let offsetNow = readVisualOffset();
+      let v = velocity;
+
+      // No meaningful flick - resume CSS auto-scroll immediately.
+      if (Math.abs(v) < 0.05) {
+        resumeCss(offsetNow);
+        return;
+      }
+
+      // Brief JS-driven inertia phase: continue the user's flick with
+      // exponential decay, then hand back to the CSS animation once
+      // velocity dies. Real-time `dt` so the feel is identical at
+      // 60 / 120 / 144 Hz.
+      let lastT = performance.now();
+      const flingTick = (now) => {
+        const dt = Math.min(64, now - lastT);
+        lastT = now;
+        offsetNow = wrap(offsetNow - v * (dt / 16));
+        v *= Math.pow(0.93, dt / 16);
+        track.style.transform = `translate3d(${offsetNow}px, 0, 0)`;
+        if (Math.abs(v) < 0.05) {
+          flingRaf = 0;
+          resumeCss(offsetNow);
+        } else {
+          flingRaf = requestAnimationFrame(flingTick);
+        }
+      };
+      flingRaf = requestAnimationFrame(flingTick);
     };
     m.addEventListener("pointerup", release);
     m.addEventListener("pointercancel", release);
