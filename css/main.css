@@ -170,6 +170,19 @@ body {
   font-feature-settings: "ss01", "cv11";
 }
 
+/* Form controls (button, input, textarea, select) don't reliably
+   inherit -webkit-font-smoothing / -moz-osx-font-smoothing from body
+   in Chromium / Firefox, so re-state them here. Without this, button
+   labels and input text can render slightly heavier than surrounding
+   copy and look subtly out of place. */
+button,
+input,
+textarea,
+select {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* hide native cursor on pointer:fine devices once custom cursor is up */
 body.has-custom-cursor,
 body.has-custom-cursor * {
