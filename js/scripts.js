@@ -59,7 +59,7 @@ const I18N = {
     "work.taskboard":
       "Kanban board with drag-and-drop, filters, analytics and offline persistence.",
     "work.itdash":
-      "Internal IT cockpit - auth, devices, contacts, tickets and admin in one place.",
+      "Internal IT hub - auth, devices, contacts, tickets and admin in one place.",
     "work.syncle":
       "4K rhythm game with random tracks, solo runs and realtime multiplayer rooms.",
     "work.playground":
@@ -157,7 +157,7 @@ const I18N = {
     "work.taskboard":
       "Tablero Kanban con drag-and-drop, filtros, analítica y persistencia offline.",
     "work.itdash":
-      "Cockpit IT interno - auth, equipos, contactos, tickets y admin en un solo lugar.",
+      "Hub IT interno - auth, equipos, contactos, tickets y admin en un solo lugar.",
     "work.syncle":
       "Rhythm game 4K con tracks random, partidas solo y salas multiplayer en tiempo real.",
     "work.playground":
