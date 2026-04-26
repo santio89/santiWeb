@@ -370,6 +370,30 @@ function initBoot() {
 /* -------------------------------------------------------------
    HEADER, NAV, SCROLL PROGRESS, ACTIVE LINKS
    ------------------------------------------------------------- */
+/* Flip `data-resizing` on <html> whenever the window is being
+   resized. CSS pairs with this to suppress transitions on elements
+   whose *ruleset itself* is media-query-bound (.header__nav in
+   particular), which otherwise animate their transform / background /
+   height when the viewport crosses the mobile breakpoint - making the
+   drawer briefly appear to "open and close" as the mobile styles
+   activate. The attribute is cleared after a short debounce once
+   resize settles, so normal transitions resume for user interactions
+   (scroll condense, burger open/close, theme switch, etc). */
+function initResizeGuard() {
+  const root = document.documentElement;
+  let t = 0;
+  const clear = () => root.removeAttribute("data-resizing");
+  window.addEventListener(
+    "resize",
+    () => {
+      root.setAttribute("data-resizing", "");
+      clearTimeout(t);
+      t = setTimeout(clear, 160);
+    },
+    { passive: true }
+  );
+}
+
 function initHeader() {
   const header = document.getElementById("header");
   const burger = document.getElementById("burger");
@@ -1360,6 +1384,7 @@ function initDoomLazy() {
    INIT
    ------------------------------------------------------------- */
 function init() {
+  initResizeGuard();
   initTheme();
   initLang();
   initBoot();

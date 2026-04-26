@@ -3107,6 +3107,29 @@ textarea:focus-visible {
 /* hide the mobile scrim element completely on desktop */
 .nav-scrim { display: none; }
 
+/* ---------- RESIZE GUARD ----------
+   While the window is actively being resized, `initResizeGuard` (in
+   scripts.js) puts `data-resizing` on <html>. Kill transitions on any
+   element whose *ruleset itself* switches across the mobile breakpoint
+   - otherwise crossing 760px animates the drawer's `transform` /
+     `visibility` / `background` from their desktop values to their
+     closed-mobile values, which reads as the drawer briefly sliding
+     open and closed. Scoped to the specific offenders so unrelated
+     transitions (hover, scroll-spy, theme switch) stay smooth. */
+html[data-resizing] .header,
+html[data-resizing] .header__nav,
+html[data-resizing] .header__nav__link,
+html[data-resizing] .nav-scrim,
+html[data-resizing] .scroll-progress,
+html[data-resizing] .header__logo__a,
+html[data-resizing] .header__logo__b,
+html[data-resizing] .header__logo__c,
+html[data-resizing] .header__section,
+html[data-resizing] .header::before,
+html[data-resizing] .header::after {
+  transition: none !important;
+}
+
 @media (max-width: 760px) {
   :root { --header-h: 56px; }
   .nav-scrim { display: block; }
