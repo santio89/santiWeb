@@ -1106,7 +1106,15 @@ textarea:focus-visible {
     linear-gradient(to bottom, var(--line-strong) 1px, transparent 1px);
 }
 :root[data-theme="light"] .hero__grid { --hero-grid-opacity: 0.1; }
+/* Seamless drift: both endpoints are tile-aligned (the pattern repeats
+   every 80px), so iteration N ends pixel-identically to where
+   iteration N+1 begins - no snap on loop. Declaring an explicit `from`
+   is critical; without it CSS fills the implicit start from the
+   static `background-position: center`, which resolves to an arbitrary
+   pixel offset tied to the hero's current size and won't line up with
+   the `to` endpoint. */
 @keyframes gridDrift {
+  from { background-position: 0 0; }
   to { background-position: 80px 80px; }
 }
 
