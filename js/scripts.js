@@ -59,7 +59,7 @@ const I18N = {
     "work.taskboard":
       "Kanban board with drag-and-drop, filters, analytics and offline persistence.",
     "work.itdash":
-      "Internal IT hub - auth, devices, contacts, tickets and admin in one place.",
+      "Internal IT hub - auth, devices, contacts, tickets, admin and a custom AI chatbot in one place.",
     "work.syncle":
       "4K rhythm game with random tracks, solo runs and realtime multiplayer rooms.",
     "work.playground":
@@ -157,7 +157,7 @@ const I18N = {
     "work.taskboard":
       "Tablero Kanban con drag-and-drop, filtros, analítica y persistencia offline.",
     "work.itdash":
-      "Hub IT interno - auth, equipos, contactos, tickets y admin en un solo lugar.",
+      "Hub IT interno - auth, equipos, contactos, tickets, admin y un chatbot IA a medida en un solo lugar.",
     "work.syncle":
       "Rhythm game 4K con tracks random, partidas solo y salas multiplayer en tiempo real.",
     "work.playground":
@@ -409,6 +409,25 @@ function initHeader() {
     nav.querySelectorAll("a").forEach((a) =>
       a.addEventListener("click", () => setOpen(false))
     );
+
+    /* Resize-out safety net: if the user opens the mobile drawer at a
+       narrow width and then widens the viewport past the mobile
+       breakpoint, the CSS hides the drawer + burger but the JS state
+       (scroll lock, `is-open` classes) would otherwise persist - leaving
+       the page un-scrollable. Watch the breakpoint and force-close
+       whenever we cross into desktop. Mirrors the `max-width: 760px`
+       media query in main.css. */
+    const desktopMQ = window.matchMedia("(min-width: 761px)");
+    const onBreakpointChange = (e) => {
+      if (e.matches && nav.classList.contains("is-open")) {
+        setOpen(false);
+      }
+    };
+    if (desktopMQ.addEventListener) {
+      desktopMQ.addEventListener("change", onBreakpointChange);
+    } else if (desktopMQ.addListener) {
+      desktopMQ.addListener(onBreakpointChange);
+    }
   }
 
   // active section highlight

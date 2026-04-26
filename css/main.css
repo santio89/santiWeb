@@ -792,20 +792,28 @@ textarea:focus-visible {
   border: 1.5px solid var(--line-strong);
   position: relative;
 }
+/* All three bars are anchored to the exact vertical center of the
+   button (top: 50%, then `margin-top: -1px` pulls them up by half their
+   own 2px height). The closed state shifts bars 1 and 3 up/down with a
+   transform; the open state simply removes that shift and rotates -
+   both rotating bars share the SAME center of rotation, so the X is
+   symmetric by construction (no translate math to get wrong). */
 .burger span {
   position: absolute;
   left: 8px;
   right: 8px;
+  top: 50%;
   height: 2px;
+  margin-top: -1px;
   background: var(--fg);
   transition: transform 220ms var(--ease-snap), opacity 220ms;
 }
-.burger span:nth-child(1) { top: 11px; }
-.burger span:nth-child(2) { top: 17px; }
-.burger span:nth-child(3) { top: 23px; }
-.burger.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger span:nth-child(1) { transform: translateY(-7px); }
+.burger span:nth-child(2) { transform: translateY(0); }
+.burger span:nth-child(3) { transform: translateY(7px); }
+.burger.is-open span:nth-child(1) { transform: rotate(45deg); }
 .burger.is-open span:nth-child(2) { opacity: 0; }
-.burger.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.burger.is-open span:nth-child(3) { transform: rotate(-45deg); }
 
 /* ---------- HERO ---------- */
 .hero {
@@ -1598,6 +1606,50 @@ textarea:focus-visible {
   transform: scale(1.03);
   filter: saturate(1.05) brightness(1.02);
 }
+
+/* ---------- Theme-aware work shots ----------
+   Some work items ship two screenshots - one for dark theme and one for
+   light. They live as two stacked <picture> elements inside
+   .work__item__shots so the browser can lazy-load BOTH when the work
+   item enters the viewport (no `display: none` because that would defer
+   loading the hidden one). The active variant is driven entirely by
+   :root[data-theme="..."], and the cross-fade rides along with the
+   site's existing theme-swap tween / view transition. */
+.work__item__shots {
+  position: absolute;
+  /* sits below the .work__item__browser strip (height: 30px) */
+  top: 30px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.work__item__shot {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transition: opacity 380ms var(--ease);
+}
+.work__item__frame .work__item__shot img {
+  /* Same look as the single-image rule above, but the parent shot is
+     already sized correctly (no need to subtract the browser-bar
+     height a second time). More specific selector wins over the
+     `.work__item__frame img` height rule. */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  background: var(--bg);
+  transition:
+    transform 480ms var(--ease),
+    filter 240ms var(--ease);
+  filter: saturate(0.92);
+}
+/* Dark is the default (site is dark-first); light variant fades in
+   when the user toggles the page to light mode. */
+.work__item__shot--light { opacity: 0; }
+:root[data-theme="light"] .work__item__shot--dark { opacity: 0; }
+:root[data-theme="light"] .work__item__shot--light { opacity: 1; }
 .work__item__overlay {
   position: absolute;
   inset: 0;
