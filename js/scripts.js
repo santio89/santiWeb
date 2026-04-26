@@ -1581,35 +1581,54 @@ function initHeroRift() {
   const HIT_INSET = 8;
   const IDLE_RELOCATE_MS = 16000; // quiet drift between teleports (user-clickable window)
   const POST_RIFT_MS = 8000;      // respawn after rift completes
-  // Teleport phases. OUT (760ms, gentle scale+fade with
-  // easeOutCubic) + DWELL (520ms, held invisible) + IN (980ms
-  // scale+fade with easeOutCubic, driven by the default
-  // transition on .hero__rift__hint) = ~2.26s total. Both OUT
-  // and IN now share the same easeOutCubic curve and scale(0.94)
-  // delta; only duration differs (OUT slightly shorter than IN)
-  // so the cell feels like it "leaves calmly and arrives softly"
-  // - one coherent breath in both directions instead of two
-  // different moods. The dwell is what sells "it's actually
-  // gone" - no dwell and the cell just seems to jump across the
-  // grid. These two setTimeout values below only cover the OUT
-  // + DWELL window (CSS drives the IN); JS just needs to
-  // reposition the hint and remove .is-teleporting by the
-  // 1280ms mark so the IN transition can fire from the default
-  // state. TELEPORT_OUT_MS must match the CSS OUT duration
-  // exactly - shorter and the cell isn't fully faded yet when
-  // we reposition (visible snap); longer and there's a dead
-  // beat where the cell is visually gone but we haven't moved
-  // it yet.
-  const TELEPORT_OUT_MS = 760;
-  const TELEPORT_DWELL_MS = 520;
+  // Teleport phases. OUT (1400ms, soft scale+fade with
+  // easeOutCubic) + DWELL (3000-4500ms randomized, held invisible)
+  // + IN (1600ms scale+fade with easeOutCubic, driven by the
+  // default transition on .hero__rift__hint) = ~6-7.5s total.
+  // Both OUT and IN share the same easeOutCubic curve and the
+  // same subtle scale(0.96) delta; only duration differs (OUT
+  // slightly shorter than IN) so the cell feels like it "leaves
+  // calmly and arrives softly" - one coherent breath in both
+  // directions. Longer fades and a longer dwell were a direct
+  // response to "disappears and reappears too fast" - the cell
+  // used to be gone for only ~1.3s which felt instantaneous;
+  // now it's absent for 4.4-5.9s per teleport, long enough to
+  // feel like a real absence without being so long the easter
+  // egg feels rare. Randomizing the dwell (via getTeleportDwell
+  // below) breaks the metronomic rhythm that a fixed constant
+  // produces so each teleport cycle feels like the cell has
+  // "its own mind" about when to return. TELEPORT_OUT_MS must
+  // match the CSS OUT duration exactly - shorter and the cell
+  // isn't fully faded yet when we reposition (visible snap);
+  // longer and there's a dead beat where the cell is visually
+  // gone but we haven't moved it yet.
+  const TELEPORT_OUT_MS = 1400;
+  const TELEPORT_DWELL_MIN_MS = 3000;
+  const TELEPORT_DWELL_MAX_MS = 4500;
+  const getTeleportDwell = () => (
+    TELEPORT_DWELL_MIN_MS +
+    Math.random() * (TELEPORT_DWELL_MAX_MS - TELEPORT_DWELL_MIN_MS)
+  );
+  // Initial-load delay: the hint starts with the `hidden`
+  // attribute in the markup so it isn't pre-rendered at load.
+  // This window (2.8-4.8s random) holds it hidden a little
+  // longer after layout is ready, then it fades in via the
+  // same .is-teleporting trick a post-rift respawn uses.
+  // Matches the staggered reveal pattern of the other hero
+  // cells (heroCellTick with up to 7s random delay) so the
+  // suspicious cell reads as "one of the grid family that
+  // shows up late" rather than something that was always
+  // there from page load.
+  const INITIAL_REVEAL_MIN_MS = 2800;
+  const INITIAL_REVEAL_MAX_MS = 4800;
   // Absolute upper bound on how long the is-teleporting class can
   // stay on the element. If something goes wrong (tab throttled,
   // timers starved, rAFs queued up, etc.) the safety watchdog forces
   // the class off at this deadline so the hint can never get stuck
-  // unclickable. Only needs to cover OUT + DWELL + a little slack
-  // (IN runs from the default-state transition once the class is
-  // gone, so the IN duration isn't the watchdog's problem).
-  const TELEPORT_SAFETY_MS = 2600;
+  // unclickable. Covers OUT + max DWELL + a little slack; IN runs
+  // from the default-state transition once the class is gone so
+  // the IN duration isn't the watchdog's problem.
+  const TELEPORT_SAFETY_MS = 6500;
   let relocateTimer = 0;
   let hintRespawn = 0;
   let teleportTimer = 0;   // tracks the in-flight teleport setTimeout so trigger() can cancel it
@@ -1826,12 +1845,23 @@ function initHeroRift() {
     return false;
   };
 
-  // Initial placement, deferred one frame so the hero layout has had
-  // at least one paint pass. Without the defer, the very first call
-  // to hero.getBoundingClientRect() can still be zeroed out on some
-  // browsers, which made pickCell() return null and left the hint
-  // permanently hidden on load.
-  requestAnimationFrame(() => tryApplyCell());
+  // Initial placement is deferred not just one frame but a full
+  // 2.8-4.8s (randomized) so the hint arrives late and fades in
+  // like one of the other hero cells instead of being in position
+  // from page load. `fade: true` routes through the
+  // .is-teleporting reflow trick in applyCell so the button
+  // transitions from opacity:0 + scale(0.96) -> opacity:1 +
+  // scale(1), giving a slow soft reveal over 1600ms instead of
+  // popping in at full opacity the moment layout is ready.
+  // Without the delay + fade, the cell was visible from first
+  // paint which made it feel like a permanent UI element; the
+  // delayed reveal restores the "suspicious, appeared a bit ago"
+  // quality the other random hero-grid cells have.
+  const initialDelay = (
+    INITIAL_REVEAL_MIN_MS +
+    Math.random() * (INITIAL_REVEAL_MAX_MS - INITIAL_REVEAL_MIN_MS)
+  );
+  setTimeout(() => tryApplyCell(0, true), initialDelay);
 
   const teleportHint = () => {
     if (active) return;           // never teleport mid-rift
@@ -1843,7 +1873,7 @@ function initHeroRift() {
     // can't ever double-schedule the flip-back).
     clearTimeout(teleportTimer);
     clearTimeout(teleportWatchdog);
-    // Phase 1 (OUT): 760ms fade + gentle scale(0.94) shrink,
+    // Phase 1 (OUT): 1400ms fade + gentle scale(0.96) shrink,
     // driven by the .is-teleporting class on the hint. Symmetric
     // easeOutCubic curve with the IN below - CSS handles the
     // actual transition; we just flip the class on.
@@ -1877,7 +1907,7 @@ function initHeroRift() {
           hint.classList.remove("is-teleporting");
         });
       });
-    }, TELEPORT_OUT_MS + TELEPORT_DWELL_MS);
+    }, TELEPORT_OUT_MS + getTeleportDwell());
   };
 
   const scheduleRelocate = (delay) => {

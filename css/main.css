@@ -1271,38 +1271,47 @@ textarea:focus-visible {
   /* Create a stacking context for the filter/shadow stack on
      ::before without CLIPPING like contain:paint does. We can't
      use contain:paint here because the sway animation rotates
-     ::before with amplitudes (up to 20° rotateY + 7° rotateZ + a
-     scale pulse) where corner displacement exceeds the 8px hit
-     margin at peak - contain:paint would visibly crop the rotated
-     border. isolation:isolate is enough for paint grouping
-     (stacking context) without the bounding-box clip. */
+     ::before with amplitudes (up to 32° rotateY + 12° rotateZ +
+     14° rotateX + a scale pulse) where corner displacement far
+     exceeds the 8px hit margin at peak - contain:paint would
+     visibly crop the rotated border. isolation:isolate is enough
+     for paint grouping (stacking context) without the bounding-
+     box clip. */
   isolation: isolate;
   /* reset default <button> focus outline; replaced with a theme-aware
      one below so keyboard users can still see where focus lives */
   outline: none;
   -webkit-tap-highlight-color: transparent;
   transform-origin: 50% 50%;
-  /* Entry transition (reappear after teleport / respawn).
-     Gentle symmetric pair with easeOutCubic on BOTH opacity
-     and transform:
-       - 980ms for the arrival - slightly slower than the OUT
-         (760ms, below) so "arrives softly, leaves calmly" -
+  /* Entry transition (reappear after teleport / respawn / initial
+     load reveal). Gentle symmetric pair with easeOutCubic on
+     BOTH opacity and transform:
+       - 1600ms for the arrival - slightly slower than the OUT
+         (1400ms, below) so "arrives softly, leaves calmly" -
          a subtle asymmetry rather than the old "reluctantly
          leaves / snaps back" which had dramatically different
          curves in each direction and read as two different
-         moods instead of one smooth breath.
+         moods instead of one smooth breath. Both durations
+         were bumped from the previous 980/760ms calibration
+         (which felt abrupt for a "suspicious, maybe not there"
+         cell) so the cell now fades for a full 1.4-1.6s in
+         each direction - enough runway to actually register
+         as a materializing/dematerializing easter egg.
        - easeOutCubic spreads the change evenly - no front-
          loaded snap-pop (expo-out) and no accelerating rush
          (the old OUT curve). The cell just... appears,
          smoothly, and settles into place.
      Paired with the OUT transition below, the two directions
-     now share the same character: a soft scale pulse (0.94 ->
-     1.0 / 1.0 -> 0.94) plus an even opacity fade. Feels like
-     the same entity materializing and dematerializing, rather
-     than two different animations bolted together. */
+     now share the same character: a soft scale pulse (0.96 ->
+     1.0 / 1.0 -> 0.96) plus an even opacity fade. Scale delta
+     was softened from 0.94 to 0.96 so the shrink is barely
+     visible but still present - a whisper of "contracting
+     inward" rather than a visible shrink. Feels like the same
+     entity materializing and dematerializing, rather than two
+     different animations bolted together. */
   transition:
-    opacity 980ms cubic-bezier(0.33, 1, 0.68, 1),
-    transform 980ms cubic-bezier(0.33, 1, 0.68, 1);
+    opacity 1600ms cubic-bezier(0.33, 1, 0.68, 1),
+    transform 1600ms cubic-bezier(0.33, 1, 0.68, 1);
   /* No halo / box-shadow pulse on the button - and none on the
      ::before either. The earlier two-layer breathing halo (tight
      inner + 26px ambient) plus the static outer box-shadow on
@@ -1333,23 +1342,26 @@ textarea:focus-visible {
 }
 .hero__rift__hint[hidden] { display: none; }
 /* Teleport exit state: opacity fades to 0 and the cell shrinks
-   subtly to scale(0.94). Held invisible for TELEPORT_DWELL_MS by
-   JS before it's repositioned + the class is removed.
+   subtly to scale(0.96). Held invisible for a JS-driven
+   randomized 3000-4500ms dwell before it's repositioned + the
+   class is removed (total absence per teleport: OUT 1400ms +
+   dwell 3-4.5s + IN 1600ms = 6-7.5s, long enough that the cell
+   genuinely feels "gone for a bit" before it reappears).
    Dropped the old rotateY(90deg) edge-on flip - that was way too
    dramatic for what should be a subtle "it's leaving" moment.
-   A tiny scale(0.94) shrink paired with the opacity fade reads
+   A tiny scale(0.96) shrink paired with the opacity fade reads
    as a gentle dematerialization without the snap of a 3D flip.
    Matches the IN transition above (same easeOutCubic curve, both
    properties) so the two directions feel like one coherent
-   breath - only difference is the duration (760ms out vs 980ms
+   breath - only difference is the duration (1400ms out vs 1600ms
    in) so leaving feels a touch more decisive than arriving. */
 .hero__rift__hint.is-teleporting {
   opacity: 0;
-  transform: scale(0.94);
+  transform: scale(0.96);
   pointer-events: none;
   transition:
-    opacity 760ms cubic-bezier(0.33, 1, 0.68, 1),
-    transform 760ms cubic-bezier(0.33, 1, 0.68, 1);
+    opacity 1400ms cubic-bezier(0.33, 1, 0.68, 1),
+    transform 1400ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 /* Solid accent-neon frame with an inner-only neon glow.
@@ -1555,66 +1567,77 @@ textarea:focus-visible {
 }
 
 @keyframes riftHintSway {
-  /* Multi-axis idle drift - amplitudes sized to match the other
-     hero grid cells (which do 180°/360° flips and scale pulses),
-     so the rift cell reads as "the same family, but weirder".
-     Continuous rotation on X/Y/Z axes + two occasional scale
-     "breath" moments (a swell at ~38% and a shrink at ~72%) with
-     the rest of the cycle held at scale(1). Ten keyframes so the
-     scale transitions neighbor each other as scale(1) -> peak ->
-     scale(1), which means the scale interpolation is localized
-     to those specific windows rather than oscillating across the
-     whole loop. That's what sells "resizes sometimes, not all
+  /* Multi-axis idle drift - amplitudes are a family step above
+     the other hero grid cells (which do clean 180°/360° flips
+     and simple scale pulses) so the rift cell reads as "the
+     same family, but weirder / more restless". Continuous
+     rotation on all three axes with bigger swings (±32° on Y,
+     ±14° on X, ±12° on Z - was ±20°/±8°/±7°) + two scale
+     "breath" moments (a swell at 34% and a shrink at 72%) with
+     the rest of the cycle held at scale(1). The larger Y-axis
+     range in particular sells the "2D/3D rotation" brief - at
+     32° the cell tips far enough past its grid plane to read as
+     clearly 3D instead of a flat icon wiggling. Twelve keyframes
+     (was ten) so the extra detail doesn't interpolate through
+     simple straight lines between peaks; each adjacent pair
+     defines a distinct micro-motion. Scale peaks still neighbor
+     each other as scale(1) -> peak -> scale(1) so interpolation
+     stays localized and reads as "resizes sometimes, not all
      the time". 11s period is slow enough to feel suspicious but
      fast enough to always read as moving. */
-  0%   { transform: perspective(560px) rotateZ(0deg)    rotateY(0deg)    rotateX(0deg)   scale(1); }
-  12%  { transform: perspective(560px) rotateZ(5deg)    rotateY(18deg)   rotateX(-4deg)  scale(1); }
-  28%  { transform: perspective(560px) rotateZ(-4deg)   rotateY(-16deg)  rotateX(8deg)   scale(1); }
-  34%  { transform: perspective(560px) rotateZ(-1deg)   rotateY(-6deg)   rotateX(5deg)   scale(1.14); }
-  42%  { transform: perspective(560px) rotateZ(4deg)    rotateY(10deg)   rotateX(4deg)   scale(1); }
-  55%  { transform: perspective(560px) rotateZ(6deg)    rotateY(12deg)   rotateX(6deg)   scale(1); }
-  66%  { transform: perspective(560px) rotateZ(-7deg)   rotateY(-20deg)  rotateX(-3deg)  scale(1); }
-  72%  { transform: perspective(560px) rotateZ(-5deg)   rotateY(-12deg)  rotateX(2deg)   scale(0.82); }
-  80%  { transform: perspective(560px) rotateZ(3deg)    rotateY(8deg)    rotateX(5deg)   scale(1); }
-  100% { transform: perspective(560px) rotateZ(0deg)    rotateY(0deg)    rotateX(0deg)   scale(1); }
+  0%   { transform: perspective(560px) rotateZ(0deg)    rotateY(0deg)    rotateX(0deg)    scale(1); }
+  10%  { transform: perspective(560px) rotateZ(6deg)    rotateY(22deg)   rotateX(-6deg)   scale(1); }
+  20%  { transform: perspective(560px) rotateZ(8deg)    rotateY(30deg)   rotateX(-2deg)   scale(1); }
+  28%  { transform: perspective(560px) rotateZ(-5deg)   rotateY(-24deg)  rotateX(10deg)   scale(1); }
+  34%  { transform: perspective(560px) rotateZ(-2deg)   rotateY(-10deg)  rotateX(6deg)    scale(1.12); }
+  42%  { transform: perspective(560px) rotateZ(5deg)    rotateY(14deg)   rotateX(4deg)    scale(1); }
+  52%  { transform: perspective(560px) rotateZ(11deg)   rotateY(20deg)   rotateX(8deg)    scale(1); }
+  60%  { transform: perspective(560px) rotateZ(7deg)    rotateY(6deg)    rotateX(12deg)   scale(1); }
+  68%  { transform: perspective(560px) rotateZ(-10deg)  rotateY(-32deg)  rotateX(-4deg)   scale(1); }
+  72%  { transform: perspective(560px) rotateZ(-7deg)   rotateY(-20deg)  rotateX(3deg)    scale(0.84); }
+  84%  { transform: perspective(560px) rotateZ(4deg)    rotateY(12deg)   rotateX(7deg)    scale(1); }
+  100% { transform: perspective(560px) rotateZ(0deg)    rotateY(0deg)    rotateX(0deg)    scale(1); }
 }
 
 @keyframes riftHintDrift {
   /* Idle positional wander for the whole hint button.
-     Amplitude sizing: ±14px horizontally, ±12px vertically.
-     Earlier iteration used ±6px, which was too subtle to
-     actually read as "moving" because:
-       - the ::before sway already rotates up to 20° + scale
-         pulses, and the eye locks onto that bigger motion
-       - ease-in-out spends half the cycle near the peak and
-         half near zero, so average perceived motion is even
-         smaller than the stated amplitude
-     Bumping to ±12-14px puts the drift clearly above the
-     noise of the sway. The cell still stays close enough to
-     its grid slot that it reads as "the same cell, drifting"
-     rather than "a new cell appeared" - but now you can
-     actually see it wander. 11s period (trimmed from 13s)
-     stays offset from the sway's 11s by a prime-ratio so the
-     two loops phase-drift rather than phase-locking.
+     Amplitude sizing: ±22px horizontally, ±18px vertically
+     (was ±14/±12). The earlier range was readable but the
+     cell still felt tethered to its grid slot; bumping to
+     ±18-22px gives it genuine wander - you can see the cell
+     drift the better part of a cell-width in each direction
+     over the 11s cycle, which is what sells the "has its own
+     mind" brief. The cell still stays close enough to its
+     grid slot that it reads as "the same cell, drifting"
+     rather than "a new cell appeared", but now the wander
+     is unambiguous. 11s period stays offset from the sway's
+     11s because the two animations drive different elements
+     (button vs ::before) with different transform-origins -
+     same period, different kinematics, so the eye reads them
+     as independent motions not a single synced loop.
 
      Uses the individual `translate:` CSS property (NOT
      `transform:`) on purpose so it never conflicts with:
-       - `transform:` on .is-teleporting, which sets the 3D
-         flip-out (rotateY(90deg) scale(0.9)) during teleport;
-         `translate:` composes on top of `transform:` in the
-         final matrix, so the drift just adds an offset to the
-         flip animation instead of fighting it.
+       - `transform:` on .is-teleporting, which sets the
+         scale(0.96) shrink during teleport; `translate:`
+         composes on top of `transform:` in the final matrix
+         so the drift just adds an offset to the teleport
+         animation instead of fighting it.
        - the ::before sway, which rotates/scales the visible
          border in place and has its own transform-origin.
-     Asymmetric keyframe spacing (peaks at 15/30/48/62/78%,
+     Asymmetric keyframe spacing (peaks at 14/28/46/60/76/88%,
      never simple halves) prevents the wander from reading as
-     a predictable back-and-forth rhythm. */
+     a predictable back-and-forth rhythm. Added an extra
+     keyframe (7 peaks vs 5) so the path traces a more
+     irregular figure-eight-ish shape instead of a smoother
+     ellipse. */
   0%   { translate:   0     0;    }
-  15%  { translate:  11px  -6px;  }
-  30%  { translate:   4px   9px;  }
-  48%  { translate:  -8px  12px;  }
-  62%  { translate: -14px  -3px;  }
-  78%  { translate:   6px -10px;  }
+  14%  { translate:  16px  -9px;  }
+  28%  { translate:   6px  14px;  }
+  46%  { translate: -13px  18px;  }
+  60%  { translate: -22px  -5px;  }
+  76%  { translate:  10px -16px;  }
+  88%  { translate:  19px   4px;  }
   100% { translate:   0     0;    }
 }
 
