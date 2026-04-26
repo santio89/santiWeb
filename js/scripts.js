@@ -1914,7 +1914,16 @@ function initHeroRift() {
   /* ---------- rift state ---------- */
   let active = false;
   let startT = 0;
-  const DURATION = 2500;
+  /* Total rift animation length. Bumped from 2500 -> 3600 so the
+     hold plateau (where the tear sits open and the hex label
+     breathes in+out) lasts long enough to actually read the
+     "0xFF TEAR / SIG::001" text. Previous 2500ms gave the label
+     only ~860ms of readable alpha - a flash, not a reveal. The
+     extra ~1100ms goes almost entirely into the hold phase (see
+     phase envelope in loop()), keeping the open and close beats
+     at their original absolute duration so the rift still feels
+     snappy on both ends. */
+  const DURATION = 3600;
   /* Rift dimensions are viewport-aware - refreshed at each trigger()
      from the current canvas width. Desktop (the original calibration)
      is kept intact; mobile + tablet scale both LEN_RATIO and WIDTH up
@@ -2583,28 +2592,36 @@ function initHeroRift() {
 
     const dt = 1 / 60;
 
-    /* Phase envelope:
-         0.00-0.08  pre-beat  (particles fly first, faint tear forming)
-         0.08-0.32  opening
-         0.32-0.72  hold (flicker)
-         0.72-1.00  closing
-       The 0-0.08 window used to overlay a radial "flash" gradient on
-       top - a perfect circular pulse that read as a too-clean
-       shockwave and fought the brutalist / debris aesthetic of the
-       particle cloud. Removed. The initial 42-particle burst already
-       fires at trigger() (one frame before the first loop tick), so
-       the "reality cracked" announcement is carried entirely by the
-       debris explosion + the faint tear starting to form. */
+    /* Phase envelope (fractions of DURATION=3600ms):
+         0.00-0.06  pre-beat  (~216ms, particles fly first, faint tear forming)
+         0.06-0.22  opening   (~576ms, tear unzips to full height)
+         0.22-0.80  hold      (~2088ms, open+flicker+label readout)
+         0.80-1.00  closing   (~720ms, tear seals shut)
+
+       Opening and closing keep their original ~600/~720ms absolute
+       durations from the old 2500ms calibration, so the rift still
+       feels snappy on both ends. The ~1100ms added to DURATION all
+       goes into the hold - doubling its length from ~1000ms to
+       ~2088ms - which is what gives the hex label (0xFF TEAR /
+       SIG::001) enough dwell time to actually read instead of
+       flashing past. The 0-0.08 window used to overlay a radial
+       "flash" gradient on top - a perfect circular pulse that read
+       as a too-clean shockwave and fought the brutalist / debris
+       aesthetic of the particle cloud. Removed. The initial
+       42-particle burst already fires at trigger() (one frame
+       before the first loop tick), so the "reality cracked"
+       announcement is carried entirely by the debris explosion +
+       the faint tear starting to form. */
     let openness = 0, length = 0;
-    if (progress < 0.08) {
-      openness = length = (progress / 0.08) * 0.1;
-    } else if (progress < 0.32) {
-      const t = (progress - 0.08) / 0.24;
+    if (progress < 0.06) {
+      openness = length = (progress / 0.06) * 0.1;
+    } else if (progress < 0.22) {
+      const t = (progress - 0.06) / 0.16;
       openness = length = easeOutCubic(t);
-    } else if (progress < 0.72) {
+    } else if (progress < 0.80) {
       openness = length = 1;
     } else {
-      const t = (progress - 0.72) / 0.28;
+      const t = (progress - 0.80) / 0.20;
       openness = length = 1 - easeInCubic(t);
     }
 
@@ -2620,8 +2637,8 @@ function initHeroRift() {
     // reshape to read. At 120ms cadence the reshape is visible but
     // deliberate - not TV static.
     if (
-      progress > 0.18 &&
-      progress < 0.75 &&
+      progress > 0.14 &&
+      progress < 0.82 &&
       elapsed - lastJitterRefresh > RIFT_JITTER_REFRESH_MS
     ) {
       rollJitter();
@@ -2636,7 +2653,7 @@ function initHeroRift() {
        bumped from 0.38 -> 0.55 now that the cloud supports more
        visual variety (4 hues, 3 kinds) - the extra density sells
        the "living tear" feel without crowding the canvas. */
-    if (progress > 0.12 && progress < 0.8 && Math.random() < 0.55) {
+    if (progress > 0.10 && progress < 0.84 && Math.random() < 0.55) {
       // Uses the same asymmetric clamped half-heights as
       // buildRiftPath so edge particles emit along the ACTUAL
       // drawn tear, not a longer theoretical tear that'd spawn
@@ -2692,10 +2709,22 @@ function initHeroRift() {
     updateParticles(dt, elapsed);
     drawParticles();
 
-    // Hex label fades in/out during the hold phase only.
-    if (progress > 0.34 && progress < 0.72) {
-      const labelT = (progress - 0.34) / 0.38;
-      const labelAlpha = Math.sin(labelT * Math.PI) * 0.7 * flicker;
+    // Hex label fades in/out during the hold phase only. Window
+    // widened from 0.34-0.72 (~950ms in the old 2500ms timeline)
+    // to 0.28-0.78 of the new 3600ms DURATION, which is ~1800ms
+    // wall-clock - roughly double the dwell time of the previous
+    // calibration so the "0xFF TEAR / SIG::001" readout is
+    // actually readable instead of flashing past. Peak alpha is
+    // also bumped a hair (0.7 -> 0.78) and the sine curve is
+    // held at plateau slightly longer via a flattening exponent,
+    // so the label sits at readable alpha for more of its window
+    // instead of spiking fast and fading fast. */
+    if (progress > 0.28 && progress < 0.78) {
+      const labelT = (progress - 0.28) / 0.50;
+      // Plateau-flattened sine: raising sin to 0.65 power widens
+      // the top of the curve so alpha stays near peak longer,
+      // giving the eye more time to actually parse the text.
+      const labelAlpha = Math.pow(Math.sin(labelT * Math.PI), 0.65) * 0.78 * flicker;
       if (labelAlpha > 0.1) drawHexLabel(labelAlpha);
     }
 
