@@ -90,6 +90,8 @@ const I18N = {
     "form.send": "SEND MESSAGE",
     "form.reset": "RESET",
 
+    "footer.backTop": "BACK TO TOP",
+
     "404.msg":
       "The page you're trying to access is unavailable, was moved or never existed.",
     "404.cta1": "BACK HOME",
@@ -187,6 +189,8 @@ const I18N = {
     "form.msg": "Contame sobre tu proyecto, posición o idea…",
     "form.send": "ENVIAR MENSAJE",
     "form.reset": "RESETEAR",
+
+    "footer.backTop": "VOLVER ARRIBA",
 
     "404.msg":
       "La página a la que intentás acceder no está disponible, fue movida o nunca existió.",

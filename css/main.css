@@ -1236,6 +1236,101 @@ textarea:focus-visible {
   50% { transform: translateY(4px); }
 }
 
+/* ---------- BACK-TO-TOP CUE ----------
+   Bookends the page by mirroring the hero "SCROLL" cue. Sits in a thin
+   band between the last section and the footer, anchored to the right
+   edge so it visually rhymes with the hero cue's bottom-left anchor. */
+.back-to-top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 40px var(--pad-page-x);
+  background: var(--bg);
+}
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  transition: color 200ms var(--ease);
+  text-decoration: none;
+}
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  color: var(--fg);
+  outline: none;
+}
+.back-to-top__line {
+  width: 60px;
+  height: 1.5px;
+  background: var(--accent);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 6px  rgba(var(--accent-rgb), 0.55),
+    0 0 14px rgba(var(--accent-rgb), 0.3);
+}
+.back-to-top__line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  /* swept opposite direction from the hero cue's line so the bookend
+     reads as a mirror, not a copy */
+  animation: scrollLineReverse 2.4s var(--ease) infinite;
+}
+@keyframes scrollLineReverse {
+  0%   { transform: translateX(100%); }
+  60%  { transform: translateX(-100%); }
+  100% { transform: translateX(-100%); }
+}
+.back-to-top__arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--bg-panel);
+  color: var(--fg);
+  transition:
+    background 200ms var(--ease),
+    color 200ms var(--ease),
+    border-color 200ms var(--ease),
+    transform 220ms var(--ease-snap),
+    box-shadow 220ms var(--ease-snap);
+  /* hero cue bobs DOWN, this one bobs UP to reinforce the direction */
+  animation: backToTopArrowBob 2.2s ease-in-out infinite;
+  will-change: transform;
+}
+.back-to-top__arrow svg {
+  width: 14px;
+  height: 14px;
+}
+:root[data-theme="light"] .back-to-top__arrow {
+  background: #fbf8ed;
+}
+.back-to-top:hover .back-to-top__arrow,
+.back-to-top:focus-visible .back-to-top__arrow {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 14px rgba(var(--accent-rgb), 0.55),
+    0 0 32px rgba(var(--accent-rgb), 0.3);
+  animation-play-state: paused;
+}
+@keyframes backToTopArrowBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
 /* ---------- MARQUEE ---------- */
 .marquee {
   position: relative;
@@ -2006,7 +2101,10 @@ textarea:focus-visible {
   border-top: 1.5px solid var(--line-strong);
   background: var(--bg-alt);
   padding: 48px var(--pad-page-x) 24px;
-  margin-top: 80px;
+  /* The .back-to-top-bar that sits directly above provides the
+     breathing room from the previous section, so no margin needed
+     here. */
+  margin-top: 0;
 }
 .footer__top {
   max-width: var(--max-w);
@@ -2921,6 +3019,15 @@ textarea:focus-visible {
   .hero__scroll__line { width: 32px; }
   .hero__scroll__arrow { width: 26px; height: 26px; }
   .hero__scroll__arrow svg { width: 12px; height: 12px; }
+  .back-to-top-bar { padding: 28px var(--pad-page-x); }
+  .back-to-top {
+    gap: 10px;
+    font-size: 9px;
+    letter-spacing: 0.26em;
+  }
+  .back-to-top__line { width: 32px; }
+  .back-to-top__arrow { width: 26px; height: 26px; }
+  .back-to-top__arrow svg { width: 12px; height: 12px; }
   .marquee--hero { padding: 12px 0; }
 
   .skills__grid { grid-template-columns: 1fr; }
