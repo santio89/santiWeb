@@ -1467,6 +1467,875 @@ function initHeroCells() {
 }
 
 /* -------------------------------------------------------------
+   HERO RIFT  (easter-egg "tear in the grid")
+   - Places a small suspicious <button> on a random 80px cell of the
+     empty right-side area of the hero. Cell has a dashed brutalist
+     outline that drifts on a slow multi-axis 2D+3D sway
+     (rotateZ/Y/X, different sign combos on every keyframe so it
+     never settles into a pattern), plus a subtle ambient halo fade
+     on the button itself. Hover swaps the sway out for a stepped
+     "hack glitch" burst - translate + skew + hue-rotate/invert at
+     steps(8) timing so it reads as a corrupted signal. A small
+     crosshair glyph fades in on hover so the cell reads as a hit
+     target. The button is a real focusable control, so keyboard +
+     screen-reader users can find it. The cell teleports to a fresh
+     random grid position every IDLE_RELOCATE_MS with a smooth 3D
+     flip-out / dwell / flip-in.
+   - Clicking the hint (or typing the magic word "rift") triggers a
+     ~2.5s canvas animation on a full-hero overlay:
+       1. a 42-particle debris burst explodes outward from the hint
+          center (sparks + rotating wireframe chunks + rare embers;
+          4 hues matching the tear's chromatic-aberration palette)
+       2. a jagged vertical rift opens — core is theme-inverse
+          (white on dark / black on light), with an accent halo and
+          a split-shadow ghost pass that reads as chromatic
+          aberration. Fully theme-aware: the tear color is always
+          opposite to --bg with an accent-color touch.
+       3. continuous inverse-fg / accent sparks emit from the edges
+          throughout the hold phase
+       4. a small phosphor-glow hex readout ("0xFF TEAR / SIG::001")
+          flickers during the hold phase
+       5. rift seals from the ends inward
+   - rAF loop only runs while active. Idle, the canvas is transparent
+     and costs zero frames. Reduced-motion users get the effect
+     removed entirely (both canvas + hint).
+   - Hint respawns at a new random cell ~20s after each fire, so a
+     long session can rediscover it a few times.
+   ------------------------------------------------------------- */
+function initHeroRift() {
+  const canvas = document.getElementById("heroRift");
+  const hint = document.getElementById("heroRiftHint");
+  const hero = document.getElementById("hero");
+  if (!canvas || !hint || !hero) return;
+
+  // Reduced-motion users see neither the hint nor the rift. Remove
+  // both so we don't leave an invisible clickable cell that would
+  // trigger nothing on activation.
+  if (prefersReducedMotion) {
+    hint.remove();
+    canvas.remove();
+    return;
+  }
+
+  const ctx = canvas.getContext("2d", { alpha: true });
+  if (!ctx) return;
+
+  /* ---------- sizing / DPR ----------
+     DPR capped at 2 (same rationale as cursor / nuclei): the effect
+     is a low-frequency paint, not a pixel-perfect render, so paying
+     for 3x pixel count on 3x displays buys nothing visible. */
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let w = 0, h = 0;
+
+  const resize = () => {
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = rect.width;
+    h = rect.height;
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  resize();
+  window.addEventListener("sw:resize", resize);
+
+  /* ---------- suspicious hint placement + teleport lifecycle ----------
+     Snap to the hero's 80px grid so the hint reads as "one of the grid
+     cells, but different", not "a stray button". Prefer the right 40%
+     of the hero horizontally + middle 60% vertically so it never
+     collides with the SANTI title / CTAs / meta row.
+
+     The hint doesn't just sit forever in one cell - every IDLE_RELOCATE_MS
+     it performs a three-phase teleport: a slow accelerating dissolve
+     (out), a beat of nothing (dwell), then a soft settle-in (in) at
+     a new random cell. All three phases are CSS-driven via the
+     .is-teleporting class + asymmetric transition easings; JS only
+     owns the phase boundaries. After the rift fires, the hint stays
+     hidden for POST_RIFT_MS and then reappears at a fresh cell. One
+     DOM node is reused throughout, so there's never more than one
+     hint at a time. */
+  const CELL = 80;
+  // Visible border is 80x80 but the button is 96x96 with the visible
+  // cell centered via ::before inset:8px. HIT_INSET is how much the
+  // hit box overhangs the visible border on every side - the JS
+  // offsets left/top by -HIT_INSET so the visible cell still snaps
+  // cleanly to the 80px grid. Keep in sync with CSS ::before inset.
+  const HIT_INSET = 8;
+  const IDLE_RELOCATE_MS = 16000; // quiet drift between teleports (user-clickable window)
+  const POST_RIFT_MS = 8000;      // respawn after rift completes
+  // Teleport phases. OUT (520ms, accelerating dissolve) + DWELL
+  // (520ms, held invisible) + IN (860ms opacity fade + 720ms 3D
+  // settle, from the default transition on .hero__rift__hint) =
+  // ~1.9s total. The dwell is what sells "it's actually gone" -
+  // no dwell and the cell just seems to jump across the grid. The
+  // two setTimeout values below only cover the OUT + DWELL window
+  // (CSS drives the IN); JS just needs to reposition the hint and
+  // remove .is-teleporting by the 1040ms mark so the IN transition
+  // can fire from the default state.
+  const TELEPORT_OUT_MS = 520;
+  const TELEPORT_DWELL_MS = 520;
+  // Absolute upper bound on how long the is-teleporting class can
+  // stay on the element. If something goes wrong (tab throttled,
+  // timers starved, rAFs queued up, etc.) the safety watchdog forces
+  // the class off at this deadline so the hint can never get stuck
+  // unclickable. Only needs to cover OUT + DWELL + a little slack
+  // (IN runs from the default-state transition once the class is
+  // gone, so the IN duration isn't the watchdog's problem).
+  const TELEPORT_SAFETY_MS = 2400;
+  let relocateTimer = 0;
+  let hintRespawn = 0;
+  let teleportTimer = 0;   // tracks the in-flight teleport setTimeout so trigger() can cancel it
+  let teleportWatchdog = 0; // safety net that force-clears .is-teleporting if a callback never does
+  let lastCellKey = ""; // so we never teleport to the same cell twice
+
+  const pickCell = () => {
+    const heroRect = hero.getBoundingClientRect();
+    if (heroRect.width < 1024) return null;
+    const cols = Math.floor(heroRect.width / CELL);
+    const rows = Math.floor(heroRect.height / CELL);
+    const offsetX = (heroRect.width - cols * CELL) / 2;
+    const offsetY = (heroRect.height - rows * CELL) / 2;
+    // Retry a handful of times to avoid landing on the exact same
+    // cell twice in a row (would read as "the hint didn't move").
+    let col = 0, row = 0, key = lastCellKey;
+    for (let i = 0; i < 6 && key === lastCellKey; i++) {
+      col = Math.floor(cols * 0.6 + Math.random() * cols * 0.35);
+      row = Math.floor(rows * 0.2 + Math.random() * rows * 0.6);
+      key = `${col}:${row}`;
+    }
+    lastCellKey = key;
+    return {
+      left: offsetX + col * CELL,
+      top: offsetY + row * CELL,
+    };
+  };
+
+  const applyCell = (cell, fade = false) => {
+    // Clear the safety watchdog FIRST (we may restart it below for
+    // the fade-in path). The .is-teleporting class is handled per
+    // branch below - the fade-in path deliberately LEAVES it on so
+    // the IN transition can fire from opacity:0.
+    clearTimeout(teleportWatchdog);
+    teleportWatchdog = 0;
+    if (!cell) {
+      hint.classList.remove("is-teleporting");
+      hint.hidden = true;
+      return;
+    }
+    // Button is 96x96 but the VISIBLE border is 80x80 (::before at
+    // inset:8px). Offset by -HIT_INSET so the visible cell still
+    // snaps to the 80px grid while the hit box overhangs 8px on
+    // every side - kills the "gotta click many times" bug.
+    hint.style.left = `${cell.left - HIT_INSET}px`;
+    hint.style.top = `${cell.top - HIT_INSET}px`;
+    if (fade && hint.hidden) {
+      // Post-rift respawn path. The element is currently
+      // display:none (via [hidden]), which means flipping it
+      // back to visible would normally pop in at full opacity -
+      // CSS transitions can't run across a display:none -> block
+      // boundary. Trick: plant .is-teleporting BEFORE making it
+      // visible so the initial committed state is opacity:0 +
+      // rotated 90°, force a reflow so that state is flushed,
+      // then drop the class next frame so the default-state
+      // transition (860ms opacity + 720ms transform settle)
+      // plays from "invisible" back to "here". Watchdog guards
+      // against the rAF callbacks never firing (tab throttling).
+      hint.classList.add("is-teleporting");
+      hint.hidden = false;
+      // force the browser to commit the hidden->visible +
+      // .is-teleporting state before we remove the class on the
+      // next frame; without this the two changes coalesce and
+      // no transition fires
+      void hint.offsetHeight;
+      teleportWatchdog = setTimeout(() => {
+        hint.classList.remove("is-teleporting");
+        teleportWatchdog = 0;
+      }, TELEPORT_SAFETY_MS);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          hint.classList.remove("is-teleporting");
+          clearTimeout(teleportWatchdog);
+          teleportWatchdog = 0;
+        });
+      });
+    } else {
+      // Idle path (or first placement). Element is already in
+      // the DOM flow; just clear any lingering teleport state
+      // and snap it into position.
+      hint.classList.remove("is-teleporting");
+      hint.hidden = false;
+    }
+  };
+
+  // Try to respawn the hint at a valid cell. If layout isn't ready
+  // yet (pickCell returns null because the hero rect measures too
+  // narrow - can happen on the very first paint or during a
+  // transient resize), retry on the next frame instead of giving up
+  // and leaving the hint hidden forever. This is the "on load it's
+  // not clickable" failure mode: initial measure happened too early.
+  // `fade` propagates through to applyCell so post-rift respawns
+  // fade in via the .is-teleporting trick instead of popping in.
+  const tryApplyCell = (attempt = 0, fade = false) => {
+    const c = pickCell();
+    if (c) {
+      applyCell(c, fade);
+      return true;
+    }
+    if (attempt < 8) {
+      requestAnimationFrame(() => tryApplyCell(attempt + 1, fade));
+    }
+    return false;
+  };
+
+  // Initial placement, deferred one frame so the hero layout has had
+  // at least one paint pass. Without the defer, the very first call
+  // to hero.getBoundingClientRect() can still be zeroed out on some
+  // browsers, which made pickCell() return null and left the hint
+  // permanently hidden on load.
+  requestAnimationFrame(() => tryApplyCell());
+
+  const teleportHint = () => {
+    if (active) return;           // never teleport mid-rift
+    if (hint.hidden) return;      // hidden = mid-rift cooldown
+    const cell = pickCell();
+    if (!cell) return;
+    // Cancel any in-flight teleport (shouldn't happen given the
+    // scheduleRelocate cadence, but defend against it anyway so we
+    // can't ever double-schedule the flip-back).
+    clearTimeout(teleportTimer);
+    clearTimeout(teleportWatchdog);
+    // Phase 1 (OUT): accelerating fade + 90° Y-flip + slight shrink,
+    // driven by the .is-teleporting class on the hint. CSS handles
+    // the actual transition; we just flip the class on.
+    hint.classList.add("is-teleporting");
+    // Safety watchdog: absolute deadline for the is-teleporting
+    // class being present. If the callbacks below get starved
+    // (tab throttled, timers backed up) this will force-clear the
+    // class so the hint can never be stuck unclickable.
+    teleportWatchdog = setTimeout(() => {
+      if (!active) hint.classList.remove("is-teleporting");
+      teleportWatchdog = 0;
+    }, TELEPORT_SAFETY_MS);
+    // Phase 2 (DWELL): held invisible for an extra beat, then
+    // reposition (still invisible) and next frame drop the class to
+    // start phase 3.
+    teleportTimer = setTimeout(() => {
+      teleportTimer = 0;
+      if (active || hint.hidden) {
+        hint.classList.remove("is-teleporting");
+        clearTimeout(teleportWatchdog);
+        teleportWatchdog = 0;
+        return;
+      }
+      applyCell(cell); // note: applyCell() already clears is-teleporting + watchdog
+      // Re-add the class immediately because applyCell just cleared
+      // it - we need it ON for one more frame so the in-transition
+      // has a starting point. Without this the flip-back snaps.
+      hint.classList.add("is-teleporting");
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          hint.classList.remove("is-teleporting");
+        });
+      });
+    }, TELEPORT_OUT_MS + TELEPORT_DWELL_MS);
+  };
+
+  const scheduleRelocate = (delay) => {
+    clearTimeout(relocateTimer);
+    relocateTimer = setTimeout(() => {
+      teleportHint();
+      scheduleRelocate(IDLE_RELOCATE_MS);
+    }, delay);
+  };
+  scheduleRelocate(IDLE_RELOCATE_MS);
+
+  // Resize: reposition to a valid cell for the new viewport, but skip
+  // the teleport animation - a resize is already a layout upheaval,
+  // an animated flip on top of it would read as a glitch.
+  window.addEventListener("sw:resize", () => {
+    if (active) return;
+    // Drop any in-flight teleport too - its stale position would
+    // land the hint on the OLD viewport's grid after resize.
+    clearTimeout(teleportTimer);
+    teleportTimer = 0;
+    tryApplyCell();
+  });
+
+  /* ---------- rift state ---------- */
+  let active = false;
+  let startT = 0;
+  const DURATION = 2500;
+  const MAX_LEN_RATIO = 0.38; // peak rift height as a fraction of canvas height
+  const MAX_WIDTH = 11;       // peak rift width at its widest point (CSS px)
+  const JAGGED_STEPS = 20;
+  let tx = 0, ty = 0; // rift origin in canvas-local CSS px
+
+  // Pre-computed jagged-edge offsets. Built once per trigger so the
+  // silhouette is a stable "crack" that shimmers in flicker, not a
+  // new random zigzag every frame (which would look like TV static).
+  const jitterL = new Float32Array(JAGGED_STEPS + 1);
+  const jitterR = new Float32Array(JAGGED_STEPS + 1);
+
+  /* ---------- particle pool ----------
+     Parallel Float32Arrays (same pattern as initCursor / initNuclei
+     elsewhere) so the hot loop has predictable memory access and
+     zero per-frame allocations. Pool wraps around at capacity so we
+     never reallocate. */
+  const MAX_PARTICLES = 140;
+  const pX = new Float32Array(MAX_PARTICLES);
+  const pY = new Float32Array(MAX_PARTICLES);
+  const pVX = new Float32Array(MAX_PARTICLES);
+  const pVY = new Float32Array(MAX_PARTICLES);
+  const pAge = new Float32Array(MAX_PARTICLES);
+  const pLife = new Float32Array(MAX_PARTICLES);
+  const pSize = new Float32Array(MAX_PARTICLES);   // radius multiplier
+  const pDrag = new Float32Array(MAX_PARTICLES);   // air drag per frame (0.90..0.97)
+  const pGrav = new Float32Array(MAX_PARTICLES);   // signed gravity px/s^2 (negative = floats up)
+  const pPhase = new Float32Array(MAX_PARTICLES);  // curl-noise phase offset
+  const pRot = new Float32Array(MAX_PARTICLES);    // current rotation (debris)
+  const pSpin = new Float32Array(MAX_PARTICLES);   // rotation velocity rad/s
+  const pHue = new Uint8Array(MAX_PARTICLES);      // 0=fg 1=accent 2=cyan 3=magenta
+  const pKind = new Uint8Array(MAX_PARTICLES);     // 0=spark 1=debris 2=ember
+  let pCursor = 0; // ring-buffer write head
+  let pAlive = 0;
+
+  /* Four particle kinds, encoded here as constants so the spawn/
+     update/draw code reads as a table rather than a grid of magic
+     numbers:
+       0 SPARK  - small glowing dot, gentle drift down, majority class
+       1 DEBRIS - rotating wireframe square, falls hard, "chunk torn
+                  out of reality" brutalist fragment
+       2 EMBER  - larger particle with hot inverse-fg peak, floats
+                  gently upward, rare "hero" particle
+     Hue numbering matches the rift's own palette so all four layers
+     compose cleanly in lighter mode without muddy mixing. */
+  const KIND_SPARK = 0;
+  const KIND_DEBRIS = 1;
+  const KIND_EMBER = 2;
+
+  const spawnParticle = (x, y, angle, speed, hue, life, kind, size) => {
+    const i = pCursor;
+    pCursor = (pCursor + 1) % MAX_PARTICLES;
+    pX[i] = x;
+    pY[i] = y;
+    pVX[i] = Math.cos(angle) * speed;
+    pVY[i] = Math.sin(angle) * speed;
+    pAge[i] = 0;
+    pLife[i] = life;
+    pHue[i] = hue;
+    pKind[i] = kind;
+    pSize[i] = size;
+    // Per-particle drag variance gives the cloud mixed masses - some
+    // sparks decelerate fast (read as light dust), others stay lively
+    // (read as hot debris). Small range but perceptibly heterogeneous.
+    pDrag[i] = 0.90 + Math.random() * 0.07;
+    // Gravity by kind: debris falls heavy, embers float up, sparks
+    // drift down gently. The sign flip on embers is what makes them
+    // read as "hot rising embers" vs "cooling debris falling off".
+    pGrav[i] =
+      kind === KIND_DEBRIS ? 90 + Math.random() * 60
+      : kind === KIND_EMBER ? -22 + Math.random() * 14
+      : 22 + Math.random() * 18;
+    pPhase[i] = Math.random() * Math.PI * 2;
+    pRot[i] = Math.random() * Math.PI * 2;
+    pSpin[i] = (Math.random() - 0.5) * 7;
+    if (pAlive < MAX_PARTICLES) pAlive++;
+  };
+
+  /* ---------- theme-aware color refs ----------
+     Read fresh from CSS custom properties on every trigger so the
+     tear always matches the CURRENT theme (user may have toggled
+     dark/light between spawns). --fg-rgb is the inverse of --bg
+     by definition: white in dark theme, black in light theme -
+     exactly the "opposite of theme color" the tear should render
+     as. --accent-rgb is the site's orange accent, used as the halo
+     / highlight tint for the "touch of accent" layer. */
+  let fgRgb = "245, 245, 245";
+  let accentRgb = "245, 144, 28";
+  // Cyan / magenta are the RGB-split colors used by the rift's
+  // chromatic aberration elsewhere (border drop-shadows, ghost pass
+  // in drawRift). Reusing them for two particle hues means the
+  // particles visually belong to the tear - a viewer reads the
+  // cloud as "shards of the same corruption signature".
+  const CYAN_RGB = "70, 200, 255";
+  const MAGENTA_RGB = "255, 80, 150";
+
+  /* Pre-baked glow sprites (one per hue). Same performance pattern
+     as initCursor - draw a radial gradient once into an offscreen
+     canvas, then blit with drawImage each frame instead of
+     reconstructing the gradient per particle. Wins:
+       - zero per-frame createRadialGradient allocations
+       - no per-draw shadowBlur (baked into the sprite alpha)
+       - drawImage scales the same sprite to any size cheaply
+     We rebake every trigger because fgRgb flips between themes. */
+  const GLOW_SPRITE_SIZE = 48;
+  const glowSprites = [null, null, null, null]; // index matches pHue
+  const bakeGlowSprite = (rgb) => {
+    const cv = document.createElement("canvas");
+    cv.width = GLOW_SPRITE_SIZE;
+    cv.height = GLOW_SPRITE_SIZE;
+    const sctx = cv.getContext("2d");
+    const c = GLOW_SPRITE_SIZE / 2;
+    const grad = sctx.createRadialGradient(c, c, 0, c, c, c);
+    // Three-stop falloff: hot tight core, soft halo body, alpha zero
+    // at the edge so sprites can overlap in lighter mode without
+    // hard seams. Core held at 1.0 so the particle's own ctx.
+    // globalAlpha controls overall brightness per draw.
+    grad.addColorStop(0, `rgba(${rgb}, 1)`);
+    grad.addColorStop(0.2, `rgba(${rgb}, 0.75)`);
+    grad.addColorStop(0.5, `rgba(${rgb}, 0.22)`);
+    grad.addColorStop(1, `rgba(${rgb}, 0)`);
+    sctx.fillStyle = grad;
+    sctx.fillRect(0, 0, GLOW_SPRITE_SIZE, GLOW_SPRITE_SIZE);
+    return cv;
+  };
+  const bakeAllGlowSprites = () => {
+    glowSprites[0] = bakeGlowSprite(fgRgb);
+    glowSprites[1] = bakeGlowSprite(accentRgb);
+    glowSprites[2] = bakeGlowSprite(CYAN_RGB);
+    glowSprites[3] = bakeGlowSprite(MAGENTA_RGB);
+  };
+  // Lookup: get the rgb triple for a hue code. Used when drawing the
+  // bright core / stroke on top of the sprite glow.
+  const rgbForHue = (h) =>
+    h === 0 ? fgRgb : h === 1 ? accentRgb : h === 2 ? CYAN_RGB : MAGENTA_RGB;
+
+  const refreshThemeColors = () => {
+    const cs = getComputedStyle(document.documentElement);
+    const f = cs.getPropertyValue("--fg-rgb").trim();
+    const a = cs.getPropertyValue("--accent-rgb").trim();
+    if (f) fgRgb = f;
+    if (a) accentRgb = a;
+    bakeAllGlowSprites();
+  };
+
+  /* ---------- trigger ---------- */
+  const trigger = () => {
+    if (active) return;
+    active = true;
+    startT = performance.now();
+    // Snapshot theme colors at fire time. One read per trigger is
+    // plenty - the animation is 2.5s and the theme can't change
+    // mid-burst without a page interaction that would steal focus.
+    refreshThemeColors();
+
+    // Rift origin = center of the hint cell, translated to canvas-
+    // local coordinates. Using the hint's own rect (not the click
+    // event point) guarantees a grid-aligned origin even if the
+    // click landed slightly off-center on the button's hit area.
+    const cRect = canvas.getBoundingClientRect();
+    const hRect = hint.getBoundingClientRect();
+    tx = hRect.left + hRect.width / 2 - cRect.left;
+    ty = hRect.top + hRect.height / 2 - cRect.top;
+
+    for (let i = 0; i <= JAGGED_STEPS; i++) {
+      jitterL[i] = (Math.random() - 0.5) * 7;
+      jitterR[i] = (Math.random() - 0.5) * 7;
+    }
+
+    /* Initial burst - the "bang" when reality cracks open. Roughly
+       distributed as:
+         45%  fg sparks      (core tear color)
+         22%  accent sparks  (warm on-brand highlight)
+         10%  cyan sparks    (chromatic-aberration ghost)
+         10%  magenta sparks (chromatic-aberration ghost)
+         10%  debris chunks  (wireframe squares, mixed hues)
+          3%  embers         (rare, big, rising, hot inverse-fg peak)
+       Wide speed range (80..330 px/s) so the burst has a hot fast
+       core + slower debris lingering at the edges, reading as a
+       proper explosion rather than a uniform ring. */
+    pCursor = 0;
+    pAlive = 0;
+    const BURST_COUNT = 42;
+    for (let i = 0; i < BURST_COUNT; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 80 + Math.random() * 250;
+      const life = 0.6 + Math.random() * 1.1;
+      const r = Math.random();
+      let hue, kind, size;
+      if (r < 0.03) {
+        // rare ember
+        kind = KIND_EMBER;
+        hue = Math.random() < 0.7 ? 0 : 1;
+        size = 2.2 + Math.random() * 0.9;
+      } else if (r < 0.13) {
+        // debris chunk
+        kind = KIND_DEBRIS;
+        hue = Math.random() < 0.55 ? 0 : Math.random() < 0.6 ? 1 : Math.random() < 0.5 ? 2 : 3;
+        size = 1.6 + Math.random() * 0.9;
+      } else {
+        // regular spark - hue weighted toward fg + accent, cyan/
+        // magenta are accent-rare so the palette doesn't tip away
+        // from the tear's primary color story
+        kind = KIND_SPARK;
+        const h = Math.random();
+        hue = h < 0.55 ? 0 : h < 0.78 ? 1 : h < 0.89 ? 2 : 3;
+        size = 1.1 + Math.random() * 0.8;
+      }
+      spawnParticle(tx, ty, angle, speed, hue, life, kind, size);
+    }
+
+    hint.hidden = true;
+    // Pause EVERY pending state-mutation timer for the hint so none
+    // of them fire mid-rift and leave the element in a weird state
+    // when we try to respawn it. Includes:
+    //   - relocateTimer:   next teleport trigger
+    //   - teleportTimer:   an in-flight teleport's reposition callback
+    //   - teleportWatchdog: safety clear for .is-teleporting
+    // Also force-clear the class itself so the respawn starts from
+    // a known-clean state.
+    clearTimeout(relocateTimer);
+    clearTimeout(teleportTimer);
+    clearTimeout(teleportWatchdog);
+    teleportTimer = 0;
+    teleportWatchdog = 0;
+    hint.classList.remove("is-teleporting");
+    canvas.classList.add("is-active");
+    requestAnimationFrame(loop);
+
+    // Respawn the hint at a new random cell POST_RIFT_MS after the
+    // rift ends, then resume the idle teleport cycle from there.
+    // Use tryApplyCell (the retry-on-next-frame version) so a
+    // transient layout where the hero measures narrow doesn't leave
+    // the hint hidden forever - it'll retry up to 8 frames until it
+    // gets a valid cell or layout confirms it really is too narrow.
+    clearTimeout(hintRespawn);
+    hintRespawn = setTimeout(() => {
+      // fade=true -> reappear uses the .is-teleporting fade-in
+      // trick (opacity:0 + rotateY(90°) settles smoothly back to
+      // here over 860ms) instead of a display:none -> block pop.
+      tryApplyCell(0, true);
+      scheduleRelocate(IDLE_RELOCATE_MS);
+    }, DURATION + POST_RIFT_MS);
+  };
+
+  hint.addEventListener("click", trigger);
+
+  // Keyboard easter egg: typing "rift" anywhere (outside of form
+  // fields) also fires it, for users who never hover over the hint.
+  let typed = "";
+  window.addEventListener("keydown", (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+    if (e.key.length !== 1) return;
+    typed = (typed + e.key.toLowerCase()).slice(-4);
+    // Require a visible, settled hint - typing during the teleport
+    // flip would read a collapsed bounding rect for tx/ty.
+    if (
+      typed === "rift" &&
+      !hint.hidden &&
+      !hint.classList.contains("is-teleporting")
+    ) trigger();
+  });
+
+  /* ---------- easings ---------- */
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+  const easeInCubic = (t) => t * t * t;
+
+  /* ---------- drawing helpers ---------- */
+  const buildRiftPath = (openness, length) => {
+    // Diamond-ish jagged silhouette: taper goes 0 → 1 → 0 from top
+    // to bottom so the rift is pointed at both ends and widest in
+    // the middle, where the hot core is.
+    const halfH = (length * h * MAX_LEN_RATIO) / 2;
+    const halfW = (openness * MAX_WIDTH) / 2;
+    ctx.beginPath();
+    for (let i = 0; i <= JAGGED_STEPS; i++) {
+      const t = i / JAGGED_STEPS;
+      const y = ty - halfH + halfH * 2 * t;
+      const taper = 1 - Math.abs(t - 0.5) * 2;
+      const x = tx - halfW * taper + jitterL[i] * taper * 0.5;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    for (let i = JAGGED_STEPS; i >= 0; i--) {
+      const t = i / JAGGED_STEPS;
+      const y = ty - halfH + halfH * 2 * t;
+      const taper = 1 - Math.abs(t - 0.5) * 2;
+      const x = tx + halfW * taper + jitterR[i] * taper * 0.5;
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  };
+
+  const drawRift = (openness, length, flicker) => {
+    // 1. Theme-inverse core fill (white on dark / black on light).
+    //    This is the tear's primary color - literally the opposite
+    //    of --bg, so it reads as "a slice of the other side".
+    buildRiftPath(openness, length);
+    ctx.fillStyle = `rgba(${fgRgb}, ${0.92 * flicker})`;
+    ctx.fill();
+
+    // 2. Accent halo (the "touch of theme accent" layer). Shadow
+    //    blur scales with openness so the glow blooms as the rift
+    //    widens. Using additive composite so the accent tints the
+    //    core without replacing it.
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.shadowColor = `rgba(${accentRgb}, 0.95)`;
+    ctx.shadowBlur = 22 + openness * 22;
+    ctx.strokeStyle = `rgba(${accentRgb}, ${0.55 * flicker})`;
+    ctx.lineWidth = 1.8;
+    buildRiftPath(openness, length);
+    ctx.stroke();
+    ctx.restore();
+
+    // 3. Split-shadow ghost pass (fake chromatic aberration). Two
+    //    offset strokes - accent on the left, fg-inverse on the
+    //    right - so the eye reads a subtle RGB split along the
+    //    silhouette without actually compositing three color
+    //    channels. Sells "reality tearing" better than a single
+    //    clean edge would.
+    ctx.save();
+    ctx.translate(-1.5, 0);
+    ctx.strokeStyle = `rgba(${accentRgb}, ${0.45 * flicker})`;
+    ctx.lineWidth = 1;
+    buildRiftPath(openness, length);
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(1.5, 0);
+    ctx.strokeStyle = `rgba(${fgRgb}, ${0.5 * flicker})`;
+    ctx.lineWidth = 0.8;
+    buildRiftPath(openness, length);
+    ctx.stroke();
+    ctx.restore();
+
+    // 4. Crisp inverse-fg edge on top for a hard brutalist silhouette.
+    ctx.strokeStyle = `rgba(${fgRgb}, ${0.95 * flicker})`;
+    ctx.lineWidth = 0.8;
+    buildRiftPath(openness, length);
+    ctx.stroke();
+  };
+
+  const updateParticles = (dt, elapsed) => {
+    // `nt` drives the curl-noise time axis. Sub-Hz so the wander
+    // reads as an organic flow field, not high-frequency jitter.
+    const nt = elapsed * 0.0011;
+    for (let i = 0; i < MAX_PARTICLES; i++) {
+      if (pAge[i] >= pLife[i]) continue;
+      pAge[i] += dt;
+      // Curl-noise-ish wander: divergence-free-ish force sampled
+      // from sin/cos of position + per-particle phase. Amplitude
+      // is small compared to the initial fling speed, so particles
+      // still fly mostly ballistically but trace a subtle swirling
+      // path instead of a straight line - reads as "reality still
+      // disturbed around the rift" rather than free-fall debris.
+      const nx = Math.sin(pY[i] * 0.019 + nt + pPhase[i]) * 34;
+      const ny = Math.cos(pX[i] * 0.019 + nt + pPhase[i]) * 34;
+      pVX[i] += nx * dt;
+      pVY[i] += ny * dt;
+      // Integrate before damping so the wander contributes to this
+      // frame's displacement.
+      pX[i] += pVX[i] * dt;
+      pY[i] += pVY[i] * dt;
+      // Per-particle drag (mass variance) + per-particle gravity
+      // (debris falls, embers rise, sparks drift).
+      pVX[i] *= pDrag[i];
+      pVY[i] *= pDrag[i];
+      pVY[i] += pGrav[i] * dt;
+      // Rotation for debris (sparks/embers render as circles, so
+      // this read is only meaningful on kind==1, but updating all
+      // of them is branchless and cheap).
+      pRot[i] += pSpin[i] * dt;
+    }
+  };
+
+  const drawParticles = () => {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < MAX_PARTICLES; i++) {
+      if (pAge[i] >= pLife[i]) continue;
+      const lifeT = pAge[i] / pLife[i];
+      const fade = 1 - lifeT;
+      const alpha = fade * 0.92;
+      const size = pSize[i] * (0.5 + 0.6 * fade); // shrink toward death
+      const hue = pHue[i];
+      const kind = pKind[i];
+      const sprite = glowSprites[hue];
+      const rgb = rgbForHue(hue);
+
+      // 1) OUTER GLOW - blit pre-baked sprite, scaled to per-particle
+      //    radius. sprite.width is GLOW_SPRITE_SIZE but we scale it
+      //    via drawImage's w/h args - zero cost, full quality.
+      const glowR = size * 6;
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(sprite, pX[i] - glowR, pY[i] - glowR, glowR * 2, glowR * 2);
+
+      // 2) KIND-SPECIFIC CORE drawn on top of the glow.
+      if (kind === KIND_DEBRIS) {
+        // Rotating wireframe square - reads as a "chunk torn out of
+        // reality" with the glow sprite doing the halo behind it.
+        // Stroke only (no fill) so it stays a clean outline rather
+        // than a solid hot block that would lose its edge in the
+        // additive glow behind it.
+        ctx.save();
+        ctx.globalAlpha = alpha * 0.95;
+        ctx.translate(pX[i], pY[i]);
+        ctx.rotate(pRot[i]);
+        const s = size * 2.4;
+        ctx.strokeStyle = `rgba(${rgb}, 1)`;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(-s / 2, -s / 2, s, s);
+        ctx.restore();
+      } else {
+        // Spark / ember: bright solid core circle for a crisp hot
+        // point inside the halo. Without this layer, pure sprite
+        // blitting looks soft and hazy - the core is what gives
+        // each particle a "pixel of pure light" read.
+        ctx.globalAlpha = Math.min(1, alpha + 0.12);
+        ctx.fillStyle = `rgba(${rgb}, 1)`;
+        ctx.beginPath();
+        ctx.arc(pX[i], pY[i], size * 0.7, 0, Math.PI * 2);
+        ctx.fill();
+        // Embers get an extra hot inverse-fg peak while they're
+        // still young (fade > 0.55) - the "white-hot tip" layer
+        // that makes them read as the hottest / rarest particle
+        // in the cloud. Gated on fade so late-life embers cool to
+        // their halo color instead of flashing white.
+        if (kind === KIND_EMBER && fade > 0.55) {
+          ctx.globalAlpha = alpha * 0.75;
+          ctx.fillStyle = `rgba(${fgRgb}, 1)`;
+          ctx.beginPath();
+          ctx.arc(pX[i], pY[i], size * 0.34, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  };
+
+  const drawHexLabel = (alpha) => {
+    // Tiny phosphor-glow readout next to the rift: retro-terminal
+    // vibe that sells the easter-egg without shouting. Two lines of
+    // tech-looking hex so the eye reads "corruption / glitch" rather
+    // than any specific reference. First line in inverse-fg (sharp
+    // readable), second in accent (secondary signal).
+    ctx.save();
+    ctx.font = "10px ui-monospace, 'JetBrains Mono', 'Fira Code', monospace";
+    ctx.textBaseline = "middle";
+    ctx.shadowColor = `rgba(${accentRgb}, ${alpha * 0.9})`;
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = `rgba(${fgRgb}, ${alpha})`;
+    ctx.fillText("0xFF TEAR", tx + MAX_WIDTH + 10, ty - 8);
+    ctx.fillStyle = `rgba(${accentRgb}, ${alpha * 0.85})`;
+    ctx.fillText("SIG::001", tx + MAX_WIDTH + 10, ty + 6);
+    ctx.restore();
+  };
+
+  /* ---------- the rAF loop ----------
+     Only runs for DURATION ms. No IO, no idle ticking. */
+  function loop(now) {
+    const elapsed = now - startT;
+    const progress = elapsed / DURATION;
+    ctx.clearRect(0, 0, w, h);
+
+    if (progress >= 1) {
+      active = false;
+      canvas.classList.remove("is-active");
+      // Defensive: clear any lingering teleport state so the next
+      // respawn is always a fresh, clickable hint. Covers the case
+      // where a rift fired while a teleport was in flight - its
+      // class + safety watchdog both get wiped here too.
+      hint.classList.remove("is-teleporting");
+      clearTimeout(teleportTimer);
+      clearTimeout(teleportWatchdog);
+      teleportTimer = 0;
+      teleportWatchdog = 0;
+      pAlive = 0;
+      pCursor = 0;
+      // zero out so a stale particle doesn't blink in on next fire
+      pAge.fill(1);
+      pLife.fill(0);
+      return;
+    }
+
+    const dt = 1 / 60;
+
+    /* Phase envelope:
+         0.00-0.08  pre-beat  (particles fly first, faint tear forming)
+         0.08-0.32  opening
+         0.32-0.72  hold (flicker)
+         0.72-1.00  closing
+       The 0-0.08 window used to overlay a radial "flash" gradient on
+       top - a perfect circular pulse that read as a too-clean
+       shockwave and fought the brutalist / debris aesthetic of the
+       particle cloud. Removed. The initial 42-particle burst already
+       fires at trigger() (one frame before the first loop tick), so
+       the "reality cracked" announcement is carried entirely by the
+       debris explosion + the faint tear starting to form. */
+    let openness = 0, length = 0;
+    if (progress < 0.08) {
+      openness = length = (progress / 0.08) * 0.1;
+    } else if (progress < 0.32) {
+      const t = (progress - 0.08) / 0.24;
+      openness = length = easeOutCubic(t);
+    } else if (progress < 0.72) {
+      openness = length = 1;
+    } else {
+      const t = (progress - 0.72) / 0.28;
+      openness = length = 1 - easeInCubic(t);
+    }
+
+    // Flicker = slow sine + step-jitter combined so the rift pulses
+    // organically but occasionally does a hard digital stutter.
+    const step = Math.floor(elapsed / 80) * 0.37;
+    const flicker = 0.78 + 0.22 * Math.sin(elapsed * 0.055 + step);
+
+    if (length > 0.001) drawRift(openness, length, flicker);
+
+    /* Continuous edge sparks during open+hold. Emitted just outside
+       the rift seam, mostly sideways so they fan out horizontally
+       (reads as "reality shedding along the cut"). Emission rate
+       bumped from 0.38 -> 0.55 now that the cloud supports more
+       visual variety (4 hues, 3 kinds) - the extra density sells
+       the "living tear" feel without crowding the canvas. */
+    if (progress > 0.12 && progress < 0.8 && Math.random() < 0.55) {
+      const halfH = (length * h * MAX_LEN_RATIO) / 2;
+      const edgeY = ty - halfH + Math.random() * halfH * 2;
+      const side = Math.random() < 0.5 ? -1 : 1;
+      const base = side > 0 ? 0 : Math.PI;
+      const angle = base + (Math.random() - 0.5) * 0.7;
+      const speed = 40 + Math.random() * 90;
+      const r = Math.random();
+      // Edge emission skews spark-heavy (debris would crowd the
+      // seam, embers are reserved for the initial burst). Hue mix
+      // leans harder on fg + accent than the burst does so the
+      // seam reads as primarily "tear color" with occasional
+      // chromatic-aberration ghosts popping through.
+      let hue, kind, size;
+      if (r < 0.06) {
+        kind = KIND_DEBRIS;
+        hue = Math.random() < 0.7 ? 0 : 1;
+        size = 1.3 + Math.random() * 0.7;
+      } else {
+        kind = KIND_SPARK;
+        const h = Math.random();
+        hue = h < 0.6 ? 0 : h < 0.84 ? 1 : h < 0.92 ? 2 : 3;
+        size = 0.9 + Math.random() * 0.7;
+      }
+      spawnParticle(tx + side * 2, edgeY, angle, speed, hue, 0.45 + Math.random() * 0.55, kind, size);
+    }
+
+    updateParticles(dt, elapsed);
+    drawParticles();
+
+    // Hex label fades in/out during the hold phase only.
+    if (progress > 0.34 && progress < 0.72) {
+      const labelT = (progress - 0.34) / 0.38;
+      const labelAlpha = Math.sin(labelT * Math.PI) * 0.7 * flicker;
+      if (labelAlpha > 0.1) drawHexLabel(labelAlpha);
+    }
+
+    requestAnimationFrame(loop);
+  }
+}
+
+/* -------------------------------------------------------------
    DOOM EASTER EGG (lazy)
    - The full implementation lives in js/doom.js (~520 lines: js-dos
      plumbing, srcdoc HTML, palettes, key remaps, slider wiring).
@@ -1549,6 +2418,7 @@ function init() {
   initMarquee();
   initNuclei();
   initHeroCells();
+  initHeroRift();
   initYear();
   initForm();
   initDoomLazy();

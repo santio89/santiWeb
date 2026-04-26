@@ -37,6 +37,11 @@
   --bg-elev: #1c1c1c;
   --bg-inset: #1f1f1f;
   --fg: #f5f5f5;
+  /* RGB triplet mirror of --fg (same pattern as --accent-rgb) so
+     canvas/effect code can inject it into rgba() without a runtime
+     hex->rgb parse. Inverse of --bg by definition, so effects that
+     want "opposite of the theme" just read this. */
+  --fg-rgb: 245, 245, 245;
   --fg-mute: #a3a3a3;
   --fg-dim: #6b6b6b;
   --line: #2a2a2a;
@@ -57,6 +62,8 @@
   --bg-elev: #ffffff;
   --bg-inset: #f4f2ed;
   --fg: #0a0a0a;
+  /* Mirror of --fg for rgba() consumers — see dark theme note. */
+  --fg-rgb: 10, 10, 10;
   --fg-mute: #3a3a3a;
   --fg-dim: #6b6b6b;
   --line: #0a0a0a;
@@ -1181,6 +1188,514 @@ textarea:focus-visible {
 /* respect reduced motion - drop the cell layer entirely */
 @media (prefers-reduced-motion: reduce) {
   .hero__cells { display: none; }
+}
+
+/* ---- HERO RIFT (easter egg) ----
+   A Half-Life-meets-cyberpunk reality tear triggered by clicking a
+   "suspicious" grid cell. Two pieces:
+
+     .hero__rift          - full-hero overlay <canvas>, paints nothing
+                            until the rift fires, then runs a rAF loop
+                            for ~2.5s (jagged vertical tear + sparks +
+                            shockwave rings + flicker-hex text), then
+                            goes dormant again. pointer-events: none so
+                            the CTAs underneath stay clickable.
+     .hero__rift__hint    - a small <button> snapped to an 80px grid
+                            cell in the empty right-side area of the
+                            hero. Dashed brutalist outline, flickers
+                            subtly so it reads as "something is off
+                            here", brightens on hover + cursor:crosshair,
+                            and fades in a small crosshair glyph on hover
+                            to signal it's a hit target. Keyboard-
+                            accessible since it's a real button.
+
+   Both are created in HTML but left hidden/empty; initHeroRift() in
+   js/scripts.js sizes the canvas, positions the hint on a random
+   grid cell, wires the trigger, and removes everything entirely for
+   prefers-reduced-motion users. */
+
+/* ---- the rift canvas ---- */
+.hero__rift {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Above the grid / cells layers but below the title's stacking
+     context so SANTI! always reads on top of a stray spark. */
+  z-index: 1;
+  /* Zero paint cost while idle: the canvas is transparent and the
+     rAF loop is parked. `contain: paint` confines invalidations to
+     the canvas rect during the 2.5s active window. */
+  contain: paint;
+  /* fade-in on activation is a single quick frame of alpha easing
+     so the flash burst doesn't pop hard-cut */
+  opacity: 0;
+  transition: opacity 120ms var(--ease);
+}
+.hero__rift.is-active { opacity: 1; }
+
+/* ---- the suspicious grid hint ---- */
+.hero__rift__hint {
+  position: absolute;
+  /* Button is 96x96 but the VISIBLE border (drawn by ::before at
+     inset:8px) is 80x80 centered on the 80px hero grid cell. That
+     gives us an 8px clickable margin on all sides around the
+     visible border, which is what kills the "gotta click many
+     times" bug: the drop-shadow RGB-split ghosts and the sway's
+     3D-rotated corners both visually bleed a few pixels past the
+     border, and with inset:0 users were clicking on those pixels
+     (visually part of the cell, but outside the hit box). JS
+     offsets left/top by -8px so the visible 80x80 still snaps to
+     the grid. */
+  width: 96px;
+  height: 96px;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  cursor: crosshair;
+  /* z-index must be STRICTLY greater than every other positioned
+     hero child (meta/title/sub/cta, all at z:2) so the hint's hit
+     box always wins pointer-event routing - even when the hint
+     lands inside the title's bounding box. That was the root of
+     the "grid isn't clickable sometimes" bug: .hero__title is a
+     block-level <h1> that stretches full hero width at z:2, and
+     because it comes AFTER the hint in the DOM, equal z-indices
+     meant the title always captured clicks over its (mostly
+     empty, right-of-SANTI!) box. Bumped to 5 so we're above
+     every z:2 sibling with margin to spare. Canvas stays at z:1
+     so rift particles still draw BEHIND the title text, matching
+     the original "SANTI! reads on top of stray sparks" intent. */
+  z-index: 5;
+  /* Create a stacking context for the filter/shadow stack on
+     ::before without CLIPPING like contain:paint does. We can't
+     use contain:paint here because the sway animation rotates
+     ::before with amplitudes (up to 20° rotateY + 7° rotateZ + a
+     scale pulse) where corner displacement exceeds the 8px hit
+     margin at peak - contain:paint would visibly crop the rotated
+     border. isolation:isolate is enough for paint grouping
+     (stacking context) without the bounding-box clip. */
+  isolation: isolate;
+  /* reset default <button> focus outline; replaced with a theme-aware
+     one below so keyboard users can still see where focus lives */
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transform-origin: 50% 50%;
+  /* Entry transition (reappear after teleport). Asymmetric pair:
+       - opacity uses easeOutCubic over 860ms so the fade rises
+         EVENLY from 0 - expo-out (what we used before) front-loads
+         ~70% of the opacity change into the first ~30% of the
+         duration, which reads as a snap-pop rather than a fade.
+         easeOutCubic spreads the change much more uniformly.
+       - transform keeps easeOutExpo at 720ms so the 3D flip-back
+         still settles confidently without overshoot.
+     The exit uses a different (accelerating) curve below for a
+     dissolve. The two-direction asymmetry is what sells
+     "suspicious" - it leaves reluctantly, arrives softly. */
+  transition:
+    opacity 860ms cubic-bezier(0.33, 1, 0.68, 1),
+    transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* No halo / box-shadow pulse on the button - and none on the
+     ::before either. The earlier two-layer breathing halo (tight
+     inner + 26px ambient) plus the static outer box-shadow on
+     ::before stacked into a ghost-duplicate rectangle behind the
+     neon border - too much visual noise around an already-glowing
+     outline. Both were stripped; the only outward reaction now is
+     the chromatic-aberration glitch on hover (via filter, not
+     box-shadow). The idle look is a clean accent border with a
+     tight inset neon glow and nothing around it. */
+
+  /* Idle positional wander. Two layered idle motions total:
+       - riftHintDrift on the BUTTON (this rule) - an 11s
+         translate-based wander, ±12-14px across x/y so the
+         whole cell visibly drifts around its grid slot between
+         the 16s teleports. Uses the individual `translate:`
+         property (NOT `transform:`) so it composes cleanly
+         with the `transform:` that .is-teleporting sets for
+         the 3D flip - the two properties never stomp each
+         other in the composed matrix.
+       - riftHintSway on the ::before pseudo (the visible 80x80
+         border) - rotates and scale-pulses the border in place,
+         also 11s. Drift is on the BUTTON and sway is on the
+         ::before CHILD, so even though both are 11s they drive
+         different elements with different transform-origins -
+         the eye reads them as two independent motions, not
+         one synced loop. */
+  animation: riftHintDrift 11s ease-in-out infinite;
+}
+.hero__rift__hint[hidden] { display: none; }
+/* Teleport exit state: opacity collapses, card flips 90° edge-on
+   and shrinks. Paired with a different easing on the transition so
+   the dissolve accelerates (reads as "phasing out" rather than
+   "fading out"), and held invisible for TELEPORT_DWELL_MS by JS
+   before it's repositioned + the class is removed. */
+.hero__rift__hint.is-teleporting {
+  opacity: 0;
+  transform: perspective(460px) rotateY(90deg) scale(0.9);
+  pointer-events: none;
+  transition:
+    opacity 520ms cubic-bezier(0.7, 0, 0.84, 0),
+    transform 520ms cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/* Solid accent-neon frame with an inner-only neon glow.
+   Two visual tiers at rest:
+     1. Solid 1.5px accent-colored border  - the "tube" itself
+     2. inset box-shadow                   - inner neon bleed
+   Previously a third layer existed - an outer (non-inset)
+   box-shadow that drew a soft halo around the border. Combined
+   with the button's ambient halo animation it read as a ghost
+   "shadow of itself" behind the square. Both were removed;
+   the border now sits flush against the hero grid with only its
+   inner light bleed, reading as a clean neon outline.
+   On hover the filter-based chromatic aberration (riftHintGlitch)
+   takes over - that's the only outside visual effect then. */
+.hero__rift__hint::before {
+  content: "";
+  position: absolute;
+  /* inset:8px = 80x80 visible border centered in the 96x96 button.
+     The extra 8px around it is transparent but clickable, so sway
+     can bleed slightly past the border without landing outside
+     the hit box. */
+  inset: 8px;
+  border: 1.5px solid var(--accent);
+  /* Barely-there inner glow: just enough to sell the neon-tube
+     feel on the border without pushing a colored haze into the
+     middle of the cell. Earlier iterations used 8-12px blur at
+     0.3-0.55 alpha, which read as a pink fog hanging in the
+     center of the box (especially on hover). 3px blur at 0.2
+     alpha stays pinned to the border line and leaves the cell
+     interior clean, so the crosshair, sway, and sparks below
+     aren't fighting a background wash. */
+  box-shadow: inset 0 0 3px rgba(var(--accent-rgb), 0.2);
+  opacity: 0.78;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  /* Idle state is intentionally free of filters - clean solid
+     neon border only, no chromatic aberration. The RGB-split
+     drop-shadows are reserved for hover (riftHintGlitch), so the
+     aberration reads as a reaction to user attention rather than
+     ambient noise. Transition filter here too so when the hover
+     animation releases, any residual filter state eases back to
+     none instead of snapping off. */
+  filter: none;
+  transition:
+    opacity 220ms var(--ease),
+    border-color 220ms var(--ease),
+    box-shadow 260ms var(--ease),
+    filter 220ms var(--ease);
+  /* Sole idle animation: rotation + occasional scale pulses on
+     transform. No filter/aberration animation - those are gated
+     to hover only. Period tuned so a casual viewer sees visible
+     motion at any moment: slower than 4-5s (would feel busy) but
+     much shorter than 12s (reads as static because amplitudes
+     peak past the observation window). */
+  animation: riftHintSway 11s ease-in-out infinite;
+}
+/* Center crosshair glyph — tiny four-tick crosshair drawn with
+   two crossed linear-gradients so we get a crisp "+" without
+   loading a font or an SVG. Hidden idle, fades in on hover/focus
+   to signal the cell is a hit target. pointer-events: none so it
+   never eats clicks meant for the button. */
+.hero__rift__hint::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  background:
+    linear-gradient(var(--accent), var(--accent)) center / 2px 10px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) center / 10px 2px no-repeat;
+  opacity: 0;
+  transition: opacity 220ms var(--ease);
+  pointer-events: none;
+  /* faint phosphor glow so when it appears it reads as "signal from
+     elsewhere" - CRT monitor vibes */
+  filter: drop-shadow(0 0 3px rgba(var(--accent-rgb), 0.7));
+}
+.hero__rift__hint:hover::before,
+.hero__rift__hint:focus-visible::before {
+  opacity: 1;
+  /* Hover ramps the neon without escalating the inset glow.
+     Earlier versions pushed the inset blur from 8px/0.3 up to
+     12px/0.55 here, which is what produced the hazy fog in the
+     middle of the cell - the user specifically didn't want that.
+     Now the inset stays at the same barely-there 3px/0.2 from
+     idle, and the border picks up the interaction via the
+     chromatic-aberration glitch + spark burst only. That keeps
+     the cell interior clean on hover and concentrates the
+     reaction on the edges where sparks fire. */
+  border-color: var(--accent);
+  box-shadow: inset 0 0 3px rgba(var(--accent-rgb), 0.28);
+  /* Stepped glitch drives transform + filter together for the
+     theme-colored chromatic aberration. Steps(6) gives discrete
+     per-frame jumps (digital corruption) rather than interpolation. */
+  animation: riftHintGlitch 260ms steps(6) infinite;
+}
+.hero__rift__hint:hover::after,
+.hero__rift__hint:focus-visible::after {
+  opacity: 1;
+}
+
+/* Spark embers that pop outward from the border on hover/focus.
+   Six child <span>s inside the button. Each is pinned at the
+   button's center via top/left 50% + transform-origin 50% 50%,
+   then the keyframe rotates around that origin with --dir before
+   translating outward. That way every spark shares the same
+   riftHintSpark keyframe but aims in its own direction (per
+   nth-child --dir) and starts at its own phase in the loop (per
+   nth-child --spark-delay). Two size + color variants for more
+   visual variety - accent-colored sparks read as "hot" and
+   fg-colored sparks read as the theme's neutral ember.
+   Idle: opacity 0, no animation (no CPU cost when not hovered).
+   Hover/focus: animation kicks in, sparks fire continuously. */
+.hero__rift__hint__spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--spark-size, 3px);
+  height: var(--spark-size, 3px);
+  background: var(--spark-color, var(--accent));
+  box-shadow: 0 0 4px 0.5px rgba(var(--spark-rgb, var(--accent-rgb)), 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  /* Keeping the translate axis simple (+X after rotate) means
+     all sparks use the same keyframe - the per-element aim comes
+     purely from --dir. will-change hints the browser to upload
+     the 6 layers to the compositor so the burst doesn't repaint
+     the whole hint every frame. */
+  will-change: transform, opacity;
+}
+.hero__rift__hint__spark:nth-child(1) { --dir:  24deg; --spark-delay: 0s;     --spark-size: 3px; --spark-color: var(--accent); --spark-rgb: var(--accent-rgb); }
+.hero__rift__hint__spark:nth-child(2) { --dir:  82deg; --spark-delay: 0.16s;  --spark-size: 2px; --spark-color: var(--fg);     --spark-rgb: var(--fg-rgb); }
+.hero__rift__hint__spark:nth-child(3) { --dir: 148deg; --spark-delay: 0.32s;  --spark-size: 3px; --spark-color: var(--accent); --spark-rgb: var(--accent-rgb); }
+.hero__rift__hint__spark:nth-child(4) { --dir: 212deg; --spark-delay: 0.48s;  --spark-size: 2px; --spark-color: var(--fg);     --spark-rgb: var(--fg-rgb); }
+.hero__rift__hint__spark:nth-child(5) { --dir: 278deg; --spark-delay: 0.64s;  --spark-size: 3px; --spark-color: var(--accent); --spark-rgb: var(--accent-rgb); }
+.hero__rift__hint__spark:nth-child(6) { --dir: 332deg; --spark-delay: 0.8s;   --spark-size: 2px; --spark-color: var(--fg);     --spark-rgb: var(--fg-rgb); }
+
+.hero__rift__hint:hover .hero__rift__hint__spark,
+.hero__rift__hint:focus-visible .hero__rift__hint__spark {
+  animation: riftHintSpark 1.05s ease-out var(--spark-delay, 0s) infinite;
+}
+
+@keyframes riftHintSpark {
+  /* Emit-from-border trajectory. The button is 96x96, so its
+     center is at (48,48) from the box origin; the visible border
+     sits at inset:8 (80x80), i.e. ~40px out from center. Each
+     keyframe uses `rotate(var(--dir)) translate(...)`, which
+     rotates the translation axis first and then moves the spark
+     along its own aimed direction.
+       0%:   born at ~36px from center (just inside the border)
+             still invisible - this is the "loading" beat
+       12%:  crossed the border, at ~42px, full opacity - peak
+             brightness, pops out as visible spark
+       50%:  mid-flight at ~50px, softening
+       100%: at ~58px, faded out + shrunk - ember dies
+     Total ~20-22px of travel beyond the border before fade,
+     enough to feel like sparks are flying off without straying
+     so far they look like separate elements. */
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--dir)) translate(36px, 0) scale(0.6);
+    opacity: 0;
+  }
+  12% {
+    transform: translate(-50%, -50%) rotate(var(--dir)) translate(42px, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(var(--dir)) translate(50px, 0) scale(0.85);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(var(--dir)) translate(58px, 0) scale(0.25);
+    opacity: 0;
+  }
+}
+.hero__rift__hint:focus-visible {
+  /* Keyboard focus ring: outline instead of box-shadow so it
+     can't be mistaken for a re-introduced outer halo. */
+  outline: 1.5px solid var(--accent);
+  outline-offset: 3px;
+}
+.hero__rift__hint:active::before {
+  /* Brief "committed" flash the moment the rift fires: the neon
+     tube snaps from accent-orange to cold cyan. Only the border
+     color changes - the inset blur stays matched to the idle/
+     hover states so we don't flash a hazy blue fog into the
+     middle of the cell at the click instant. The canvas rift
+     animation that follows carries the rest of the impact. */
+  border-color: #9af0ff;
+  box-shadow: inset 0 0 3px rgba(154, 240, 255, 0.35);
+  opacity: 1;
+}
+
+@keyframes riftHintSway {
+  /* Multi-axis idle drift - amplitudes sized to match the other
+     hero grid cells (which do 180°/360° flips and scale pulses),
+     so the rift cell reads as "the same family, but weirder".
+     Continuous rotation on X/Y/Z axes + two occasional scale
+     "breath" moments (a swell at ~38% and a shrink at ~72%) with
+     the rest of the cycle held at scale(1). Ten keyframes so the
+     scale transitions neighbor each other as scale(1) -> peak ->
+     scale(1), which means the scale interpolation is localized
+     to those specific windows rather than oscillating across the
+     whole loop. That's what sells "resizes sometimes, not all
+     the time". 11s period is slow enough to feel suspicious but
+     fast enough to always read as moving. */
+  0%   { transform: perspective(560px) rotateZ(0deg)    rotateY(0deg)    rotateX(0deg)   scale(1); }
+  12%  { transform: perspective(560px) rotateZ(5deg)    rotateY(18deg)   rotateX(-4deg)  scale(1); }
+  28%  { transform: perspective(560px) rotateZ(-4deg)   rotateY(-16deg)  rotateX(8deg)   scale(1); }
+  34%  { transform: perspective(560px) rotateZ(-1deg)   rotateY(-6deg)   rotateX(5deg)   scale(1.14); }
+  42%  { transform: perspective(560px) rotateZ(4deg)    rotateY(10deg)   rotateX(4deg)   scale(1); }
+  55%  { transform: perspective(560px) rotateZ(6deg)    rotateY(12deg)   rotateX(6deg)   scale(1); }
+  66%  { transform: perspective(560px) rotateZ(-7deg)   rotateY(-20deg)  rotateX(-3deg)  scale(1); }
+  72%  { transform: perspective(560px) rotateZ(-5deg)   rotateY(-12deg)  rotateX(2deg)   scale(0.82); }
+  80%  { transform: perspective(560px) rotateZ(3deg)    rotateY(8deg)    rotateX(5deg)   scale(1); }
+  100% { transform: perspective(560px) rotateZ(0deg)    rotateY(0deg)    rotateX(0deg)   scale(1); }
+}
+
+@keyframes riftHintDrift {
+  /* Idle positional wander for the whole hint button.
+     Amplitude sizing: ±14px horizontally, ±12px vertically.
+     Earlier iteration used ±6px, which was too subtle to
+     actually read as "moving" because:
+       - the ::before sway already rotates up to 20° + scale
+         pulses, and the eye locks onto that bigger motion
+       - ease-in-out spends half the cycle near the peak and
+         half near zero, so average perceived motion is even
+         smaller than the stated amplitude
+     Bumping to ±12-14px puts the drift clearly above the
+     noise of the sway. The cell still stays close enough to
+     its grid slot that it reads as "the same cell, drifting"
+     rather than "a new cell appeared" - but now you can
+     actually see it wander. 11s period (trimmed from 13s)
+     stays offset from the sway's 11s by a prime-ratio so the
+     two loops phase-drift rather than phase-locking.
+
+     Uses the individual `translate:` CSS property (NOT
+     `transform:`) on purpose so it never conflicts with:
+       - `transform:` on .is-teleporting, which sets the 3D
+         flip-out (rotateY(90deg) scale(0.9)) during teleport;
+         `translate:` composes on top of `transform:` in the
+         final matrix, so the drift just adds an offset to the
+         flip animation instead of fighting it.
+       - the ::before sway, which rotates/scales the visible
+         border in place and has its own transform-origin.
+     Asymmetric keyframe spacing (peaks at 15/30/48/62/78%,
+     never simple halves) prevents the wander from reading as
+     a predictable back-and-forth rhythm. */
+  0%   { translate:   0     0;    }
+  15%  { translate:  11px  -6px;  }
+  30%  { translate:   4px   9px;  }
+  48%  { translate:  -8px  12px;  }
+  62%  { translate: -14px  -3px;  }
+  78%  { translate:   6px -10px;  }
+  100% { translate:   0     0;    }
+}
+
+@keyframes riftHintGlitch {
+  /* Hover glitch - classic RGB-split chromatic aberration tuned
+     for elegance, not drama. This is the "back-of-camera" kind
+     of CA you'd see on a cheap lens, not the aggressive stylized
+     kind - the ghost channels are deliberately translucent so
+     they read as subtly smeared RGB rather than visible colored
+     echoes of the border.
+       - cyan channel  (rgba(70, 200, 255)) - cooler side
+       - magenta chan. (rgba(255, 80, 150)) - warmer side
+     Both triplets match the CYAN_RGB / MAGENTA_RGB constants the
+     rift particle system uses for tear sparks, so the hint's
+     hover ghosts and the explosion sparks read as the same
+     "corruption signature" - not two unrelated palettes.
+     Three design rules keep this professional instead of
+     cartoonish:
+       1. Offsets stay inside ±2.2px. Any wider and the ghosts
+          separate into distinct rectangles instead of fused
+          smears. Real camera CA is sub-pixel - ±2.2px is
+          stylized but stays in the "this lens has aberration"
+          reading rather than "this UI is broken".
+       2. Alphas are capped at ~0.55. Earlier iterations used
+          0.85-1.0 alpha and the ghosts screamed at you. Dropping
+          to 0.35-0.55 range makes them whisper - they're there,
+          they jitter, but they don't dominate the border. This
+          is the single biggest lever between "amateur neon
+          effect" and "pro camera-lens CA".
+       3. Ghost offsets NEVER fully converge to 0 on any frame.
+          If they did, that frame would read as "the glitch
+          paused" and break the vibration. Minimum ~1px kept
+          throughout so the CA stays continuous.
+     Each keyframe simultaneously jitters:
+       - transform (always-on ±1-2px sub-pixel shake)
+       - filter    (cyan + magenta offsets, always non-zero,
+                    asymmetric alphas between frames so the
+                    ghosts breathe slightly instead of staying
+                    flat - small detail that sells "motion")
+     steps(6) timing gives discrete per-frame jumps (digital
+     corruption feel) rather than smooth interpolation. 260ms
+     loop fires ~4x/second. */
+  0% {
+    transform: translate(0.5px, -0.5px);
+    filter:
+      drop-shadow(-1.4px 0.3px 0 rgba(70, 200, 255, 0.42))
+      drop-shadow(1.4px -0.3px 0 rgba(255, 80, 150, 0.42));
+  }
+  16% {
+    transform: translate(-1.5px, 0.5px);
+    filter:
+      drop-shadow(-2.2px 0.6px 0 rgba(70, 200, 255, 0.55))
+      drop-shadow(1.8px -0.4px 0 rgba(255, 80, 150, 0.48));
+  }
+  33% {
+    transform: translate(1px, -1px);
+    filter:
+      drop-shadow(-1px -0.6px 0 rgba(70, 200, 255, 0.38))
+      drop-shadow(2.1px 0.4px 0 rgba(255, 80, 150, 0.5));
+  }
+  50% {
+    transform: translate(-0.5px, 1.2px);
+    filter:
+      drop-shadow(-2.2px 0.2px 0 rgba(70, 200, 255, 0.52))
+      drop-shadow(1.2px -0.8px 0 rgba(255, 80, 150, 0.4));
+  }
+  66% {
+    transform: translate(1.5px, 0.5px);
+    filter:
+      drop-shadow(-0.9px 0.4px 0 rgba(70, 200, 255, 0.38))
+      drop-shadow(2px -0.2px 0 rgba(255, 80, 150, 0.45));
+  }
+  83% {
+    transform: translate(-1px, -1px);
+    filter:
+      drop-shadow(-1.8px -0.5px 0 rgba(70, 200, 255, 0.5))
+      drop-shadow(1.5px 0.8px 0 rgba(255, 80, 150, 0.48));
+  }
+  100% {
+    transform: translate(0.5px, -0.5px);
+    filter:
+      drop-shadow(-1.4px 0.3px 0 rgba(70, 200, 255, 0.42))
+      drop-shadow(1.4px -0.3px 0 rgba(255, 80, 150, 0.42));
+  }
+}
+/* Hidden on tablets/phones: the hint wants room in the grid and
+   the rift effect is calibrated for desktop geometry. JS also
+   bails out on reduced-motion, so this media query is just belt-
+   and-braces for CSS-only reads. */
+@media (max-width: 1023px) {
+  .hero__rift,
+  .hero__rift__hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__rift__hint,
+  .hero__rift__hint:hover,
+  .hero__rift__hint:focus-visible,
+  .hero__rift__hint::before,
+  .hero__rift__hint:hover::before,
+  .hero__rift__hint:focus-visible::before,
+  .hero__rift__hint:hover .hero__rift__hint__spark,
+  .hero__rift__hint:focus-visible .hero__rift__hint__spark { animation: none; }
 }
 
 .hero__meta {

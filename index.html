@@ -227,6 +227,36 @@
         <div class="hero__grid" aria-hidden="true"></div>
         <div class="hero__cells" id="heroCells" aria-hidden="true"></div>
 
+        <!-- Reality-tear easter egg: clicking the suspicious hint
+             cell opens a Half-Life-style rift in the grid. The
+             canvas is a full-hero overlay that only runs a rAF loop
+             during the ~2.5s rift animation; idle it's zero cost.
+             Both the hint and the canvas are injected / positioned
+             by initHeroRift() in js/scripts.js and removed entirely
+             for prefers-reduced-motion users. -->
+        <canvas
+          class="hero__rift"
+          id="heroRift"
+          aria-hidden="true"
+        ></canvas>
+        <button
+          type="button"
+          class="hero__rift__hint"
+          id="heroRiftHint"
+          aria-label="Something off in the grid"
+          hidden
+        ><!-- hover/focus sparks: 6 tiny pseudo-embers that pop outward
+               from the border on interaction. Decorative; aria-hidden
+               so assistive tech sees only the button's label. CSS
+               picks up each nth-child for its own direction + delay -->
+          <span class="hero__rift__hint__spark" aria-hidden="true"></span>
+          <span class="hero__rift__hint__spark" aria-hidden="true"></span>
+          <span class="hero__rift__hint__spark" aria-hidden="true"></span>
+          <span class="hero__rift__hint__spark" aria-hidden="true"></span>
+          <span class="hero__rift__hint__spark" aria-hidden="true"></span>
+          <span class="hero__rift__hint__spark" aria-hidden="true"></span>
+        </button>
+
         <div class="hero__meta">
           <span class="dot dot--live"></span>
           <span data-i18n="hero.location">BUENOS AIRES, AR</span>

@@ -191,7 +191,13 @@
 }
 .doom-modal__body {
   position: relative;
-  background: #000;
+  /* Theme-driven so the letterbox / play-area backdrop matches the
+     page (near-black in dark mode, cream in light mode) instead of
+     a hardcoded #000 that reads as a harsh cutout on light theme.
+     The iframe document inside paints the same var(--bg) via
+     doomThemeCss() in js/doom.js, so body + mount + frame + iframe
+     body all agree on the same single tone. */
+  background: var(--bg);
   overflow: hidden;
   /* DOOM renders 4:3 internally; locking the body to that ratio lets
      js-dos scale the canvas to fill instead of letterboxing. We must
@@ -234,7 +240,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+  background: var(--bg);
 }
 /* the iframe runs js-dos in its own document so its CSS / audio /
    workers stay isolated and die cleanly when the modal closes. */
@@ -243,7 +249,10 @@
   width: 100%;
   height: 100%;
   border: 0;
-  background: #000;
+  /* matches body + mount so there's no color seam during the brief
+     window where the iframe element is visible but its document
+     hasn't painted yet */
+  background: var(--bg);
   color-scheme: dark;
 }
 .doom-modal__loader {
@@ -533,13 +542,13 @@
 
 /* native fullscreen */
 .doom-modal__mount:fullscreen {
-  background: #000;
+  background: var(--bg);
   width: 100vw;
   height: 100vh;
   padding: 0;
 }
 .doom-modal__mount:-webkit-full-screen {
-  background: #000;
+  background: var(--bg);
   width: 100vw;
   height: 100vh;
 }
