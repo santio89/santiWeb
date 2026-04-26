@@ -1282,20 +1282,27 @@ textarea:focus-visible {
   outline: none;
   -webkit-tap-highlight-color: transparent;
   transform-origin: 50% 50%;
-  /* Entry transition (reappear after teleport). Asymmetric pair:
-       - opacity uses easeOutCubic over 860ms so the fade rises
-         EVENLY from 0 - expo-out (what we used before) front-loads
-         ~70% of the opacity change into the first ~30% of the
-         duration, which reads as a snap-pop rather than a fade.
-         easeOutCubic spreads the change much more uniformly.
-       - transform keeps easeOutExpo at 720ms so the 3D flip-back
-         still settles confidently without overshoot.
-     The exit uses a different (accelerating) curve below for a
-     dissolve. The two-direction asymmetry is what sells
-     "suspicious" - it leaves reluctantly, arrives softly. */
+  /* Entry transition (reappear after teleport / respawn).
+     Gentle symmetric pair with easeOutCubic on BOTH opacity
+     and transform:
+       - 980ms for the arrival - slightly slower than the OUT
+         (760ms, below) so "arrives softly, leaves calmly" -
+         a subtle asymmetry rather than the old "reluctantly
+         leaves / snaps back" which had dramatically different
+         curves in each direction and read as two different
+         moods instead of one smooth breath.
+       - easeOutCubic spreads the change evenly - no front-
+         loaded snap-pop (expo-out) and no accelerating rush
+         (the old OUT curve). The cell just... appears,
+         smoothly, and settles into place.
+     Paired with the OUT transition below, the two directions
+     now share the same character: a soft scale pulse (0.94 ->
+     1.0 / 1.0 -> 0.94) plus an even opacity fade. Feels like
+     the same entity materializing and dematerializing, rather
+     than two different animations bolted together. */
   transition:
-    opacity 860ms cubic-bezier(0.33, 1, 0.68, 1),
-    transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 980ms cubic-bezier(0.33, 1, 0.68, 1),
+    transform 980ms cubic-bezier(0.33, 1, 0.68, 1);
   /* No halo / box-shadow pulse on the button - and none on the
      ::before either. The earlier two-layer breathing halo (tight
      inner + 26px ambient) plus the static outer box-shadow on
@@ -1325,18 +1332,24 @@ textarea:focus-visible {
   animation: riftHintDrift 11s ease-in-out infinite;
 }
 .hero__rift__hint[hidden] { display: none; }
-/* Teleport exit state: opacity collapses, card flips 90° edge-on
-   and shrinks. Paired with a different easing on the transition so
-   the dissolve accelerates (reads as "phasing out" rather than
-   "fading out"), and held invisible for TELEPORT_DWELL_MS by JS
-   before it's repositioned + the class is removed. */
+/* Teleport exit state: opacity fades to 0 and the cell shrinks
+   subtly to scale(0.94). Held invisible for TELEPORT_DWELL_MS by
+   JS before it's repositioned + the class is removed.
+   Dropped the old rotateY(90deg) edge-on flip - that was way too
+   dramatic for what should be a subtle "it's leaving" moment.
+   A tiny scale(0.94) shrink paired with the opacity fade reads
+   as a gentle dematerialization without the snap of a 3D flip.
+   Matches the IN transition above (same easeOutCubic curve, both
+   properties) so the two directions feel like one coherent
+   breath - only difference is the duration (760ms out vs 980ms
+   in) so leaving feels a touch more decisive than arriving. */
 .hero__rift__hint.is-teleporting {
   opacity: 0;
-  transform: perspective(460px) rotateY(90deg) scale(0.9);
+  transform: scale(0.94);
   pointer-events: none;
   transition:
-    opacity 520ms cubic-bezier(0.7, 0, 0.84, 0),
-    transform 520ms cubic-bezier(0.7, 0, 0.84, 0);
+    opacity 760ms cubic-bezier(0.33, 1, 0.68, 1),
+    transform 760ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 /* Solid accent-neon frame with an inner-only neon glow.
@@ -1469,6 +1482,14 @@ textarea:focus-visible {
      the 6 layers to the compositor so the burst doesn't repaint
      the whole hint every frame. */
   will-change: transform, opacity;
+  /* When hover/focus ends the animation goes away, which would
+     otherwise snap in-flight sparks from opacity:1 back to their
+     base opacity:0 in a single frame. This transition catches
+     that return-to-base so remaining sparks soft-fade out instead
+     of blinking off - reads as sparks settling down instead of
+     being abruptly cut. Animation takes priority while active, so
+     this only applies on the exit path. */
+  transition: opacity 260ms ease-out;
 }
 .hero__rift__hint__spark:nth-child(1) { --dir:  24deg; --spark-delay: 0s;     --spark-size: 3px; --spark-color: var(--accent); --spark-rgb: var(--accent-rgb); }
 .hero__rift__hint__spark:nth-child(2) { --dir:  82deg; --spark-delay: 0.16s;  --spark-size: 2px; --spark-color: var(--fg);     --spark-rgb: var(--fg-rgb); }

@@ -1564,16 +1564,26 @@ function initHeroRift() {
   const HIT_INSET = 8;
   const IDLE_RELOCATE_MS = 16000; // quiet drift between teleports (user-clickable window)
   const POST_RIFT_MS = 8000;      // respawn after rift completes
-  // Teleport phases. OUT (520ms, accelerating dissolve) + DWELL
-  // (520ms, held invisible) + IN (860ms opacity fade + 720ms 3D
-  // settle, from the default transition on .hero__rift__hint) =
-  // ~1.9s total. The dwell is what sells "it's actually gone" -
-  // no dwell and the cell just seems to jump across the grid. The
-  // two setTimeout values below only cover the OUT + DWELL window
-  // (CSS drives the IN); JS just needs to reposition the hint and
-  // remove .is-teleporting by the 1040ms mark so the IN transition
-  // can fire from the default state.
-  const TELEPORT_OUT_MS = 520;
+  // Teleport phases. OUT (760ms, gentle scale+fade with
+  // easeOutCubic) + DWELL (520ms, held invisible) + IN (980ms
+  // scale+fade with easeOutCubic, driven by the default
+  // transition on .hero__rift__hint) = ~2.26s total. Both OUT
+  // and IN now share the same easeOutCubic curve and scale(0.94)
+  // delta; only duration differs (OUT slightly shorter than IN)
+  // so the cell feels like it "leaves calmly and arrives softly"
+  // - one coherent breath in both directions instead of two
+  // different moods. The dwell is what sells "it's actually
+  // gone" - no dwell and the cell just seems to jump across the
+  // grid. These two setTimeout values below only cover the OUT
+  // + DWELL window (CSS drives the IN); JS just needs to
+  // reposition the hint and remove .is-teleporting by the
+  // 1280ms mark so the IN transition can fire from the default
+  // state. TELEPORT_OUT_MS must match the CSS OUT duration
+  // exactly - shorter and the cell isn't fully faded yet when
+  // we reposition (visible snap); longer and there's a dead
+  // beat where the cell is visually gone but we haven't moved
+  // it yet.
+  const TELEPORT_OUT_MS = 760;
   const TELEPORT_DWELL_MS = 520;
   // Absolute upper bound on how long the is-teleporting class can
   // stay on the element. If something goes wrong (tab throttled,
@@ -1582,7 +1592,7 @@ function initHeroRift() {
   // unclickable. Only needs to cover OUT + DWELL + a little slack
   // (IN runs from the default-state transition once the class is
   // gone, so the IN duration isn't the watchdog's problem).
-  const TELEPORT_SAFETY_MS = 2400;
+  const TELEPORT_SAFETY_MS = 2600;
   let relocateTimer = 0;
   let hintRespawn = 0;
   let teleportTimer = 0;   // tracks the in-flight teleport setTimeout so trigger() can cancel it
@@ -1636,9 +1646,9 @@ function initHeroRift() {
       // CSS transitions can't run across a display:none -> block
       // boundary. Trick: plant .is-teleporting BEFORE making it
       // visible so the initial committed state is opacity:0 +
-      // rotated 90°, force a reflow so that state is flushed,
+      // scale(0.94), force a reflow so that state is flushed,
       // then drop the class next frame so the default-state
-      // transition (860ms opacity + 720ms transform settle)
+      // transition (980ms opacity + 980ms scale, both easeOutCubic)
       // plays from "invisible" back to "here". Watchdog guards
       // against the rAF callbacks never firing (tab throttling).
       hint.classList.add("is-teleporting");
@@ -1705,9 +1715,10 @@ function initHeroRift() {
     // can't ever double-schedule the flip-back).
     clearTimeout(teleportTimer);
     clearTimeout(teleportWatchdog);
-    // Phase 1 (OUT): accelerating fade + 90° Y-flip + slight shrink,
-    // driven by the .is-teleporting class on the hint. CSS handles
-    // the actual transition; we just flip the class on.
+    // Phase 1 (OUT): 760ms fade + gentle scale(0.94) shrink,
+    // driven by the .is-teleporting class on the hint. Symmetric
+    // easeOutCubic curve with the IN below - CSS handles the
+    // actual transition; we just flip the class on.
     hint.classList.add("is-teleporting");
     // Safety watchdog: absolute deadline for the is-teleporting
     // class being present. If the callbacks below get starved
@@ -1771,11 +1782,22 @@ function initHeroRift() {
   const JAGGED_STEPS = 20;
   let tx = 0, ty = 0; // rift origin in canvas-local CSS px
 
-  // Pre-computed jagged-edge offsets. Built once per trigger so the
-  // silhouette is a stable "crack" that shimmers in flicker, not a
-  // new random zigzag every frame (which would look like TV static).
+  // Pre-computed jagged-edge offsets. Re-rolled every RIFT_JITTER_REFRESH_MS
+  // during the hold phase so the seam reads as an unstable living
+  // crack that shifts subtly, not a frozen silhouette. Every-frame
+  // re-rolls would look like TV static; every ~120ms gives a
+  // "seam is breathing / shifting / unstable" quality that matches
+  // the flicker cadence without being chaotic.
   const jitterL = new Float32Array(JAGGED_STEPS + 1);
   const jitterR = new Float32Array(JAGGED_STEPS + 1);
+  const RIFT_JITTER_REFRESH_MS = 120;
+  let lastJitterRefresh = 0;
+  const rollJitter = () => {
+    for (let i = 0; i <= JAGGED_STEPS; i++) {
+      jitterL[i] = (Math.random() - 0.5) * 7;
+      jitterR[i] = (Math.random() - 0.5) * 7;
+    }
+  };
 
   /* ---------- particle pool ----------
      Parallel Float32Arrays (same pattern as initCursor / initNuclei
@@ -1929,10 +1951,8 @@ function initHeroRift() {
     tx = hRect.left + hRect.width / 2 - cRect.left;
     ty = hRect.top + hRect.height / 2 - cRect.top;
 
-    for (let i = 0; i <= JAGGED_STEPS; i++) {
-      jitterL[i] = (Math.random() - 0.5) * 7;
-      jitterR[i] = (Math.random() - 0.5) * 7;
-    }
+    rollJitter();
+    lastJitterRefresh = 0;
 
     /* Initial burst - the "bang" when reality cracks open. Roughly
        distributed as:
@@ -2003,8 +2023,9 @@ function initHeroRift() {
     clearTimeout(hintRespawn);
     hintRespawn = setTimeout(() => {
       // fade=true -> reappear uses the .is-teleporting fade-in
-      // trick (opacity:0 + rotateY(90°) settles smoothly back to
-      // here over 860ms) instead of a display:none -> block pop.
+      // trick (opacity:0 + scale(0.94) settles smoothly back to
+      // opacity:1 + scale(1) over 980ms) instead of a
+      // display:none -> block pop.
       tryApplyCell(0, true);
       scheduleRelocate(IDLE_RELOCATE_MS);
     }, DURATION + POST_RIFT_MS);
@@ -2068,6 +2089,29 @@ function initHeroRift() {
     ctx.fillStyle = `rgba(${fgRgb}, ${0.92 * flicker})`;
     ctx.fill();
 
+    // 1b. Inner bloom at peak openness. A small accent-tinted
+    //    radial gradient painted inside the clipped rift silhouette
+    //    - reads as the rift core "glowing from within" rather
+    //    than a flat pane of light. Only visible at high openness
+    //    so the tip/close phases stay crisp silhouette; peaks at
+    //    openness=1 and fades quickly below 0.7.
+    if (openness > 0.7) {
+      const bloomT = (openness - 0.7) / 0.3; // 0..1 across the hold plateau
+      ctx.save();
+      buildRiftPath(openness, length);
+      ctx.clip();
+      const bloomR = MAX_WIDTH * 2.5;
+      const bloomGrad = ctx.createRadialGradient(tx, ty, 0, tx, ty, bloomR);
+      const bloomA = bloomT * flicker * 0.55;
+      bloomGrad.addColorStop(0, `rgba(${accentRgb}, ${bloomA})`);
+      bloomGrad.addColorStop(0.45, `rgba(${fgRgb}, ${bloomA * 0.4})`);
+      bloomGrad.addColorStop(1, `rgba(${accentRgb}, 0)`);
+      ctx.globalCompositeOperation = "lighter";
+      ctx.fillStyle = bloomGrad;
+      ctx.fillRect(tx - bloomR, ty - bloomR, bloomR * 2, bloomR * 2);
+      ctx.restore();
+    }
+
     // 2. Accent halo (the "touch of theme accent" layer). Shadow
     //    blur scales with openness so the glow blooms as the rift
     //    widens. Using additive composite so the accent tints the
@@ -2088,8 +2132,15 @@ function initHeroRift() {
     //    silhouette without actually compositing three color
     //    channels. Sells "reality tearing" better than a single
     //    clean edge would.
+    //    Per-frame offset jitter (±0.6px) + scale with openness
+    //    so the aberration itself vibrates like the hint border
+    //    does on hover - the seam reads as unstable/vibrating,
+    //    not statically offset. Base offset still ±1.5px so the
+    //    split is clearly visible; jitter lives on top.
+    const ghostJit = (Math.random() - 0.5) * 1.2;
+    const ghostBase = 1.5 + openness * 0.4;
     ctx.save();
-    ctx.translate(-1.5, 0);
+    ctx.translate(-ghostBase + ghostJit, (Math.random() - 0.5) * 0.4);
     ctx.strokeStyle = `rgba(${accentRgb}, ${0.45 * flicker})`;
     ctx.lineWidth = 1;
     buildRiftPath(openness, length);
@@ -2097,7 +2148,7 @@ function initHeroRift() {
     ctx.restore();
 
     ctx.save();
-    ctx.translate(1.5, 0);
+    ctx.translate(ghostBase - ghostJit, (Math.random() - 0.5) * 0.4);
     ctx.strokeStyle = `rgba(${fgRgb}, ${0.5 * flicker})`;
     ctx.lineWidth = 0.8;
     buildRiftPath(openness, length);
@@ -2120,12 +2171,23 @@ function initHeroRift() {
       pAge[i] += dt;
       // Curl-noise-ish wander: divergence-free-ish force sampled
       // from sin/cos of position + per-particle phase. Amplitude
-      // is small compared to the initial fling speed, so particles
-      // still fly mostly ballistically but trace a subtle swirling
-      // path instead of a straight line - reads as "reality still
-      // disturbed around the rift" rather than free-fall debris.
-      const nx = Math.sin(pY[i] * 0.019 + nt + pPhase[i]) * 34;
-      const ny = Math.cos(pX[i] * 0.019 + nt + pPhase[i]) * 34;
+      // is now PER-KIND so mass reads differently across the cloud:
+      //   - DEBRIS (heavy chunks) gets low wander (18) - they plow
+      //     through the disturbance on ballistic arcs, selling
+      //     "torn piece of reality" with a clean parabolic fall.
+      //   - EMBER (hot wisps) gets high wander (48) - they dance
+      //     and swirl in the updraft, selling "rising heat".
+      //   - SPARK (light dust, majority class) gets medium (34) -
+      //     a subtle swirling path without dominating the fling.
+      // Small diff but perceptibly distinct mass behavior once
+      // you see the cloud moving.
+      const kind = pKind[i];
+      const curlAmp =
+        kind === KIND_DEBRIS ? 18
+        : kind === KIND_EMBER ? 48
+        : 34;
+      const nx = Math.sin(pY[i] * 0.019 + nt + pPhase[i]) * curlAmp;
+      const ny = Math.cos(pX[i] * 0.019 + nt + pPhase[i]) * curlAmp;
       pVX[i] += nx * dt;
       pVY[i] += ny * dt;
       // Integrate before damping so the wander contributes to this
@@ -2137,26 +2199,82 @@ function initHeroRift() {
       pVX[i] *= pDrag[i];
       pVY[i] *= pDrag[i];
       pVY[i] += pGrav[i] * dt;
-      // Rotation for debris (sparks/embers render as circles, so
-      // this read is only meaningful on kind==1, but updating all
-      // of them is branchless and cheap).
+      // Rotation updated for all, but debris gets angular friction
+      // so its spin decays over life - reads as "tumbling chunk
+      // slowing as it falls", matching real-world angular damping
+      // in a viscous medium. 0.97^frame at 60fps = ~83% retained
+      // per second, subtle but adds a lot of "settle" read.
       pRot[i] += pSpin[i] * dt;
+      if (kind === KIND_DEBRIS) pSpin[i] *= 0.97;
     }
   };
 
   const drawParticles = () => {
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
+    // Inverse of "TRAIL_SPEED" below - any sqrt comparison we need
+    // for the trail cutoff only runs once per frame via this
+    // squared constant, not per-particle per-frame.
+    const TRAIL_SPEED_SQ = 170 * 170; // only sparks/embers faster than this get a trail
     for (let i = 0; i < MAX_PARTICLES; i++) {
       if (pAge[i] >= pLife[i]) continue;
       const lifeT = pAge[i] / pLife[i];
       const fade = 1 - lifeT;
-      const alpha = fade * 0.92;
+      // Birth envelope: the first ~8% of life is a ramp-in from
+      // alpha 0 -> full. Prevents new edge-emission particles
+      // from popping into existence at 0.92 alpha, which used to
+      // look like little "blinks" along the rift seam. Ramp is
+      // fast enough (e.g. ~56ms of a 0.7s life) that the burst
+      // still feels instant, but slow enough that the eye reads
+      // it as "lighting up" instead of "appearing".
+      const birth = lifeT < 0.08 ? lifeT / 0.08 : 1;
+      const alpha = fade * birth * 0.92;
       const size = pSize[i] * (0.5 + 0.6 * fade); // shrink toward death
       const hue = pHue[i];
       const kind = pKind[i];
       const sprite = glowSprites[hue];
       const rgb = rgbForHue(hue);
+
+      // 0) VELOCITY TRAIL (pre-glow) for fast sparks / embers.
+      //    Classic pro-game motion-blur fake: draw a short line
+      //    segment backward along the velocity vector, fading to
+      //    transparent at the tail. Only drawn when moving fast
+      //    enough to justify (slower particles' trails would just
+      //    look like noise). Gated:
+      //      - no trails on debris (they're solid chunks, a trail
+      //        would read as "smear glitch" not "motion blur")
+      //      - only past the birth ramp (lifeT > 0.08) so freshly
+      //        spawned particles don't have a frozen "hair" at
+      //        their spawn point
+      //      - only on fast enough particles (vx^2+vy^2 > ~170^2)
+      //    The trail length is velocity-scaled and tapered by
+      //    fade, so decelerating particles shed their trail first
+      //    before dimming - the same read you get from tracer
+      //    rounds in well-animated shooters.
+      if (kind !== KIND_DEBRIS && lifeT > 0.08) {
+        const vx = pVX[i];
+        const vy = pVY[i];
+        const vSq = vx * vx + vy * vy;
+        if (vSq > TRAIL_SPEED_SQ) {
+          const v = Math.sqrt(vSq);
+          // Cap trail length so very fast initial-burst particles
+          // don't paint half the canvas. 14px feels like a
+          // tracer round at full brightness.
+          const trailLen = Math.min(14, v * 0.05) * fade;
+          const tailX = pX[i] - (vx / v) * trailLen;
+          const tailY = pY[i] - (vy / v) * trailLen;
+          const grad = ctx.createLinearGradient(pX[i], pY[i], tailX, tailY);
+          grad.addColorStop(0, `rgba(${rgb}, ${alpha * 0.7})`);
+          grad.addColorStop(1, `rgba(${rgb}, 0)`);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = Math.max(0.8, size * 0.6);
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(pX[i], pY[i]);
+          ctx.lineTo(tailX, tailY);
+          ctx.stroke();
+        }
+      }
 
       // 1) OUTER GLOW - blit pre-baked sprite, scaled to per-particle
       //    radius. sprite.width is GLOW_SPRITE_SIZE but we scale it
@@ -2206,6 +2324,7 @@ function initHeroRift() {
       }
     }
     ctx.globalAlpha = 1;
+    ctx.lineCap = "butt"; // reset from trail drawing
     ctx.restore();
   };
 
@@ -2286,6 +2405,21 @@ function initHeroRift() {
     const step = Math.floor(elapsed / 80) * 0.37;
     const flicker = 0.78 + 0.22 * Math.sin(elapsed * 0.055 + step);
 
+    // Refresh the jagged silhouette offsets during the hold phase
+    // so the seam reads as a living, unstable crack. Gated to the
+    // open+hold window (not the pointed-tip opening or sealing
+    // phases) where the rift is visually large enough for the
+    // reshape to read. At 120ms cadence the reshape is visible but
+    // deliberate - not TV static.
+    if (
+      progress > 0.18 &&
+      progress < 0.75 &&
+      elapsed - lastJitterRefresh > RIFT_JITTER_REFRESH_MS
+    ) {
+      rollJitter();
+      lastJitterRefresh = elapsed;
+    }
+
     if (length > 0.001) drawRift(openness, length, flicker);
 
     /* Continuous edge sparks during open+hold. Emitted just outside
@@ -2296,10 +2430,28 @@ function initHeroRift() {
        the "living tear" feel without crowding the canvas. */
     if (progress > 0.12 && progress < 0.8 && Math.random() < 0.55) {
       const halfH = (length * h * MAX_LEN_RATIO) / 2;
-      const edgeY = ty - halfH + Math.random() * halfH * 2;
+      // Sample position along the rift's vertical extent. `tNorm`
+      // is the 0..1 Y-position; the seam's actual half-width at
+      // that Y follows the same diamond taper as buildRiftPath
+      // (widest at the middle, zero at the tips).
+      const tNorm = Math.random();
+      const edgeY = ty - halfH + tNorm * halfH * 2;
+      const taper = 1 - Math.abs(tNorm - 0.5) * 2;
+      const seamHalfW = (openness * MAX_WIDTH) / 2 * taper;
       const side = Math.random() < 0.5 ? -1 : 1;
-      const base = side > 0 ? 0 : Math.PI;
-      const angle = base + (Math.random() - 0.5) * 0.7;
+      // Spawn AT the seam edge (plus half a px of hair so the
+      // particle's own glow doesn't get clipped by the inverse-fg
+      // fill) rather than at tx+side*2 which sat inside the rift
+      // when the tear was open. Now the sparks genuinely peel off
+      // the silhouette edge instead of appearing from the core.
+      const spawnX = tx + side * (seamHalfW + 0.5);
+      // Bias outward angle away from the seam normal (horizontal
+      // outward) but with a wider cone near the pointed tips
+      // where the seam tapers - physically tips would shed more
+      // chaotically while the middle shears cleanly outward.
+      const baseAngle = side > 0 ? 0 : Math.PI;
+      const coneWidth = 0.6 + (1 - taper) * 0.8; // tips: ~1.4rad, middle: ~0.6rad
+      const angle = baseAngle + (Math.random() - 0.5) * coneWidth;
       const speed = 40 + Math.random() * 90;
       const r = Math.random();
       // Edge emission skews spark-heavy (debris would crowd the
@@ -2318,7 +2470,7 @@ function initHeroRift() {
         hue = h < 0.6 ? 0 : h < 0.84 ? 1 : h < 0.92 ? 2 : 3;
         size = 0.9 + Math.random() * 0.7;
       }
-      spawnParticle(tx + side * 2, edgeY, angle, speed, hue, 0.45 + Math.random() * 0.55, kind, size);
+      spawnParticle(spawnX, edgeY, angle, speed, hue, 0.45 + Math.random() * 0.55, kind, size);
     }
 
     updateParticles(dt, elapsed);
