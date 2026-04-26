@@ -331,10 +331,37 @@ textarea:focus-visible {
       0 0 36px rgba(var(--accent-rgb), 0.32);
   }
 }
+/* Glow-pulse for the small orange cap blocks at the right edge of each
+   section line. Same layered shadow recipe as `.dot--live` (a stable
+   inner halo + an outward expanding ring that fades out) but stretched
+   to a 3.2s cadence - the section caps are larger and more spread out
+   across the page than the tiny live dot, so a slower rhythm reads as
+   "breathing HUD accent" rather than "alarm light". */
+@keyframes sectionCapPulse {
+  0% {
+    box-shadow:
+      0 0 8px  rgba(var(--accent-rgb), 0.85),
+      0 0 18px rgba(var(--accent-rgb), 0.45),
+      0 0 0 0  rgba(var(--accent-rgb), 0.7);
+  }
+  70% {
+    box-shadow:
+      0 0 8px  rgba(var(--accent-rgb), 0.85),
+      0 0 18px rgba(var(--accent-rgb), 0.45),
+      0 0 0 10px rgba(var(--accent-rgb), 0);
+  }
+  100% {
+    box-shadow:
+      0 0 8px  rgba(var(--accent-rgb), 0.85),
+      0 0 18px rgba(var(--accent-rgb), 0.45),
+      0 0 0 0 rgba(var(--accent-rgb), 0);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   /* keep glows but stop the breathing */
   .hero__title__line--accent > span,
   .section__title::before,
+  .section__line::after,
   .work__item__title h3::after {
     animation: none !important;
   }
@@ -802,9 +829,23 @@ textarea:focus-visible {
   border-color: transparent;
 }
 .header__section__caret {
-  color: var(--accent);
-  font-size: 10px;
-  line-height: 1;
+  /* Brutalist HUD caret - pure CSS right-pointing triangle.
+     `clip-path: polygon()` carves a solid background rectangle into
+     a wedge with hard, pixel-sharp edges (no anti-aliased curves,
+     no SVG, no extra DOM). `drop-shadow` lives on `filter` instead
+     of `box-shadow` because box-shadow paints the element's
+     rectangular box (ignoring the clip), while drop-shadow follows
+     the rendered pixels of the clipped triangle - giving a proper
+     offset silhouette like a brutalist stamp. `flex-shrink: 0`
+     keeps the wedge from squashing when the section label hits its
+     `text-overflow: ellipsis` width cap. */
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  background: var(--accent);
+  clip-path: polygon(0 0, 0 100%, 100% 50%);
+  filter: drop-shadow(1px 1px 0 color-mix(in srgb, var(--accent) 55%, transparent));
   /* Subtle pulse so the readout feels alive, not static. */
   animation: sectionCaretPulse 2.4s ease-in-out infinite;
 }
@@ -1673,7 +1714,18 @@ textarea:focus-visible {
   bottom: -3px;
   width: 12px;
   background: var(--accent);
+  animation: sectionCapPulse 3.2s ease-out infinite;
 }
+/* Stagger each section's pulse so they don't all fire in unison -
+   avoids the page feeling "strobey". Offsets are spread across the
+   3.2s cycle (~0.6-0.65s apart) instead of matching the breathing
+   delays from the `//` prefixes, because this pulse is phase-based
+   (ring expansion) rather than amplitude-based (halo fade), so a
+   simple even spread reads better. */
+.section:nth-of-type(2) .section__line::after { animation-delay: -0.6s; }
+.section:nth-of-type(3) .section__line::after { animation-delay: -1.2s; }
+.section:nth-of-type(4) .section__line::after { animation-delay: -1.9s; }
+.section:nth-of-type(5) .section__line::after { animation-delay: -2.5s; }
 .section__lede {
   max-width: 60ch;
   font-size: clamp(1rem, 1.2vw, 1.1rem);
