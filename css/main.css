@@ -21,6 +21,10 @@
   --max-w: 1400px;
   --header-h: 64px;
   --header-h-condensed: 48px;
+  /* Height of the `.scroll-progress` bar - referenced by the mobile
+     drawer so it can sit BELOW the progress strip instead of covering
+     it. Single source of truth for both rules. */
+  --scroll-progress-h: 2px;
 
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-snap: cubic-bezier(0.7, 0, 0.2, 1);
@@ -618,7 +622,7 @@ textarea:focus-visible {
   top: var(--header-h);
   left: 0;
   right: 0;
-  height: 2px;
+  height: var(--scroll-progress-h);
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left center;
@@ -829,29 +833,45 @@ textarea:focus-visible {
   border-color: transparent;
 }
 .header__section__caret {
-  /* Brutalist HUD caret - pure CSS right-pointing triangle.
-     `clip-path: polygon()` carves a solid background rectangle into
-     a wedge with hard, pixel-sharp edges (no anti-aliased curves,
-     no SVG, no extra DOM). `drop-shadow` lives on `filter` instead
-     of `box-shadow` because box-shadow paints the element's
-     rectangular box (ignoring the clip), while drop-shadow follows
-     the rendered pixels of the clipped triangle - giving a proper
-     offset silhouette like a brutalist stamp. `flex-shrink: 0`
-     keeps the wedge from squashing when the section label hits its
+  /* Brutalist HUD data block - a solid accent rectangle that echoes
+     the same motif as the section-line end caps and the PROFILE.SYS
+     live dot. Uses a separate, dialed-back pulse (`sectionBadgePulse`)
+     because the badge sits inside the tight condensed header and a
+     full-strength pulse reads as agitated in such a small container.
+     Sized 6x6 so it looks like a data marker next to the 10px readout
+     text rather than a full-height block crowding the label.
+     `flex-shrink: 0` keeps it from squashing when the label hits its
      `text-overflow: ellipsis` width cap. */
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   flex-shrink: 0;
   background: var(--accent);
-  clip-path: polygon(0 0, 0 100%, 100% 50%);
-  filter: drop-shadow(1px 1px 0 color-mix(in srgb, var(--accent) 55%, transparent));
-  /* Subtle pulse so the readout feels alive, not static. */
-  animation: sectionCaretPulse 2.4s ease-in-out infinite;
+  animation: sectionBadgePulse 3.6s ease-out infinite;
 }
-@keyframes sectionCaretPulse {
-  0%, 100% { opacity: 1; transform: translateX(0); }
-  50% { opacity: 0.55; transform: translateX(2px); }
+/* Toned-down twin of `sectionCapPulse` - smaller halos, a shorter ring
+   throw (6px instead of 10px), and lower peak alphas. Reads as a calm
+   breath rather than a flashing beacon, which is the right tone for a
+   marker sitting inside the condensed-header chrome. */
+@keyframes sectionBadgePulse {
+  0% {
+    box-shadow:
+      0 0 4px  rgba(var(--accent-rgb), 0.55),
+      0 0 10px rgba(var(--accent-rgb), 0.25),
+      0 0 0 0  rgba(var(--accent-rgb), 0.4);
+  }
+  70% {
+    box-shadow:
+      0 0 4px  rgba(var(--accent-rgb), 0.55),
+      0 0 10px rgba(var(--accent-rgb), 0.25),
+      0 0 0 6px rgba(var(--accent-rgb), 0);
+  }
+  100% {
+    box-shadow:
+      0 0 4px  rgba(var(--accent-rgb), 0.55),
+      0 0 10px rgba(var(--accent-rgb), 0.25),
+      0 0 0 0  rgba(var(--accent-rgb), 0);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .header__section__caret { animation: none; }
@@ -1649,8 +1669,32 @@ textarea:focus-visible {
 .marquee__track > span:nth-child(odd) {
   color: var(--fg);
 }
-.marquee__track > span:nth-child(even) {
-  color: var(--accent);
+/* Brutalist marquee separator - a small solid accent diamond (square
+   rotated 45deg) between tech names. `em`-sized so it scales with the
+   marquee's responsive font-size - stays proportional to the tech
+   names at every viewport. A rotated rectangle (not a plain square)
+   keeps a clear visual distinction from the solid-rectangle indicators
+   used elsewhere (`.dot--live`, section-line caps, header badge),
+   so the user reads "separator" not "status light". */
+/* Use `.marquee__track > span.marquee__sep` (specificity 0,2,1) so the
+   `display` here beats `.marquee__track > span { display: inline-block }`
+   - an inline-block span would still render the ::before but its layout
+   metrics make centering the rotated mark awkward. */
+.marquee__track > span.marquee__sep {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* `display: inline-block` is required on the pseudo itself - without
+   it the default `inline` display ignores width/height and the diamond
+   collapses to 0x0. */
+.marquee__sep::before {
+  content: "";
+  display: inline-block;
+  width: 0.35em;
+  height: 0.35em;
+  background: var(--accent);
+  transform: rotate(45deg);
 }
 @keyframes marquee {
   from { transform: translate3d(0, 0, 0); }
@@ -3192,15 +3236,16 @@ html[data-resizing] .header::after {
      drawer's geometry decoupled from the header's own layout. */
   .header__nav {
     position: fixed;
-    /* Honors the condensed header height too, so opening the burger
-       after scrolling doesn't leave a sliver of viewport above the
-       drawer. */
-    top: var(--header-h);
+    /* Offset by `--scroll-progress-h` (2px) below the header so the
+       scroll-progress bar stays visible above the drawer when the
+       user opens the nav mid-scroll. Without this the drawer's
+       solid background paints right over the progress strip. */
+    top: calc(var(--header-h) + var(--scroll-progress-h));
     right: 0;
     left: auto;
     width: min(82vw, 360px);
-    height: calc(100dvh - var(--header-h));
-    max-height: calc(100dvh - var(--header-h));
+    height: calc(100dvh - var(--header-h) - var(--scroll-progress-h));
+    max-height: calc(100dvh - var(--header-h) - var(--scroll-progress-h));
     transition:
       transform 320ms var(--ease-snap),
       visibility 0s linear 320ms,
@@ -3221,11 +3266,13 @@ html[data-resizing] .header::after {
     visibility: hidden;
     margin-left: 0;
   }
-  /* Drawer follows the condensed header height. */
+  /* Drawer follows the condensed header height, preserving the same
+     `--scroll-progress-h` breathing room so the progress bar stays
+     visible in both states. */
   :root.is-header-condensed .header__nav {
-    top: var(--header-h-condensed);
-    height: calc(100dvh - var(--header-h-condensed));
-    max-height: calc(100dvh - var(--header-h-condensed));
+    top: calc(var(--header-h-condensed) + var(--scroll-progress-h));
+    height: calc(100dvh - var(--header-h-condensed) - var(--scroll-progress-h));
+    max-height: calc(100dvh - var(--header-h-condensed) - var(--scroll-progress-h));
   }
   /* Kill the condensed-header inter-link `gap` on mobile - in the
      desktop horizontal nav the gap sits between pill-shaped links, but
