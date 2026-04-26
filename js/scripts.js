@@ -1914,16 +1914,16 @@ function initHeroRift() {
   /* ---------- rift state ---------- */
   let active = false;
   let startT = 0;
-  /* Total rift animation length. Bumped from 2500 -> 3600 so the
+  /* Total rift animation length. Bumped from 2500 -> 3500 so the
      hold plateau (where the tear sits open and the hex label
      breathes in+out) lasts long enough to actually read the
      "0xFF TEAR / SIG::001" text. Previous 2500ms gave the label
      only ~860ms of readable alpha - a flash, not a reveal. The
-     extra ~1100ms goes almost entirely into the hold phase (see
+     extra ~1000ms goes almost entirely into the hold phase (see
      phase envelope in loop()), keeping the open and close beats
      at their original absolute duration so the rift still feels
      snappy on both ends. */
-  const DURATION = 3600;
+  const DURATION = 3500;
   /* Rift dimensions are viewport-aware - refreshed at each trigger()
      from the current canvas width. Desktop (the original calibration)
      is kept intact; mobile + tablet scale both LEN_RATIO and WIDTH up
@@ -2592,17 +2592,17 @@ function initHeroRift() {
 
     const dt = 1 / 60;
 
-    /* Phase envelope (fractions of DURATION=3600ms):
-         0.00-0.06  pre-beat  (~216ms, particles fly first, faint tear forming)
-         0.06-0.22  opening   (~576ms, tear unzips to full height)
-         0.22-0.80  hold      (~2088ms, open+flicker+label readout)
-         0.80-1.00  closing   (~720ms, tear seals shut)
+    /* Phase envelope (fractions of DURATION=3500ms):
+         0.00-0.06  pre-beat  (~210ms, particles fly first, faint tear forming)
+         0.06-0.22  opening   (~560ms, tear unzips to full height)
+         0.22-0.80  hold      (~2030ms, open+flicker+label readout)
+         0.80-1.00  closing   (~700ms, tear seals shut)
 
        Opening and closing keep their original ~600/~720ms absolute
        durations from the old 2500ms calibration, so the rift still
-       feels snappy on both ends. The ~1100ms added to DURATION all
+       feels snappy on both ends. The ~1000ms added to DURATION all
        goes into the hold - doubling its length from ~1000ms to
-       ~2088ms - which is what gives the hex label (0xFF TEAR /
+       ~2030ms - which is what gives the hex label (0xFF TEAR /
        SIG::001) enough dwell time to actually read instead of
        flashing past. The 0-0.08 window used to overlay a radial
        "flash" gradient on top - a perfect circular pulse that read
@@ -2711,7 +2711,7 @@ function initHeroRift() {
 
     // Hex label fades in/out during the hold phase only. Window
     // widened from 0.34-0.72 (~950ms in the old 2500ms timeline)
-    // to 0.28-0.78 of the new 3600ms DURATION, which is ~1800ms
+    // to 0.28-0.78 of the new 3500ms DURATION, which is ~1750ms
     // wall-clock - roughly double the dwell time of the previous
     // calibration so the "0xFF TEAR / SIG::001" readout is
     // actually readable instead of flashing past. Peak alpha is
