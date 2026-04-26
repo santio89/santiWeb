@@ -1630,10 +1630,11 @@ function initHeroRift() {
   // the IN duration isn't the watchdog's problem.
   const TELEPORT_SAFETY_MS = 6500;
   let relocateTimer = 0;
-  let hintRespawn = 0;
-  let teleportTimer = 0;   // tracks the in-flight teleport setTimeout so trigger() can cancel it
-  let teleportWatchdog = 0; // safety net that force-clears .is-teleporting if a callback never does
-  let lastCellKey = ""; // so we never teleport to the same cell twice
+  let hintRespawn = 0;         // post-rift respawn setTimeout (non-zero = mid-cooldown, hint is hidden)
+  let initialRevealTimer = 0;  // initial-load reveal setTimeout (non-zero = pre-reveal, hint is hidden)
+  let teleportTimer = 0;       // tracks the in-flight teleport setTimeout so trigger() can cancel it
+  let teleportWatchdog = 0;    // safety net that force-clears .is-teleporting if a callback never does
+  let lastCellKey = "";        // so we never teleport to the same cell twice
 
   /* Interactive hero children whose hit boxes the hint MUST NOT
      overlap - otherwise the z:5 hint would absorb clicks meant
@@ -1857,11 +1858,28 @@ function initHeroRift() {
   // paint which made it feel like a permanent UI element; the
   // delayed reveal restores the "suspicious, appeared a bit ago"
   // quality the other random hero-grid cells have.
+  //
+  // The timer ID is tracked in initialRevealTimer (reset to 0
+  // when it fires) so the sw:resize handler can detect that a
+  // reveal is still pending and YIELD to it instead of calling
+  // tryApplyCell itself. Without that gate, a native `resize`
+  // event fired during load (URL-bar settle on mobile,
+  // scrollbar appearance when images finish loading, DevTools
+  // toggling, etc.) would route through the resize handler's
+  // tryApplyCell(no fade) BEFORE this setTimeout fires - which
+  // snap-shows the hint at full opacity partway through the
+  // countdown, then the setTimeout arrives a couple seconds
+  // later and repositions it to a different cell, producing
+  // the "hint appears instantly then jumps somewhere else a
+  // second later" bug.
   const initialDelay = (
     INITIAL_REVEAL_MIN_MS +
     Math.random() * (INITIAL_REVEAL_MAX_MS - INITIAL_REVEAL_MIN_MS)
   );
-  setTimeout(() => tryApplyCell(0, true), initialDelay);
+  initialRevealTimer = setTimeout(() => {
+    initialRevealTimer = 0;
+    tryApplyCell(0, true);
+  }, initialDelay);
 
   const teleportHint = () => {
     if (active) return;           // never teleport mid-rift
@@ -1938,7 +1956,34 @@ function initHeroRift() {
     // spot. Clearing it lets the first post-resize pick be
     // unconstrained by history.
     lastCellKey = "";
-    tryApplyCell();
+    // Yield to any reveal that's already scheduled. Two cases:
+    //   1. initialRevealTimer != 0 - we're in the 2.8-4.8s pre-
+    //      reveal countdown on initial page load. Letting the
+    //      pending setTimeout handle placement preserves the
+    //      fade-in.
+    //   2. hintRespawn != 0        - we're in the 8s post-rift
+    //      cooldown. Respawning now would cut the cooldown
+    //      short and make the easter egg feel repeatable too
+    //      fast; the post-rift setTimeout handles placement
+    //      with its own fade when cooldown ends.
+    // Without this gate, native `resize` events that fire
+    // during page load (mobile URL-bar settle, scrollbar
+    // shift when late assets load, font-loading reflow, etc.)
+    // would call tryApplyCell without fade HERE and snap the
+    // hint visible at full opacity partway through whichever
+    // countdown was pending - producing the "hint is there
+    // from page start and then jumps somewhere else a second
+    // later" bug.
+    if (initialRevealTimer || hintRespawn) return;
+    // If the hint is currently hidden (e.g., initial reveal
+    // failed its 8-frame pickCell retries because the hero
+    // measured too narrow) but no reveal timer is pending,
+    // fade it IN via the .is-teleporting trick - a new
+    // viewport might be one where pickCell now succeeds. Using
+    // fade=hint.hidden keeps visible repositions as snaps
+    // (correct for live resize) while hidden-to-visible still
+    // animates smoothly.
+    tryApplyCell(0, hint.hidden);
   });
 
   /* ---------- rift state ---------- */
@@ -2227,9 +2272,14 @@ function initHeroRift() {
     // gets a valid cell or layout confirms it really is too narrow.
     clearTimeout(hintRespawn);
     hintRespawn = setTimeout(() => {
+      // Reset the ID so the sw:resize handler stops treating
+      // the post-rift cooldown as still pending. Without this,
+      // any resize after the respawn would skip tryApplyCell
+      // forever (see the resize handler's early-return guard).
+      hintRespawn = 0;
       // fade=true -> reappear uses the .is-teleporting fade-in
-      // trick (opacity:0 + scale(0.94) settles smoothly back to
-      // opacity:1 + scale(1) over 980ms) instead of a
+      // trick (opacity:0 + scale(0.96) settles smoothly back to
+      // opacity:1 + scale(1) over 1600ms) instead of a
       // display:none -> block pop.
       tryApplyCell(0, true);
       scheduleRelocate(IDLE_RELOCATE_MS);
