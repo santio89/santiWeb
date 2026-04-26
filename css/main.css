@@ -1700,14 +1700,70 @@ textarea:focus-visible {
       drop-shadow(1.4px -0.3px 0 rgba(255, 80, 150, 0.42));
   }
 }
-/* Hidden on tablets/phones: the hint wants room in the grid and
-   the rift effect is calibrated for desktop geometry. JS also
-   bails out on reduced-motion, so this media query is just belt-
-   and-braces for CSS-only reads. */
-@media (max-width: 1023px) {
-  .hero__rift,
-  .hero__rift__hint { display: none; }
+/* No viewport-width gate on the rift: the effect now runs on
+   mobile + tablet too. JS picks viewport-appropriate safe zones
+   (top strip + above-marquee row on narrow screens, where no
+   content lives) so the hint never lands on the centered CTAs /
+   title, and the canvas's `contain: paint` clips any tear that
+   would have run past the hero edge - so the occasional
+   half-cropped seam at a narrow viewport reads as an intentional
+   "reality tearing off the screen" rather than a bug. Only the
+   reduced-motion rule below still removes both. */
+
+/* Touch devices don't have :hover, so the `riftHintGlitch` +
+   hover-sparks rules never fire for them and touch users would
+   otherwise never see the chromatic-aberration signature that's
+   a core part of the Half-Life / brutalist aesthetic. This
+   passive cycle layers ON TOP of the idle `riftHintSway`
+   (riftHintSway drives `transform`, the passive anim drives
+   `filter` only - CSS composes them cleanly, no property
+   conflict), and flickers CA briefly in a ~0.8s window every
+   ~4.8s. The "mostly off, occasionally glitching" rhythm reads
+   as "reality occasionally destabilizing around this cell"
+   rather than a constant drone that would turn into visual
+   noise. Colors + alphas match the hover riftHintGlitch so
+   desktop hover and touch idle share one coherent CA palette.
+   `:focus-visible` and `:hover` selectors still win over this
+   when they match (for keyboards-attached-to-tablets, for
+   instance), because those rules use the `animation` shorthand
+   which REPLACES both entries at once with the full-intensity
+   riftHintGlitch. */
+@media (hover: none) {
+  .hero__rift__hint::before {
+    animation:
+      riftHintSway 11s ease-in-out infinite,
+      riftHintGlitchPassive 4.8s steps(8) infinite;
+  }
 }
+
+@keyframes riftHintGlitchPassive {
+  /* Long quiet stretch (0-78%, ~3.75s) then a brief stutter
+     (78-89%, ~530ms) then back to clean. Three discrete CA
+     frames in the stutter window give a "stutter-reboot" feel
+     through steps(8) interpolation. Alphas held lower than the
+     hover version (0.3-0.42 vs 0.35-0.55) so passive users get
+     a hint of the CA rather than the full hover-intensity
+     burst - the effect reads as ambient rather than a
+     reaction-to-interaction. */
+  0%, 78%, 100% { filter: none; }
+  80% {
+    filter:
+      drop-shadow(-0.9px 0.2px 0 rgba(70, 200, 255, 0.38))
+      drop-shadow(0.9px -0.2px 0 rgba(255, 80, 150, 0.38));
+  }
+  83% {
+    filter:
+      drop-shadow(1.1px -0.3px 0 rgba(70, 200, 255, 0.42))
+      drop-shadow(-1.1px 0.3px 0 rgba(255, 80, 150, 0.42));
+  }
+  86% {
+    filter:
+      drop-shadow(-0.7px -0.2px 0 rgba(70, 200, 255, 0.3))
+      drop-shadow(0.7px 0.2px 0 rgba(255, 80, 150, 0.3));
+  }
+  89% { filter: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero__rift__hint,
   .hero__rift__hint:hover,

@@ -1468,19 +1468,33 @@ function initHeroCells() {
 
 /* -------------------------------------------------------------
    HERO RIFT  (easter-egg "tear in the grid")
-   - Places a small suspicious <button> on a random 80px cell of the
-     empty right-side area of the hero. Cell has a dashed brutalist
-     outline that drifts on a slow multi-axis 2D+3D sway
-     (rotateZ/Y/X, different sign combos on every keyframe so it
-     never settles into a pattern), plus a subtle ambient halo fade
-     on the button itself. Hover swaps the sway out for a stepped
-     "hack glitch" burst - translate + skew + hue-rotate/invert at
-     steps(8) timing so it reads as a corrupted signal. A small
-     crosshair glyph fades in on hover so the cell reads as a hit
-     target. The button is a real focusable control, so keyboard +
-     screen-reader users can find it. The cell teleports to a fresh
-     random grid position every IDLE_RELOCATE_MS with a smooth 3D
-     flip-out / dwell / flip-in.
+   - Places a small suspicious <button> on a random 80px grid cell
+     of the hero. The safe zone is viewport-aware:
+       * desktop (>=1024px): right 60-95% / middle 20-80% - clear
+         of the left-aligned SANTI title and bottom-left CTAs.
+       * tablet  (768-1023): right 50-95% / middle 20-80% - same
+         idea but a little wider since content stretches more.
+       * mobile  (<768px):   top strip (rows 0-1) OR above the
+         marquee (rows-2..rows-1), random col - avoids the
+         center-stacked title / sub / CTA column by going to
+         the vertical margins instead.
+     On top of that, every placement runs through a forbidden-rects
+     pass that rejects any cell overlapping an actually-interactive
+     hero child (.hero__cta, .hero__scroll, .marquee--hero), so
+     the z:5 hint can never absorb clicks meant for a CTA.
+     Cell has a solid accent-neon border drawn via ::before that
+     rotates + scale-pulses on a slow 2D+3D sway (riftHintSway).
+     Hover swaps in a chromatic-aberration glitch (riftHintGlitch,
+     steps(6)) plus 6 radial sparks (riftHintSpark) that pop out
+     from the border edge. A small crosshair glyph fades in on
+     hover so the cell reads as a hit target. The whole button
+     (not just the ::before) drifts ±12-14px around its grid
+     slot via riftHintDrift for subtle positional wander between
+     teleports. The button is a real focusable control, so
+     keyboard + screen-reader users can find it. The cell
+     teleports to a fresh random grid position every
+     IDLE_RELOCATE_MS with a symmetric scale+opacity breath
+     (760ms out / 520ms dwell / 980ms in, both easeOutCubic).
    - Clicking the hint (or typing the magic word "rift") triggers a
      ~2.5s canvas animation on a full-hero overlay:
        1. a 42-particle debris burst explodes outward from the hint
@@ -1556,11 +1570,14 @@ function initHeroRift() {
      DOM node is reused throughout, so there's never more than one
      hint at a time. */
   const CELL = 80;
-  // Visible border is 80x80 but the button is 96x96 with the visible
-  // cell centered via ::before inset:8px. HIT_INSET is how much the
-  // hit box overhangs the visible border on every side - the JS
-  // offsets left/top by -HIT_INSET so the visible cell still snaps
-  // cleanly to the 80px grid. Keep in sync with CSS ::before inset.
+  // Visible border is 80x80 (matching the hero bg grid cell size
+  // at every viewport - the hint should read as "one of the grid
+  // cells, just suspicious", not a chunky standout) but the
+  // button is 96x96 with the visible cell centered via ::before
+  // inset:8px. HIT_INSET is how much the hit box overhangs the
+  // visible border on every side - the JS offsets left/top by
+  // -HIT_INSET so the visible cell still snaps cleanly to the
+  // 80px grid. Keep in sync with CSS ::before inset.
   const HIT_INSET = 8;
   const IDLE_RELOCATE_MS = 16000; // quiet drift between teleports (user-clickable window)
   const POST_RIFT_MS = 8000;      // respawn after rift completes
@@ -1599,26 +1616,137 @@ function initHeroRift() {
   let teleportWatchdog = 0; // safety net that force-clears .is-teleporting if a callback never does
   let lastCellKey = ""; // so we never teleport to the same cell twice
 
+  /* Interactive hero children whose hit boxes the hint MUST NOT
+     overlap - otherwise the z:5 hint would absorb clicks meant
+     for the CTA / scroll link / theme toggle, making them dead
+     on touch. Title + meta + sub are intentionally NOT in this
+     list: they're non-interactive, and letting the hint land
+     over them is part of the "suspicious cell bleeds through
+     the content" aesthetic. Measured per-pick so the list
+     automatically adapts to layout changes (resize, theme
+     toggle, i18n text reflow). */
+  const FORBIDDEN_SELECTORS = [
+    ".hero__cta",
+    ".hero__scroll",
+    ".marquee--hero",
+  ];
+
   const pickCell = () => {
     const heroRect = hero.getBoundingClientRect();
-    if (heroRect.width < 1024) return null;
+    // Minimum viability: need at least ~2 cells of horizontal room
+    // and ~4 rows of vertical room. Anything smaller is so cramped
+    // the forbidden-rects below would leave zero free cells.
+    if (heroRect.width < CELL * 2 || heroRect.height < CELL * 4) return null;
     const cols = Math.floor(heroRect.width / CELL);
     const rows = Math.floor(heroRect.height / CELL);
     const offsetX = (heroRect.width - cols * CELL) / 2;
     const offsetY = (heroRect.height - rows * CELL) / 2;
-    // Retry a handful of times to avoid landing on the exact same
-    // cell twice in a row (would read as "the hint didn't move").
-    let col = 0, row = 0, key = lastCellKey;
-    for (let i = 0; i < 6 && key === lastCellKey; i++) {
-      col = Math.floor(cols * 0.6 + Math.random() * cols * 0.35);
-      row = Math.floor(rows * 0.2 + Math.random() * rows * 0.6);
-      key = `${col}:${row}`;
+
+    /* Breakpoints match the CSS: 768px = phone cutoff, 1024px =
+       tablet cutoff. Each tier biases placement to a different
+       "preferred zone" because the hero content occupies
+       different space at each width:
+         - DESKTOP  (>=1024px): SANTI! left-aligned, CTAs bottom-
+           left. Pick right 60-95% horizontally, middle 20-80%
+           vertically - original desktop behavior.
+         - TABLET   (768..1023): content stretches more. Relax to
+           right 50-95% / middle 20-80% for variety.
+         - MOBILE   (<768px): content is CENTER-stacked, so there's
+           no "right half" of empty space. Safe zones are the top
+           strip (rows 0-1, above the meta) and the row just above
+           the marquee (below the scroll link). Random col for
+           variety.
+       The forbidden-rects pass below then rejects any cell that
+       still overlaps an interactive child - so even if the bias
+       picks a cell colliding with the CTA hit box, we keep
+       re-rolling until we find a clean one. */
+    const isMobile = heroRect.width < 768;
+    const isTablet = heroRect.width < 1024;
+
+    // Build the forbidden-rects list in hero-local coords. Each
+    // rect is padded by HIT_INSET on all sides so the button's
+    // overhanging 8px hit margin also can't overlap - otherwise
+    // a cell that visually looks clear would still eat the CTA's
+    // edge pixels.
+    const forbidden = [];
+    for (const sel of FORBIDDEN_SELECTORS) {
+      const el = hero.querySelector(sel);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) continue;
+      forbidden.push({
+        x1: r.left - heroRect.left - HIT_INSET,
+        y1: r.top - heroRect.top - HIT_INSET,
+        x2: r.right - heroRect.left + HIT_INSET,
+        y2: r.bottom - heroRect.top + HIT_INSET,
+      });
     }
-    lastCellKey = key;
-    return {
-      left: offsetX + col * CELL,
-      top: offsetY + row * CELL,
+
+    // AABB overlap test between the candidate visible 80x80 cell
+    // and each forbidden rect. Pure rect-vs-rect, no trig, so
+    // calling this 16 times per pick is basically free.
+    const isFree = (left, top) => {
+      const x1 = left, y1 = top;
+      const x2 = left + CELL, y2 = top + CELL;
+      for (let j = 0; j < forbidden.length; j++) {
+        const f = forbidden[j];
+        if (x1 < f.x2 && x2 > f.x1 && y1 < f.y2 && y2 > f.y1) return false;
+      }
+      return true;
     };
+
+    // Retry up to 16 times: enough to avoid-same-cell AND avoid
+    // forbidden rects without giving up. If even 16 rolls can't
+    // find a free cell (very dense small viewport), we accept
+    // whatever the last roll produced - a slightly blocked CTA
+    // beats a hint that never appears at all.
+    let col = 0, row = 0, key = lastCellKey, left = 0, top = 0;
+    let foundFree = false;
+    for (let i = 0; i < 16; i++) {
+      if (isMobile) {
+        col = Math.floor(Math.random() * cols);
+        const topBand = Math.random() < 0.5;
+        const bandDepth = Math.min(2, Math.max(1, Math.floor(rows / 4)));
+        row = topBand
+          ? Math.floor(Math.random() * bandDepth)
+          : rows - 1 - Math.floor(Math.random() * bandDepth);
+        if (row < 0) row = 0;
+      } else if (isTablet) {
+        col = Math.floor(cols * 0.5 + Math.random() * cols * 0.45);
+        row = Math.floor(rows * 0.2 + Math.random() * rows * 0.6);
+      } else {
+        col = Math.floor(cols * 0.6 + Math.random() * cols * 0.35);
+        row = Math.floor(rows * 0.2 + Math.random() * rows * 0.6);
+      }
+      const k = `${col}:${row}`;
+      const l = offsetX + col * CELL;
+      const t = offsetY + row * CELL;
+      const free = isFree(l, t);
+      // First valid candidate (different cell + not forbidden)
+      // wins. If we never find both, the last iteration's
+      // values fall through.
+      if (k !== lastCellKey && free) {
+        key = k;
+        left = l;
+        top = t;
+        foundFree = true;
+        break;
+      }
+      // Remember the last "at least different cell" as a fallback
+      // so we never return the same cell twice even if every
+      // candidate was forbidden.
+      if (k !== lastCellKey) {
+        key = k;
+        left = l;
+        top = t;
+      }
+    }
+    // If not even a different-cell fallback was found, bail - the
+    // caller will retry next frame. Skips the rare "viewport too
+    // small to fit any cell that isn't the last one" case.
+    if (!foundFree && key === lastCellKey) return null;
+    lastCellKey = key;
+    return { left, top };
   };
 
   const applyCell = (cell, fade = false) => {
@@ -1770,6 +1898,16 @@ function initHeroRift() {
     // land the hint on the OLD viewport's grid after resize.
     clearTimeout(teleportTimer);
     teleportTimer = 0;
+    // Clear lastCellKey: after a resize (especially a breakpoint
+    // crossing like phone-rotate portrait<->landscape, or tablet
+    // <->desktop) the col/row numbering changes, so the stored
+    // "previous" cell key no longer maps to a meaningful position.
+    // Without this reset, the avoid-same-cell retry in pickCell
+    // could either spin uselessly (comparing new-grid keys to an
+    // old-grid string) or accidentally land on a visually-same
+    // spot. Clearing it lets the first post-resize pick be
+    // unconstrained by history.
+    lastCellKey = "";
     tryApplyCell();
   });
 
@@ -1777,8 +1915,15 @@ function initHeroRift() {
   let active = false;
   let startT = 0;
   const DURATION = 2500;
-  const MAX_LEN_RATIO = 0.38; // peak rift height as a fraction of canvas height
-  const MAX_WIDTH = 11;       // peak rift width at its widest point (CSS px)
+  /* Rift dimensions are viewport-aware - refreshed at each trigger()
+     from the current canvas width. Desktop (the original calibration)
+     is kept intact; mobile + tablet scale both LEN_RATIO and WIDTH up
+     so the tear reads as a full dramatic seam on narrow viewports
+     where absolute px counts are smaller. Without this, a mobile
+     tear measured the same ~11x133px as desktop, which is visually
+     thin on a 375px-wide viewport compared to a 1440px one. */
+  let MAX_LEN_RATIO = 0.38; // peak rift height as a fraction of canvas height
+  let MAX_WIDTH = 11;       // peak rift width at its widest point (CSS px)
   const JAGGED_STEPS = 20;
   let tx = 0, ty = 0; // rift origin in canvas-local CSS px
 
@@ -1942,6 +2087,27 @@ function initHeroRift() {
     // mid-burst without a page interaction that would steal focus.
     refreshThemeColors();
 
+    // Viewport-aware rift sizing. Three tiers matching the hint
+    // placement breakpoints (768 / 1024). Scales both the length
+    // ratio (taller tear) and the peak width (wider tear) so
+    // narrow viewports get a proportionally more dramatic seam
+    // instead of a desktop-sized sliver that reads as timid.
+    //   - mobile  (< 768):  0.54 len, 18px width  - ~42% taller,
+    //                       ~64% wider than desktop
+    //   - tablet  (< 1024): 0.46 len, 14px width  - a midpoint
+    //                       that works on iPad-class widths
+    //   - desktop (>=1024): 0.38 len, 11px width  - original
+    if (w < 768) {
+      MAX_LEN_RATIO = 0.54;
+      MAX_WIDTH = 18;
+    } else if (w < 1024) {
+      MAX_LEN_RATIO = 0.46;
+      MAX_WIDTH = 14;
+    } else {
+      MAX_LEN_RATIO = 0.38;
+      MAX_WIDTH = 11;
+    }
+
     // Rift origin = center of the hint cell, translated to canvas-
     // local coordinates. Using the hint's own rect (not the click
     // event point) guarantees a grid-aligned origin even if the
@@ -2056,16 +2222,58 @@ function initHeroRift() {
   const easeInCubic = (t) => t * t * t;
 
   /* ---------- drawing helpers ---------- */
+
+  /* Split vertical half-height: separate top-extent from bottom-
+     extent, each clamped to the room available on that side of
+     (tx, ty). The hint's widest point stays anchored at ty (so
+     the tear visually peels off the click point), but the upper
+     tip and lower tip can extend unequally into the canvas.
+
+     Why not symmetric? On mobile the hint lands in top/bottom
+     row bands where ty is close to an edge - say ty=40 in a
+     h=700 canvas. A symmetric clamp (min(ty, h-ty)*0.9 = 36)
+     would collapse BOTH halves to ~36px, wasting the ~600px of
+     room on the other side and producing a stubby tear. With
+     the asymmetric split, halfHT clamps to 36px (the cramped
+     side) while halfHB extends to the full desired length
+     (~190px on mobile), yielding a 226px asymmetric seam that
+     looks like reality is tearing open DOWN from the hint -
+     natural for a top-edge spawn. Desktop hints sit mid-hero
+     with plenty of room on both sides, so both halves hit
+     `desired` and the tear stays perfectly symmetric.
+
+     The 0.9 factor leaves buffer room for the ghost chromatic-
+     aberration pass offsets (±2px) and jagged jitterL/R (±3.5px)
+     so the outline stays fully visible within the canvas rect. */
+  const computeHalfH = (length) => {
+    const desired = (length * h * MAX_LEN_RATIO) / 2;
+    return {
+      top: Math.min(desired, ty * 0.9),
+      bottom: Math.min(desired, (h - ty) * 0.9),
+    };
+  };
+
+  // Map loop parameter t (0..1) to a canvas-Y, where the widest
+  // point t=0.5 stays locked at ty. Upper half linearly goes from
+  // (ty - halfHT) up to ty, lower half from ty down to (ty+halfHB).
+  const tToY = (t, halfHT, halfHB) => (
+    t < 0.5
+      ? ty - halfHT + halfHT * (t * 2)
+      : ty + halfHB * ((t - 0.5) * 2)
+  );
+
   const buildRiftPath = (openness, length) => {
     // Diamond-ish jagged silhouette: taper goes 0 → 1 → 0 from top
     // to bottom so the rift is pointed at both ends and widest in
-    // the middle, where the hot core is.
-    const halfH = (length * h * MAX_LEN_RATIO) / 2;
+    // the middle (at ty), where the hot core is. Upper/lower
+    // extents are independent so near-edge spawns still produce
+    // a full-length seam (see computeHalfH comment).
+    const { top: halfHT, bottom: halfHB } = computeHalfH(length);
     const halfW = (openness * MAX_WIDTH) / 2;
     ctx.beginPath();
     for (let i = 0; i <= JAGGED_STEPS; i++) {
       const t = i / JAGGED_STEPS;
-      const y = ty - halfH + halfH * 2 * t;
+      const y = tToY(t, halfHT, halfHB);
       const taper = 1 - Math.abs(t - 0.5) * 2;
       const x = tx - halfW * taper + jitterL[i] * taper * 0.5;
       if (i === 0) ctx.moveTo(x, y);
@@ -2073,7 +2281,7 @@ function initHeroRift() {
     }
     for (let i = JAGGED_STEPS; i >= 0; i--) {
       const t = i / JAGGED_STEPS;
-      const y = ty - halfH + halfH * 2 * t;
+      const y = tToY(t, halfHT, halfHB);
       const taper = 1 - Math.abs(t - 0.5) * 2;
       const x = tx + halfW * taper + jitterR[i] * taper * 0.5;
       ctx.lineTo(x, y);
@@ -2429,13 +2637,21 @@ function initHeroRift() {
        visual variety (4 hues, 3 kinds) - the extra density sells
        the "living tear" feel without crowding the canvas. */
     if (progress > 0.12 && progress < 0.8 && Math.random() < 0.55) {
-      const halfH = (length * h * MAX_LEN_RATIO) / 2;
+      // Uses the same asymmetric clamped half-heights as
+      // buildRiftPath so edge particles emit along the ACTUAL
+      // drawn tear, not a longer theoretical tear that'd spawn
+      // particles into thin air outside the visible silhouette
+      // when the rift is clipped near a canvas edge. Near-edge
+      // spawns (mobile top/bottom rows) now get longer seams on
+      // the uncramped side - particles correctly follow that
+      // asymmetry instead of bunching up around a stubby middle.
+      const { top: halfHT, bottom: halfHB } = computeHalfH(length);
       // Sample position along the rift's vertical extent. `tNorm`
-      // is the 0..1 Y-position; the seam's actual half-width at
-      // that Y follows the same diamond taper as buildRiftPath
-      // (widest at the middle, zero at the tips).
+      // is the 0..1 parameter (not Y), mapped through the same
+      // piecewise function as buildRiftPath so the widest point
+      // stays anchored at ty and the taper math matches.
       const tNorm = Math.random();
-      const edgeY = ty - halfH + tNorm * halfH * 2;
+      const edgeY = tToY(tNorm, halfHT, halfHB);
       const taper = 1 - Math.abs(tNorm - 0.5) * 2;
       const seamHalfW = (openness * MAX_WIDTH) / 2 * taper;
       const side = Math.random() < 0.5 ? -1 : 1;
