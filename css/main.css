@@ -1095,7 +1095,7 @@ textarea:focus-visible {
      already creates contrast; light theme gets a stronger grid because
      light bg + low-contrast lines wash out otherwise */
   opacity: var(--hero-grid-opacity, 0.5);
-  animation: gridDrift 30s linear infinite;
+  animation: gridDrift 60s linear infinite;
 }
 /* dark needs both higher opacity AND a lighter line color since the
    default --line is so close to the bg it disappears at low opacity. */
@@ -1112,10 +1112,12 @@ textarea:focus-visible {
    is critical; without it CSS fills the implicit start from the
    static `background-position: center`, which resolves to an arbitrary
    pixel offset tied to the hero's current size and won't line up with
-   the `to` endpoint. */
+   the `to` endpoint. Negative offsets drift the pattern up-left;
+   using 10 tiles (-800px) over 30s preserves the original visible
+   pace while still landing on an exact tile boundary for the loop. */
 @keyframes gridDrift {
   from { background-position: 0 0; }
-  to { background-position: 80px 80px; }
+  to { background-position: -800px -800px; }
 }
 
 /* ---- ANIMATED HERO CELLS ----
