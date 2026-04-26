@@ -244,6 +244,13 @@ function applyLang(lang) {
       line.setAttribute("data-text", dict[inner.getAttribute("data-i18n")]);
     }
   });
+
+  // Notify other modules (e.g. the header section badge in initHeader)
+  // that the language has changed so they can re-render any text that
+  // isn't bound through `data-i18n` directly.
+  document.dispatchEvent(
+    new CustomEvent("sw:langchange", { detail: { lang } })
+  );
 }
 
 function initLang() {
@@ -369,19 +376,49 @@ function initHeader() {
   const nav = document.querySelector(".header__nav");
   const progress = document.getElementById("scrollProgress");
   const links = document.querySelectorAll(".header__nav__link");
+  const sectionBadge = document.querySelector(".header__section");
+  const sectionBadgeName = document.getElementById("headerSectionName");
+
+  /* Header condense behavior. Once the user has scrolled past most of
+     the hero we collapse the chrome into a tighter HUD-style readout
+     (height shrinks, glass background, accent underline, brackets slide
+     in, "/WEB" label retracts, section badge reveals). The class lives
+     on BOTH the header (so the header itself can react in CSS) and on
+     the document root (so the scroll-progress bar and the mobile drawer
+     can also follow the new height). The threshold is tied to the
+     viewport so it always corresponds to "you've left the hero" rather
+     than a hardcoded pixel value that breaks at small/large screens. */
+  const condenseThreshold = () =>
+    Math.min(Math.max(window.innerHeight * 0.55, 320), 560);
+
+  let condensed = false;
+  const updateCondensed = (next) => {
+    if (next === condensed) return;
+    condensed = next;
+    if (header) header.classList.toggle("is-condensed", next);
+    root.classList.toggle("is-header-condensed", next);
+  };
 
   const onScroll = () => {
+    const y = window.scrollY;
     if (header) {
-      header.classList.toggle("is-scrolled", window.scrollY > 8);
+      header.classList.toggle("is-scrolled", y > 8);
     }
+    /* Tiny hysteresis (~8px) keeps the state from flickering when the
+       user parks near the threshold and the page settles. */
+    if (!condensed && y > condenseThreshold()) updateCondensed(true);
+    else if (condensed && y < condenseThreshold() - 8) updateCondensed(false);
+
     if (progress) {
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      const ratio = max > 0 ? window.scrollY / max : 0;
+      const ratio = max > 0 ? y / max : 0;
       progress.style.transform = `scaleX(${Math.min(1, Math.max(0, ratio))})`;
     }
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
+  // Re-check on resize because the threshold depends on viewport height.
+  window.addEventListener("resize", onScroll, { passive: true });
 
   if (burger && nav) {
     // backdrop scrim that dims the page behind the open mobile menu and
@@ -434,25 +471,91 @@ function initHeader() {
     }
   }
 
-  // active section highlight
-  const sections = ["about", "skills", "work", "experience", "contact"]
+  // active section highlight + HUD section badge
+  /* The hero is observed alongside the real content sections so that
+     scrolling back up into it cleanly resets the active-link + badge
+     state. Without this, the last active section's `.is-active` class
+     and the badge label get stuck on the previous value (e.g. "ABOUT"
+     stays highlighted even when the user has returned to the hero). */
+  const sections = ["hero", "about", "skills", "work", "experience", "contact"]
     .map((id) => document.getElementById(id))
     .filter(Boolean);
+
+  /* Maps the DOM section id to the matching `data-i18n` key already
+     used by the nav links so the badge auto-stays in sync with whatever
+     localized label the rest of the chrome is showing. */
+  const SECTION_I18N_KEY = {
+    about: "nav.about",
+    skills: "nav.skills",
+    work: "nav.work",
+    experience: "nav.exp",
+    contact: "nav.contact",
+  };
+
+  let currentSectionId = "";
+  let badgeChangeTimer = 0;
+  const renderSectionBadge = () => {
+    if (!sectionBadgeName) return;
+    const key = SECTION_I18N_KEY[currentSectionId];
+    const dict = I18N[currentLang] || I18N.en;
+    const next = (key && dict[key]) || "";
+    /* Toggle an `is-empty` flag on the badge so CSS can collapse the
+       pill entirely when there's no active section (hero), rather than
+       leaving a stray caret hanging in the condensed header. */
+    if (sectionBadge) sectionBadge.classList.toggle("is-empty", next === "");
+    if (sectionBadgeName.textContent === next) return;
+    /* Quick fade-out -> swap text -> fade-in via the .is-changing class
+       on the badge. Keeps the readout from flicker-popping when you
+       cross from one section into the next. */
+    if (sectionBadge) sectionBadge.classList.add("is-changing");
+    clearTimeout(badgeChangeTimer);
+    badgeChangeTimer = setTimeout(() => {
+      sectionBadgeName.textContent = next;
+      if (sectionBadge) sectionBadge.classList.remove("is-changing");
+    }, 140);
+  };
+
+  // Initial state: no active section, badge collapsed.
+  renderSectionBadge();
+
+  // Re-render the badge text when the language toggle fires.
+  document.addEventListener("sw:langchange", renderSectionBadge);
 
   if (sections.length && "IntersectionObserver" in window) {
     const io = new IntersectionObserver(
       (entries) => {
+        /* At the hero<->about crossover the observer can fire for both
+           entries in the same batch. Processing entries in iteration
+           order risks the hero clearing state AFTER about sets it
+           (leaving the badge blank when we're actually in about).
+           Instead, scan the batch once and prefer any content section
+           over the hero. Only fall back to "clear" if the hero is the
+           only thing entering the viewport band this tick. */
+        let contentId = null;
+        let heroEntering = false;
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            links.forEach((l) =>
-              l.classList.toggle(
-                "is-active",
-                l.getAttribute("href") === "#" + id
-              )
-            );
+          if (!entry.isIntersecting) return;
+          if (entry.target.id === "hero") {
+            heroEntering = true;
+          } else {
+            contentId = entry.target.id;
           }
         });
+
+        if (contentId) {
+          links.forEach((l) =>
+            l.classList.toggle(
+              "is-active",
+              l.getAttribute("href") === "#" + contentId
+            )
+          );
+          currentSectionId = contentId;
+          renderSectionBadge();
+        } else if (heroEntering) {
+          links.forEach((l) => l.classList.remove("is-active"));
+          currentSectionId = "";
+          renderSectionBadge();
+        }
       },
       { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
     );

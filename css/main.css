@@ -20,6 +20,7 @@
   --pad-page-x: clamp(1.2rem, 4vw, 4rem);
   --max-w: 1400px;
   --header-h: 64px;
+  --header-h-condensed: 48px;
 
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-snap: cubic-bezier(0.7, 0, 0.2, 1);
@@ -597,6 +598,13 @@ textarea:focus-visible {
   z-index: 99;
   pointer-events: none;
   will-change: transform;
+  /* Follow the header as it shrinks/expands. The transition timing is
+     tuned to match the header height transition below so the bar never
+     visually detaches from the header bottom edge. */
+  transition: top 320ms var(--ease);
+}
+:root.is-header-condensed .scroll-progress {
+  top: var(--header-h-condensed);
 }
 
 /* ---------- HEADER ---------- */
@@ -615,10 +623,70 @@ textarea:focus-visible {
   z-index: 100;
   background: var(--bg);
   border-bottom: 1.5px solid var(--line);
-  transition: border-color 200ms var(--ease);
+  /* Smoothly morph between full and condensed HUD states. Height,
+     padding, background and border are all animated together. The
+     timings stay short enough to feel snappy but long enough to read
+     as a deliberate "mode change" rather than a flicker. */
+  transition:
+    height 320ms var(--ease),
+    background-color 280ms var(--ease),
+    border-color 200ms var(--ease),
+    box-shadow 280ms var(--ease);
 }
+/* Faint hairline upgrade once the user has scrolled at all. Pre-existing
+   behavior, kept so the header doesn't visually float at scrollY=0. */
 .header.is-scrolled {
   border-bottom-color: var(--line-strong);
+}
+
+/* HUD reticle brackets at the far edges. Hidden offscreen and faded out
+   in the resting state; they slide inward and fade up once the header
+   condenses. Pure decoration — `aria-hidden` is implicit on pseudos. */
+.header::before,
+.header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 14px;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 360ms var(--ease-snap),
+    opacity 240ms var(--ease);
+}
+.header::before {
+  left: calc(var(--pad-page-x) - 16px);
+  border-right: none;
+  transform: translate(-12px, -50%);
+}
+.header::after {
+  right: calc(var(--pad-page-x) - 16px);
+  border-left: none;
+  transform: translate(12px, -50%);
+}
+.header.is-condensed::before,
+.header.is-condensed::after {
+  opacity: 0.85;
+  transform: translate(0, -50%);
+}
+
+/* ---- CONDENSED MODE ---------------------------------------------------
+   When the user scrolls past the hero the header shifts into a tighter,
+   translucent HUD readout: smaller height, glass background, an accent
+   underline that gains a faint neon halo, and a section badge that
+   reveals itself next to the (now collapsed) logo. */
+.header.is-condensed {
+  height: var(--header-h-condensed);
+  background: var(--bg);
+  /* Keep the hairline border in its usual subtle tone instead of
+     switching to accent - the scroll-progress bar immediately under
+     the header is the only accent-colored strip, which keeps it
+     readable as the true scroll-progress indicator rather than a
+     decorative HUD line. */
+  border-bottom-color: var(--line-strong);
+  box-shadow: 0 8px 24px -20px rgba(0, 0, 0, 0.45);
 }
 
 .header__logo {
@@ -639,6 +707,21 @@ textarea:focus-visible {
   color: var(--bg);
   transition: transform 200ms var(--ease-snap), background 200ms;
 }
+.header__logo__b,
+.header__logo__c {
+  /* Both spans collapse smoothly when the header condenses. We animate
+     `max-width` (with overflow hidden on the parent flex item) AND
+     opacity so the morph reads as the WEB tag retracting into the
+     boxed SO mark, like a HUD label dropping its descriptor. */
+  display: inline-block;
+  overflow: hidden;
+  max-width: 4ch;
+  opacity: 1;
+  transition:
+    max-width 320ms var(--ease),
+    opacity 200ms var(--ease),
+    margin 320ms var(--ease);
+}
 .header__logo__b {
   color: var(--accent);
   font-weight: 500;
@@ -649,6 +732,14 @@ textarea:focus-visible {
   font-size: 14px;
   letter-spacing: 0.04em;
   font-weight: 600;
+  max-width: 6ch;
+}
+.header.is-condensed .header__logo__b,
+.header.is-condensed .header__logo__c {
+  max-width: 0;
+  opacity: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 .header__logo:hover .header__logo__a {
   transform: translate(-2px, -2px);
@@ -656,11 +747,97 @@ textarea:focus-visible {
   color: var(--accent-fg);
 }
 
+/* Section readout badge - reveals next to the collapsed logo once the
+   header condenses, acts as a live HUD indicator of which section the
+   reader is currently in. Updated by the scroll-spy in scripts.js. */
+.header__section {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--bg-panel) 60%, transparent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg);
+  /* Hidden by default - slides in from the left and fades up when
+     condensed. `max-width: 0` lets us animate the gap closure too. */
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: translateX(-6px);
+  margin-left: 0;
+  transition:
+    max-width 360ms var(--ease),
+    opacity 220ms var(--ease),
+    transform 360ms var(--ease-snap),
+    margin-left 360ms var(--ease),
+    border-color 200ms var(--ease),
+    background 200ms var(--ease);
+}
+.header.is-condensed .header__section {
+  /* Sized to comfortably fit the widest localized label ("EXPERIENCIA"
+     in ES at 11 chars) PLUS caret + gap + padding. `ch` only measures
+     glyph advance width, so we need generous headroom on top of the
+     raw char count to cover the extra letter-spacing tracking. */
+  max-width: 28ch;
+  opacity: 1;
+  transform: translateX(0);
+  margin-left: 14px;
+  border-color: var(--accent);
+}
+/* When the HUD has no active section (e.g. user scrolled back into the
+   hero), collapse the pill entirely even in condensed mode - we don't
+   want a lonely caret floating next to the logo with no label. */
+.header.is-condensed .header__section.is-empty {
+  max-width: 0;
+  opacity: 0;
+  transform: translateX(-6px);
+  margin-left: 0;
+  border-color: transparent;
+}
+.header__section__caret {
+  color: var(--accent);
+  font-size: 10px;
+  line-height: 1;
+  /* Subtle pulse so the readout feels alive, not static. */
+  animation: sectionCaretPulse 2.4s ease-in-out infinite;
+}
+@keyframes sectionCaretPulse {
+  0%, 100% { opacity: 1; transform: translateX(0); }
+  50% { opacity: 0.55; transform: translateX(2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header__section__caret { animation: none; }
+}
+.header__section__name {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Smooth content-swap animation when the active section changes. */
+  transition: opacity 180ms var(--ease), transform 180ms var(--ease);
+}
+.header__section.is-changing .header__section__name {
+  opacity: 0;
+  transform: translateY(-2px);
+}
+
 .header__nav {
   display: flex;
   align-items: center;
   gap: 28px;
   margin-left: auto;
+  /* Animate the inter-link gap so the nav tightens slightly in
+     condensed mode, reinforcing the "compressed HUD" feel. */
+  transition: gap 280ms var(--ease);
+}
+.header.is-condensed .header__nav {
+  gap: 22px;
 }
 .header__nav__link {
   font-family: var(--font-mono);
@@ -671,7 +848,14 @@ textarea:focus-visible {
   position: relative;
   padding: 6px 0;
   color: var(--fg-mute);
-  transition: color 180ms var(--ease);
+  transition:
+    color 180ms var(--ease),
+    font-size 280ms var(--ease),
+    letter-spacing 280ms var(--ease);
+}
+.header.is-condensed .header__nav__link {
+  font-size: 10px;
+  letter-spacing: 0.14em;
 }
 .header__nav__link::after {
   content: "";
@@ -1241,10 +1425,19 @@ textarea:focus-visible {
    band between the last section and the footer, anchored to the right
    edge so it visually rhymes with the hero cue's bottom-left anchor. */
 .back-to-top-bar {
-  display: flex;
-  justify-content: flex-end;
+  /* Outer band spans the full viewport like the footer chrome. */
   padding: 40px var(--pad-page-x);
   background: var(--bg);
+  width: 100%;
+}
+.back-to-top-bar__inner {
+  /* Inner track mirrors `.footer__top` / `.footer__bottom` so the cue
+     aligns with the right edge of the footer's content column on any
+     viewport. */
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
 }
 .back-to-top {
   display: inline-flex;
@@ -2920,36 +3113,55 @@ textarea:focus-visible {
 
   .header { gap: 12px; }
   /* The mobile nav is sized with viewport units (dvh/vw) so it doesn't
-     depend on the header being a normal containing block. (Historic
-     note: this was originally needed because the header used
-     `backdrop-filter`, which per CSS spec makes the element a
-     containing block for `position: fixed` descendants. The blur is
-     gone now, but the viewport-unit sizing is still the right call -
-     keeps the nav decoupled from the header layout entirely.) */
+     depend on the header being a normal containing block - keeps the
+     drawer's geometry decoupled from the header's own layout. */
   .header__nav {
     position: fixed;
+    /* Honors the condensed header height too, so opening the burger
+       after scrolling doesn't leave a sliver of viewport above the
+       drawer. */
     top: var(--header-h);
     right: 0;
     left: auto;
     width: min(82vw, 360px);
     height: calc(100dvh - var(--header-h));
     max-height: calc(100dvh - var(--header-h));
+    transition:
+      transform 320ms var(--ease-snap),
+      visibility 0s linear 320ms,
+      top 320ms var(--ease),
+      height 320ms var(--ease),
+      max-height 320ms var(--ease);
     background: var(--bg);
-    border-left: 1px solid var(--line);
+    border-left: 1px solid var(--line-strong);
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
     gap: 0;
-    padding: 12px 0;
+    padding: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     z-index: 99;
     transform: translateX(calc(100% + 4px));
     visibility: hidden;
-    transition:
-      transform 320ms var(--ease-snap),
-      visibility 0s linear 320ms;
     margin-left: 0;
+  }
+  /* Drawer follows the condensed header height. */
+  :root.is-header-condensed .header__nav {
+    top: var(--header-h-condensed);
+    height: calc(100dvh - var(--header-h-condensed));
+    max-height: calc(100dvh - var(--header-h-condensed));
+  }
+  /* Kill the condensed-header inter-link `gap` on mobile - in the
+     desktop horizontal nav the gap sits between pill-shaped links, but
+     in the vertical drawer it becomes a stripe of empty space above
+     each row (most visible above an `.is-active` row, where you see a
+     band between the previous border and the active background/accent
+     bar starting). Specificity has to match `.header.is-condensed
+     .header__nav` since media queries don't add specificity. */
+  .header .header__nav,
+  .header.is-condensed .header__nav {
+    gap: 0;
   }
   .header__nav.is-open {
     transform: translateX(0);
@@ -2958,9 +3170,19 @@ textarea:focus-visible {
       transform 320ms var(--ease-snap),
       visibility 0s linear 0s;
   }
+  /* Rows sit at their natural height, stacked at the top of the
+     drawer (the parent's `justify-content: flex-start` + no flex-grow
+     keeps them packed at the top, with empty space below the last
+     row). `display: flex; align-items: center` is used purely to
+     vertically center the label inside its row - it doesn't make the
+     row itself grow. `min-height` just guarantees a comfortable tap
+     target. */
   .header__nav__link {
-    display: block;
-    padding: 16px var(--pad-page-x);
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-height: 56px;
+    padding: 0 var(--pad-page-x);
     border-bottom: 1px solid var(--line);
     font-size: 13px;
     color: var(--fg);
@@ -2983,26 +3205,52 @@ textarea:focus-visible {
   .nav-scrim {
     position: fixed;
     inset: var(--header-h) 0 0 0;
-    background: rgba(0, 0, 0, 0.55);
+    /* Fully transparent. The drawer is opaque and sits flush with the
+       header background, so it already reads as a clearly separated
+       surface from the page. The scrim exists purely as a
+       click-outside-to-close target. */
+    background: transparent;
     opacity: 0;
     visibility: hidden;
     z-index: 98;
     transition:
       opacity 280ms var(--ease),
-      visibility 0s linear 280ms;
+      visibility 0s linear 280ms,
+      top 320ms var(--ease);
   }
   .nav-scrim.is-open {
     opacity: 1;
     visibility: visible;
     transition:
       opacity 280ms var(--ease),
-      visibility 0s linear 0s;
+      visibility 0s linear 0s,
+      top 320ms var(--ease);
+  }
+  /* Scrim tracks the condensed header so there's no gap between the
+     bottom edge of the header and the top of the dim. */
+  :root.is-header-condensed .nav-scrim {
+    top: var(--header-h-condensed);
   }
   .header__nav__link::after { display: none; }
   .header__actions {
     margin-left: auto;
   }
   .burger { display: block; }
+
+  /* On mobile the badge sits next to the (collapsed) logo and we cap
+     it so it can't crowd the action cluster on the right. The header
+     still condenses but the brackets are dropped - they fight the lang
+     toggle visually at narrow widths. The `ch` value has to be much
+     larger than the actual glyph count because `ch` doesn't account
+     for letter-spacing; at 9px mono font with 0.16em tracking we need
+     ~6.8px per char, so 20ch (~108px) gives us room for the full
+     "EXPERIENCE"/"EXPERIENCIA" label + caret + gap + padding. Below
+     a very narrow viewport the flex parent will still shrink us, and
+     text-overflow ellipsis on the inner name span catches that case. */
+  .header.is-condensed .header__section { max-width: 20ch; margin-left: 10px; }
+  .header__section { font-size: 9px; letter-spacing: 0.16em; height: 20px; padding: 0 6px; }
+  .header::before,
+  .header::after { display: none; }
 
   /* Mobile inherits the desktop `calc(100dvh - var(--header-h))` height
      lock; this just trims the inner padding so the title has more room. */

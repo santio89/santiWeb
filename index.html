@@ -140,6 +140,14 @@
         <span class="header__logo__c">WEB</span>
       </a>
 
+      <!-- HUD-style readout that shows the current section once the user
+           has scrolled past the hero. Hidden until .header.is-condensed
+           is applied. Updated by the scroll-spy in scripts.js. -->
+      <span class="header__section" aria-hidden="true">
+        <span class="header__section__caret">&#9656;</span>
+        <span class="header__section__name" id="headerSectionName"></span>
+      </span>
+
       <nav class="header__nav" id="primaryNav" aria-label="Main navigation">
         <a href="#about" class="header__nav__link" data-i18n="nav.about"
           >ABOUT</a
@@ -1132,15 +1140,17 @@
     </main>
 
     <div class="back-to-top-bar">
-      <a href="#hero" class="back-to-top" aria-label="Back to top">
-        <span data-i18n="footer.backTop">BACK TO TOP</span>
-        <span class="back-to-top__line" aria-hidden="true"></span>
-        <span class="back-to-top__arrow" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M12 20V4M5 11l7-7 7 7" stroke-linecap="square" stroke-linejoin="miter"/>
-          </svg>
-        </span>
-      </a>
+      <div class="back-to-top-bar__inner">
+        <a href="#hero" class="back-to-top" aria-label="Back to top">
+          <span data-i18n="footer.backTop">BACK TO TOP</span>
+          <span class="back-to-top__line" aria-hidden="true"></span>
+          <span class="back-to-top__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 20V4M5 11l7-7 7 7" stroke-linecap="square" stroke-linejoin="miter"/>
+            </svg>
+          </span>
+        </a>
+      </div>
     </div>
 
     <footer class="footer" id="footer">
