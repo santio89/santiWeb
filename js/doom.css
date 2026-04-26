@@ -253,13 +253,19 @@
   place-items: center;
   gap: 14px;
   align-content: center;
-  color: rgba(245, 245, 245, 0.78);
+  /* Theme-driven bg + fg so the cross-fade into the js-dos iframe is
+     seamless - the iframe body is also painted with var(--bg) via
+     doomThemeCss() in js/doom.js, so both sides of the transition
+     share exactly the same colour in both dark and light modes.
+     --fg-mute is the existing "soft body text" token from main.css
+     and reads well on either theme's background. */
+  background: var(--bg);
+  color: var(--fg-mute);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-align: center;
-  background: #000;
   z-index: 2;
   pointer-events: none;
   transition: opacity 280ms var(--ease);

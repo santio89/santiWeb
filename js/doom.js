@@ -183,6 +183,7 @@ function buildDoomFrameDoc(bundleUrl, theme) {
       // needed; the host modal already provides our brutalist frame.
       var dosProps = null;
       var dosCI = null; // CommandInterface, populated on "ci-ready"
+      var readyPosted = false;
       if (typeof Dos === "function") {
         try {
           dosProps = Dos(document.getElementById("dos"), {
@@ -194,18 +195,30 @@ function buildDoomFrameDoc(bundleUrl, theme) {
             noCloud: true,
             noNetworking: true,
             // Capture the CommandInterface as soon as DOSBox is live so
-            // we can synthesize key events for the ArrowUp/Down remap below.
+            // we can synthesize key events for the ArrowUp/Down remap
+            // below, AND post doom:ready to the host - which uses it
+            // as the signal to fade out our brutalist boot loader.
+            //
+            // Posting doom:ready here (instead of right after Dos()
+            // returns) is important: Dos() resolves synchronously
+            // while the ~13MB bundle is still being fetched + the
+            // WASM is being compiled. If we post too early, the host
+            // hides its loader and the user sees js-dos's own bluish
+            // "Bundle loading X%" overlay through the gap. "ci-ready"
+            // only fires once DOSBox is actually running, so the host
+            // loader covers the whole cold boot.
             onEvent: function (event, ci) {
               if (event === "ci-ready" && ci) {
                 dosCI = ci;
+                if (!readyPosted) {
+                  readyPosted = true;
+                  try {
+                    parent.postMessage({ type: "doom:ready" }, "*");
+                  } catch (_) {}
+                }
               }
             },
           });
-          // Tell the host the iframe + js-dos instance are live so it can
-          // push initial slider values (volume / sensitivity). Without this
-          // the in-game defaults (e.g. mouseSensitivity = 0.5) would stay
-          // active even though our footer sliders read 1.00.
-          try { parent.postMessage({ type: "doom:ready" }, "*"); } catch (_) {}
         } catch (err) {
           console.error("[doom]", err);
           parent.postMessage({ type: "doom:error", message: String(err) }, "*");
@@ -345,8 +358,14 @@ export function initDoom({ getDict, openImmediately = false } = {}) {
       booting = false;
       return;
     }
-    // wipe the loader; the iframe (with the matched theme bg) takes over
-    mount.innerHTML = "";
+    /* Append the iframe UNDERNEATH the loader instead of replacing it.
+       The loader (bar + "LOADING..." text) has z-index: 2 in doom.css
+       so it sits on top while js-dos cold-fetches its CDN assets and
+       the ~13MB DOOM bundle, compiles the WASM, and paints its first
+       frame. We only remove it once the iframe posts "doom:ready"
+       (or "doom:error"), which is the first moment the game is
+       actually visible — otherwise the user stared at a black panel
+       during that 1-3s window on the cold path. */
     frame = document.createElement("iframe");
     frame.className = "doom-modal__frame";
     frame.title = "DOOM";
@@ -355,6 +374,22 @@ export function initDoom({ getDict, openImmediately = false } = {}) {
     frame.srcdoc = buildDoomFrameDoc(bundleUrl, getHostTheme());
     mount.appendChild(frame);
     booting = false;
+  };
+
+  /* Fade + remove the boot loader once the iframe signals it's ready.
+     Matches the 280ms opacity transition on .doom-modal__loader in
+     doom.css so the hand-off from loader to game is a gentle cross-
+     fade instead of a pop. 320ms > 280ms so the node is only removed
+     after the fade finishes. */
+  const LOADER_FADE_MS = 320;
+  const hideLoader = () => {
+    const loader = mount.querySelector(".doom-modal__loader");
+    if (!loader) return;
+    loader.classList.add("is-hidden");
+    setTimeout(() => {
+      // still attached? (teardown may have wiped the mount meanwhile)
+      if (loader.parentNode) loader.remove();
+    }, LOADER_FADE_MS);
   };
 
   const toggleFullscreen = () => {
@@ -405,13 +440,20 @@ export function initDoom({ getDict, openImmediately = false } = {}) {
   // shortcuts forwarded from inside the iframe
   window.addEventListener("message", (e) => {
     if (!e.data || typeof e.data !== "object") return;
-    if (frame && e.source !== frame.contentWindow) return;
+    // Ignore messages after teardown (frame is null) or from a foreign
+    // window. Without this, a late "doom:ready" arriving AFTER the
+    // user closed the modal would hideLoader() on the freshly-
+    // restored loader, leaving the next open with no loader shown.
+    if (!frame || e.source !== frame.contentWindow) return;
     if (e.data.type === "doom:error") {
+      // showError replaces the entire mount with an error panel, which
+      // also removes the boot loader - no need to call hideLoader().
       const dict = getDict();
       showError(dict["doom.error"]);
       return;
     }
     if (e.data.type === "doom:ready") {
+      hideLoader();
       initialSyncs.forEach((fn) => {
         try { fn(); } catch (_) {}
       });
