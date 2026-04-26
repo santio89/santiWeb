@@ -285,15 +285,12 @@ function initTheme() {
   // Theme swap. We try the View Transitions API first because it does
   // a single GPU-composited cross-fade between an "old state" and a
   // "new state" snapshot of the page, instead of asking every element
-  // to color-tween simultaneously. That removes two big sources of
-  // jank: (a) the header's backdrop-filter doesn't have to re-blur
-  // the underlying body once per frame while the body's background
-  // is mid-tween, and (b) hundreds of elements aren't repainting at
-  // the same time. Falls back to the legacy class-based tween on
-  // Firefox / older Safari (and is skipped entirely for users with
-  // reduced-motion preference).
-  let swapTimer = 0;
-  const TWEEN_MS = 380;
+  // to color-tween simultaneously. On engines that don't support it
+  // (mostly Firefox right now) we simply apply the swap instantly -
+  // a snappy repaint reads cleaner than the old global
+  // `* { transition: background, color 380ms }` storm, which was the
+  // very thing View Transitions were designed to replace. Skipped
+  // entirely for users with reduced-motion preference.
   const apply = (next) => {
     root.setAttribute("data-theme", next);
     localStorage.setItem("sw.theme", next);
@@ -308,12 +305,7 @@ function initTheme() {
       document.startViewTransition(() => apply(next));
       return;
     }
-    root.classList.add("theme-transitioning");
     apply(next);
-    clearTimeout(swapTimer);
-    swapTimer = setTimeout(() => {
-      root.classList.remove("theme-transitioning");
-    }, TWEEN_MS);
   };
 
   const btn = document.getElementById("themeToggle");
@@ -349,6 +341,13 @@ function initBoot() {
   const pct = document.getElementById("bootPct");
   if (!boot) return;
 
+  /* The boot loader is a deliberate brutalist beat (brand + bar + `00N`
+     counter reading out), not a gate we're trying to get rid of. Pacing
+     intentionally kept close to the original feel - random increment is
+     `6..20` per tick so the bar visibly jitters its way up over 5-17
+     ticks, each tick is ~108ms (a hair under the old 110ms, imperceptible
+     but shaves a tiny bit of total hold), and the post-100 hold + fade
+     let the full bar + "100" read before the page appears. */
   let p = 0;
   const tick = () => {
     p += Math.random() * 14 + 6;
@@ -356,7 +355,7 @@ function initBoot() {
     if (bar) bar.style.transform = `scaleX(${p / 100})`;
     if (pct) pct.textContent = String(Math.floor(p)).padStart(3, "0");
     if (p < 100) {
-      setTimeout(tick, 110);
+      setTimeout(tick, 108);
     } else {
       setTimeout(() => {
         boot.classList.add("is-done");
@@ -379,16 +378,38 @@ function initBoot() {
    activate. The attribute is cleared after a short debounce once
    resize settles, so normal transitions resume for user interactions
    (scroll condense, burger open/close, theme switch, etc). */
+/* Central resize broker.
+   - Registers a single native `resize` listener.
+   - Coalesces bursts of native events into one `sw:resize` custom
+     event per animation frame (the screen can't update faster than
+     that anyway, so handling each raw event is wasted work).
+   - Also maintains `data-resizing` on <html> for the CSS transition
+     suppression rules (see main.css), cleared 160ms after the
+     resize burst stops.
+   Every downstream module (header, cursor, marquee, hero cells,
+   etc.) subscribes to `sw:resize` instead of `resize` - so the page
+   keeps one shared listener and a single rAF coalescer, not one per
+   subsystem. */
 function initResizeGuard() {
   const root = document.documentElement;
-  let t = 0;
-  const clear = () => root.removeAttribute("data-resizing");
+  let clearT = 0;
+  let pending = false;
+  const dispatch = () => {
+    pending = false;
+    root.setAttribute("data-resizing", "");
+    window.dispatchEvent(new CustomEvent("sw:resize"));
+    clearTimeout(clearT);
+    clearT = setTimeout(
+      () => root.removeAttribute("data-resizing"),
+      160
+    );
+  };
   window.addEventListener(
     "resize",
     () => {
-      root.setAttribute("data-resizing", "");
-      clearTimeout(t);
-      t = setTimeout(clear, 160);
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(dispatch);
     },
     { passive: true }
   );
@@ -423,7 +444,16 @@ function initHeader() {
     root.classList.toggle("is-header-condensed", next);
   };
 
-  const onScroll = () => {
+  /* rAF-coalesced scroll handler. Native `scroll` fires up to
+     ~100x/sec on a 120Hz trackpad flick, and each call here reads
+     `scrollHeight` + `innerHeight` (forced layout for the progress
+     ratio) on top of the class-toggle work. Coalescing to one update
+     per animation frame caps the work at the display's refresh rate
+     with zero visible difference - the browser only paints at the
+     same rate anyway. */
+  let scrollRaf = 0;
+  const runScrollUpdate = () => {
+    scrollRaf = 0;
     const y = window.scrollY;
     if (header) {
       header.classList.toggle("is-scrolled", y > 8);
@@ -439,10 +469,15 @@ function initHeader() {
       progress.style.transform = `scaleX(${Math.min(1, Math.max(0, ratio))})`;
     }
   };
-  onScroll();
+  const onScroll = () => {
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(runScrollUpdate);
+  };
+  runScrollUpdate();
   window.addEventListener("scroll", onScroll, { passive: true });
   // Re-check on resize because the threshold depends on viewport height.
-  window.addEventListener("resize", onScroll, { passive: true });
+  // Subscribes to the central broker - see initResizeGuard.
+  window.addEventListener("sw:resize", onScroll);
 
   if (burger && nav) {
     // backdrop scrim that dims the page behind the open mobile menu and
@@ -717,7 +752,7 @@ function initCursor() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();
-  window.addEventListener("resize", resize);
+  window.addEventListener("sw:resize", resize);
 
   // mouse / pointer
   const mouse = { x: W / 2, y: H / 2, prevX: W / 2, prevY: H / 2, vx: 0, vy: 0, speed: 0 };
@@ -760,6 +795,84 @@ function initCursor() {
   // ~10 (red-orange) .. ~46 (amber-yellow). occasional hotter cores allowed.
   function emberHue() {
     return 10 + Math.random() * 36;
+  }
+
+  /* ---- Pre-baked outer-glow sprites ----
+     At 420 particles * 60fps, the old code called `createRadialGradient`
+     + 3x `addColorStop` + a large `arc`/`fill` **25 200 times/sec** just
+     for the outer halo layer. Each of those allocated a fresh
+     CanvasGradient object - huge GC churn on the main thread.
+
+     Instead: pre-bake an offscreen sprite per (hue, light) bucket and
+     `drawImage` it per particle, modulating opacity via `globalAlpha`.
+     The sprite uses the **same 3-stop gradient recipe** as the original
+     code (warm halo, slightly-cooler mid-stop, transparent rim), just
+     computed once at load.
+
+     We bucket on TWO axes:
+       - hue (8 buckets across 10..46deg) - fresh particles start near
+         amber-yellow and cool toward red-orange over their lifetime
+       - light (3 buckets across 46..72%) - fast fresh "hot" particles
+         render their halo brighter than slow dying ones, but the top
+         bucket is capped at 72% (warm amber) instead of the old 78%
+         (near cream-yellow) - three additive layers (outer halo +
+         bright core + hot-peak) were piling up past pure white in
+         `lighter` blend mode, blowing out the cluster center. Keeping
+         the top halo bucket firmly in amber territory keeps the color
+         story reading "hot orange ember" instead of "white flame".
+     Quantizing to 8x3 = 24 sprites preserves the full dynamic look
+     (heat still reads as hotter halo) while eliminating the per-frame
+     gradient allocation. */
+  const GLOW_SPRITE_RES = 64;
+  const GLOW_HUE_BUCKETS = 8;
+  const GLOW_LIGHT_BUCKETS = 3;
+  const GLOW_HUE_MIN = 8;
+  const GLOW_HUE_MAX = 46;
+  const GLOW_LIGHT_MIN = 46;
+  const GLOW_LIGHT_MAX = 72;
+  const glowSprites = [];
+  for (let h = 0; h < GLOW_HUE_BUCKETS; h++) {
+    const hue =
+      GLOW_HUE_MIN +
+      (h / (GLOW_HUE_BUCKETS - 1)) * (GLOW_HUE_MAX - GLOW_HUE_MIN);
+    const row = [];
+    for (let l = 0; l < GLOW_LIGHT_BUCKETS; l++) {
+      const light =
+        GLOW_LIGHT_MIN +
+        (l / (GLOW_LIGHT_BUCKETS - 1)) * (GLOW_LIGHT_MAX - GLOW_LIGHT_MIN);
+      const s = document.createElement("canvas");
+      s.width = GLOW_SPRITE_RES;
+      s.height = GLOW_SPRITE_RES;
+      const sc = s.getContext("2d");
+      const mid = GLOW_SPRITE_RES / 2;
+      const g = sc.createRadialGradient(mid, mid, 0, mid, mid, mid);
+      g.addColorStop(0, `hsla(${hue}, 100%, ${light}%, 1)`);
+      g.addColorStop(
+        0.35,
+        `hsla(${Math.max(0, hue - 6)}, 100%, ${Math.max(36, light - 14)}%, 0.55)`,
+      );
+      g.addColorStop(1, `hsla(${hue}, 100%, ${light}%, 0)`);
+      sc.fillStyle = g;
+      sc.fillRect(0, 0, GLOW_SPRITE_RES, GLOW_SPRITE_RES);
+      row.push(s);
+    }
+    glowSprites.push(row);
+  }
+  function glowSpriteFor(hue, light) {
+    const ht = (hue - GLOW_HUE_MIN) / (GLOW_HUE_MAX - GLOW_HUE_MIN);
+    const lt = (light - GLOW_LIGHT_MIN) / (GLOW_LIGHT_MAX - GLOW_LIGHT_MIN);
+    const hi = Math.max(
+      0,
+      Math.min(GLOW_HUE_BUCKETS - 1, Math.round(ht * (GLOW_HUE_BUCKETS - 1))),
+    );
+    const li = Math.max(
+      0,
+      Math.min(
+        GLOW_LIGHT_BUCKETS - 1,
+        Math.round(lt * (GLOW_LIGHT_BUCKETS - 1)),
+      ),
+    );
+    return glowSprites[hi][li];
   }
 
   function spawn(x, y, _baseHue, life, gen, sizeMul, vx, vy) {
@@ -907,28 +1020,40 @@ function initCursor() {
       const hue = Math.max(0, p.hue - (1 - lifeRatio) * 16);
       const light = 46 + heat * 32; // 46..78
 
-      // outer glow - same warm hue, sharper falloff for a defined ember
-      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 6.5);
-      grad.addColorStop(0, `hsla(${hue}, 100%, ${light}%, ${alpha})`);
-      grad.addColorStop(
-        0.35,
-        `hsla(${Math.max(0, hue - 6)}, 100%, ${Math.max(36, light - 14)}%, ${alpha * 0.55})`,
-      );
-      grad.addColorStop(1, `hsla(${hue}, 100%, ${light}%, 0)`);
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, r * 6.5, 0, Math.PI * 2);
-      ctx.fill();
+      // outer glow - pre-baked sprite, opacity modulated via globalAlpha.
+      // Same visual recipe as the old 3-stop createRadialGradient call,
+      // just drawn from an offscreen canvas instead of reconstructing
+      // the gradient per frame. The (hue, light) bucket lookup keeps
+      // the "hot particles burn brighter" look intact - see sprite
+      // cache setup above.
+      const glow = r * 6.5;
+      const sprite = glowSpriteFor(hue, light);
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(sprite, p.x - glow, p.y - glow, glow * 2, glow * 2);
+      ctx.globalAlpha = 1;
 
-      // bright same-hue core (yellow-shifted, no complementary tint)
-      ctx.fillStyle = `hsla(${Math.min(50, hue + 8)}, 100%, ${Math.min(86, light + 16)}%, ${Math.min(1, alpha + 0.18)})`;
+      // bright same-hue core - warmer / slightly less bright than the
+      // old `hue+8, light+16` recipe (that was reading as pale yellow
+      // and, stacked additively with the hot peak below, blew the
+      // cluster center past white). Keeping the core in proper warm-
+      // amber territory gives good contrast against black while the
+      // outer halo does the color-story work.
+      ctx.fillStyle = `hsla(${Math.min(46, hue + 4)}, 100%, ${Math.min(78, light + 10)}%, ${Math.min(1, alpha + 0.12)})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r * 0.6, 0, Math.PI * 2);
       ctx.fill();
 
-      // hot white center - only for fresh, fast sparks (true heat)
-      if (heat > 0.55) {
-        ctx.fillStyle = `hsla(46, 100%, 96%, ${Math.min(1, alpha * 0.9 * heat)})`;
+      // warm peak - only for fresh, fast sparks. Previously this drew
+      // a near-white dot (hsla(46,100%,96%,alpha*0.9)) which, overlaid
+      // additively on the bright core + outer halo, stacked straight
+      // past pure white when particles clustered. Swapped to a warm
+      // cream-amber (hsla(38,100%,74%,...)) at lower alpha so the hot
+      // centers still read as the brightest / hottest point of the
+      // ember without washing out to white. Higher heat threshold
+      // (0.6) also trims the pool of particles that get the extra
+      // pass, keeping the effect feeling intentional.
+      if (heat > 0.6) {
+        ctx.fillStyle = `hsla(38, 100%, 74%, ${Math.min(1, alpha * 0.6 * heat)})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, r * 0.3, 0, Math.PI * 2);
         ctx.fill();
@@ -1014,7 +1139,7 @@ function initMarquee() {
     if ("ResizeObserver" in window) {
       new ResizeObserver(apply).observe(track);
     } else {
-      window.addEventListener("resize", apply);
+      window.addEventListener("sw:resize", apply);
     }
 
     // Defer until webfonts are ready so our first measurement uses the
@@ -1328,14 +1453,17 @@ function initHeroCells() {
 
   populate();
 
+  // No periodic reshuffle. The sparse twinkle pattern already looks
+  // randomized enough that a human eye can't tell which specific cells
+  // are "lucky" over a long viewing session, and `replaceChildren()`
+  // every 22s was re-creating 3-7 DOM nodes forever for a payoff nobody
+  // could perceive. `populate()` runs once on load and again in the
+  // resize-debounce below, which covers any viewport change.
   let resizeTimer = 0;
-  window.addEventListener("resize", () => {
+  window.addEventListener("sw:resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(populate, 220);
   });
-
-  // periodically reshuffle so the same cells aren't always the lucky ones
-  setInterval(populate, 22000);
 }
 
 /* -------------------------------------------------------------
@@ -1354,6 +1482,25 @@ function initDoomLazy() {
 
   let loading = false;
 
+  /* Inject the modal stylesheet on first activation. Resolves when the
+     CSS is parsed so the modal opens already laid out (no flash of
+     unstyled modal). We ignore network errors here - the JS still runs
+     and DOOM is playable even if the skin fails to load. */
+  const loadDoomCss = () =>
+    new Promise((resolve) => {
+      if (document.querySelector('link[data-doom-css]')) {
+        resolve();
+        return;
+      }
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "js/doom.css";
+      link.setAttribute("data-doom-css", "");
+      link.addEventListener("load", () => resolve(), { once: true });
+      link.addEventListener("error", () => resolve(), { once: true });
+      document.head.appendChild(link);
+    });
+
   // { once: true } means the listener is removed before the await
   // settles - so doom.js's own click handler (registered inside
   // initDoom) takes over for every subsequent click without a relay.
@@ -1364,7 +1511,14 @@ function initDoomLazy() {
       loading = true;
       e.preventDefault();
       try {
-        const mod = await import("./doom.js");
+        /* Fire the CSS link and the JS import off in parallel - the
+           browser fetches both concurrently instead of serially. By
+           the time the JS module resolves, the stylesheet is usually
+           already applied. */
+        const [mod] = await Promise.all([
+          import("./doom.js"),
+          loadDoomCss(),
+        ]);
         // openImmediately replays the click that triggered this load
         // so the user doesn't have to click twice on the cold path.
         mod.initDoom({
