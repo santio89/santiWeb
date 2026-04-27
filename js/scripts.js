@@ -785,6 +785,9 @@ function initCursor() {
   // core spring follow
   const corePos = { x: W / 2, y: H / 2 };
   let coreScale = 1;
+  let ringRotation = 0; // accumulated rotation angle for smooth directional spinning
+  let idleTimer = 0; // tracks time since last movement (ms), triggers idle animation after ~200ms
+  let lastMoveTime = performance.now();
 
   // particles
   const particles = [];
@@ -918,7 +921,32 @@ function initCursor() {
     core.style.transform = `translate3d(${corePos.x - 13}px, ${corePos.y - 13}px, 0) scale(${coreScale})`;
     const ring = core.firstElementChild;
     if (ring) {
-      ring.style.transform = `rotate(${(performance.now() / 90) * (1 + mouse.speed / 220)}deg)`;
+      const idleThreshold = 1.5;
+      const isIdle = mouse.speed < idleThreshold;
+      const now = performance.now();
+
+      if (!isIdle) {
+        // Active mode: reset idle timer when moving
+        lastMoveTime = now;
+        
+        // Movement-driven spinning with smooth physics
+        const movementDelta = (mouse.vx - mouse.vy) * 1.35;
+        const cappedDelta = Math.max(-15, Math.min(15, movementDelta));
+        ringRotation += cappedDelta;
+        // Smooth damping - lets physics settle naturally
+        ringRotation *= 0.94;
+      } else {
+        // Idle mode: only spin if idle for 200ms+
+        idleTimer = now - lastMoveTime;
+        const shouldIdleSpin = idleTimer > 200;
+        
+        if (shouldIdleSpin) {
+          // Very subtle constant rotation (~0.1 deg/frame = one full 360 spin every ~60 seconds)
+          ringRotation += 0.1;
+        }
+      }
+
+      ring.style.transform = `rotate(${ringRotation}deg)`;
     }
 
     // ignite: radial burst on the exact click frame
