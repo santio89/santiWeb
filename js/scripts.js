@@ -71,13 +71,13 @@ const I18N = {
     "work.more": "SEE MORE ON GITHUB",
 
     "exp.title": "EXPERIENCE",
-    "exp.r2": "Web Development Tutor",
+    "exp.r2": "Teacher",
     "exp.r3": "IT Administrator",
     "exp.r4": "IT Specialist",
     "exp.p1":
       "Design and ship funnel experiences used by thousands of users - landing pages, forms, checkouts - focused on conversion. Integrate with external platforms and own customer accounts and projects end-to-end.",
     "exp.p2":
-      "Answer student questions, review challenges and projects, run after-class tutoring sessions.",
+      "Teach web dev at Coderhouse - live classes, project reviews and after-class tutoring.",
     "exp.p3":
       "Installation, configuration and maintenance of Windows Server, VMs (Hyper-V, VMware, Proxmox, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) and VPNs. Implemented and maintained the GLPI inventory/ticketing system. In charge of the company website (WordPress on cPanel hosting, including DNS records). Built an internal IT management app in React + Node. ~100 workstations.",
     "exp.p4":
@@ -175,13 +175,13 @@ const I18N = {
     "work.more": "VER MÁS EN GITHUB",
 
     "exp.title": "EXPERIENCIA",
-    "exp.r2": "Tutor de Desarrollo Web",
+    "exp.r2": "Profesor",
     "exp.r3": "Administrador IT",
     "exp.r4": "Especialista IT",
     "exp.p1":
       "Diseño e implementación de experiencias de funnel usadas por miles de usuarios - landings, forms, checkouts - enfocadas en la conversión. Integraciones con plataformas externas y gestión end-to-end de cuentas y proyectos de clientes.",
     "exp.p2":
-      "Resolver consultas de estudiantes, revisar desafíos y proyectos, dictar clases de apoyo.",
+      "Dictar desarrollo web en Coderhouse - clases en vivo, revisiones de proyectos y tutorías de apoyo.",
     "exp.p3":
       "Instalación, configuración y mantenimiento de Windows Server, VMs (Hyper-V, VMware, Proxmox, VirtualBox), routers (Ubiquiti, Cisco, MikroTik) y VPNs. Implementación y mantenimiento del sistema GLPI de inventario y ticketing. A cargo del sitio web de la empresa (WordPress sobre hosting cPanel, incluyendo registros DNS). Desarrollo de una app interna de gestión IT en React + Node. ~100 puestos.",
     "exp.p4":
