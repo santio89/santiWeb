@@ -52,6 +52,10 @@ const I18N = {
 
     "work.title": "WORKS",
     "work.lede": "A small selection.",
+    "work.devstory":
+      "Turn a GitHub username into an AI-written narrative timeline - share, email or chat with the biographer.",
+    "work.anytrack":
+      "AI-powered web monitoring - point at a URL, describe what to watch, get scheduled extractions and alerts.",
     "work.gol":
       "Interactive cellular automaton. Playback, presets, editable grid and history undo.",
     "work.sandbox":
@@ -152,6 +156,10 @@ const I18N = {
 
     "work.title": "TRABAJOS",
     "work.lede": "Una pequeña selección.",
+    "work.devstory":
+      "Convierte un usuario de GitHub en una línea de tiempo narrativa con IA - compartir, email o chat con el biógrafo.",
+    "work.anytrack":
+      "Monitoreo web con IA - apuntá a una URL, describí qué vigilar y obtené extracciones programadas y alertas.",
     "work.gol":
       "Autómata celular interactivo. Reproducción, presets, grilla editable e historial.",
     "work.sandbox":
