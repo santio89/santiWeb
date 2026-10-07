@@ -598,10 +598,9 @@ textarea:focus-visible {
   z-index: 99;
   pointer-events: none;
   will-change: transform;
-  /* Follow the header as it shrinks/expands. The transition timing is
-     tuned to match the header height transition below so the bar never
-     visually detaches from the header bottom edge. */
-  transition: top 320ms var(--ease);
+  /* Follow the header as it shrinks/expands so the bar stays attached
+     to the header's bottom edge throughout the transition. */
+  transition: top 420ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 :root.is-header-condensed .scroll-progress {
   top: var(--header-h-condensed);
@@ -622,6 +621,9 @@ textarea:focus-visible {
   gap: 32px;
   z-index: 100;
   background: var(--bg);
+  transition:
+    height 420ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-bottom-color 280ms var(--ease);
 }
 
 /* HUD reticle brackets at the far edges. Hidden offscreen and faded out

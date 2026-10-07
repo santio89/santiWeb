@@ -466,10 +466,11 @@ function initHeader() {
     if (header) {
       header.classList.toggle("is-scrolled", y > 8);
     }
-    /* Tiny hysteresis (~8px) keeps the state from flickering when the
-       user parks near the threshold and the page settles. */
+    /* Keep the release threshold beyond the header's 16px height change.
+       Scroll anchoring can adjust scrollY as the sticky header shrinks;
+       this buffer prevents that adjustment from immediately undoing it. */
     if (!condensed && y > condenseThreshold()) updateCondensed(true);
-    else if (condensed && y < condenseThreshold() - 8) updateCondensed(false);
+    else if (condensed && y < condenseThreshold() - 24) updateCondensed(false);
 
     if (progress) {
       const max = document.documentElement.scrollHeight - window.innerHeight;
