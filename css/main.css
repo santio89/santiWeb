@@ -622,21 +622,11 @@ textarea:focus-visible {
   gap: 32px;
   z-index: 100;
   background: var(--bg);
-  border-bottom: 1.5px solid var(--line);
-  /* Smoothly morph between full and condensed HUD states. Height,
-     padding, background and border are all animated together. The
-     timings stay short enough to feel snappy but long enough to read
-     as a deliberate "mode change" rather than a flicker. */
   transition:
     height 320ms var(--ease),
     background-color 280ms var(--ease),
     border-color 200ms var(--ease),
     box-shadow 280ms var(--ease);
-}
-/* Faint hairline upgrade once the user has scrolled at all. Pre-existing
-   behavior, kept so the header doesn't visually float at scrollY=0. */
-.header.is-scrolled {
-  border-bottom-color: var(--line-strong);
 }
 
 /* HUD reticle brackets at the far edges. Hidden offscreen and faded out
