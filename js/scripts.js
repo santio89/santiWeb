@@ -442,7 +442,7 @@ function initHeader() {
      viewport so it always corresponds to "you've left the hero" rather
      than a hardcoded pixel value that breaks at small/large screens. */
   const condenseThreshold = () =>
-    Math.min(Math.max(window.innerHeight * 0.55, 320), 560);
+    Math.min(Math.max(window.innerHeight * 0.25, 320), 560);
 
   let condensed = false;
   const updateCondensed = (next) => {
