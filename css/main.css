@@ -622,11 +622,6 @@ textarea:focus-visible {
   gap: 32px;
   z-index: 100;
   background: var(--bg);
-  transition:
-    height 320ms var(--ease),
-    background-color 280ms var(--ease),
-    border-color 200ms var(--ease),
-    box-shadow 280ms var(--ease);
 }
 
 /* HUD reticle brackets at the far edges. Hidden offscreen and faded out
@@ -676,7 +671,6 @@ textarea:focus-visible {
      readable as the true scroll-progress indicator rather than a
      decorative HUD line. */
   border-bottom-color: var(--line-strong);
-  box-shadow: 0 8px 24px -20px rgba(0, 0, 0, 0.45);
 }
 
 .header__logo {
