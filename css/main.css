@@ -291,6 +291,34 @@ textarea:focus-visible {
   }
 }
 
+.hero__meta__text {
+  display: inline-block;
+  animation: tagGlitch 5s ease-out infinite;
+}
+
+@keyframes tagGlitch {
+  0%, 95%, 100% {
+    transform: translate(0, 0);
+    text-shadow: none;
+    box-shadow: none;
+  }
+  96% {
+    transform: translate(-1px, 0);
+    text-shadow: 1px 0 var(--accent), -1px 0 var(--fg-mute);
+    box-shadow: 1px 0 0 var(--accent), -1px 0 0 var(--fg-mute);
+  }
+  97% {
+    transform: translate(1px, 0);
+    text-shadow: -1px 0 var(--accent), 1px 0 var(--fg-mute);
+    box-shadow: -1px 0 0 var(--accent), 1px 0 0 var(--fg-mute);
+  }
+  98% {
+    transform: translate(0, -1px);
+    text-shadow: 1px 0 var(--accent), -1px 0 var(--fg-mute);
+    box-shadow: 0 -1px 0 var(--accent), 0 1px 0 var(--fg-mute);
+  }
+}
+
 /* ---------- NEON ACCENT GLOW ----------
    A single breathing keyframe re-used across accent surfaces (hero name,
    section `//` prefix, work title underline) so the orange feels electric and
@@ -1803,12 +1831,28 @@ textarea:focus-visible {
   text-transform: uppercase;
   color: var(--fg-mute);
   padding: 6px 12px;
-  border: 1.5px solid var(--line-strong);
+  border: none;
   background: var(--bg-panel);
   align-self: flex-start;
   position: relative;
   z-index: 2;
   animation: fadeInUp 600ms var(--ease) both;
+}
+.hero__meta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--line-strong);
+  pointer-events: none;
+  z-index: 0;
+  animation: tagGlitch 8s ease-out infinite;
+  animation-delay: -5s;
+}
+.hero__meta__text {
+  position: relative;
+  z-index: 1;
+  animation: tagGlitch 8s ease-out infinite;
+  animation-delay: -5s;
 }
 .hero__title {
   margin-top: 28px;
