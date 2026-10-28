@@ -23,7 +23,7 @@ const I18N = {
 
     "boot.loading": "LOADING SYSTEM",
 
-    "hero.location": "BUENOS AIRES, AR",
+    "hero.location": "WEB DEV",
     "hero.l1": "HI, I'M",
     "hero.l2": "SANTI!",
     "hero.sub":
@@ -127,7 +127,7 @@ const I18N = {
 
     "boot.loading": "CARGANDO SISTEMA",
 
-    "hero.location": "BUENOS AIRES, AR",
+    "hero.location": "WEB DEV",
     "hero.l1": "HOLA, SOY",
     "hero.l2": "SANTI!",
     "hero.sub":

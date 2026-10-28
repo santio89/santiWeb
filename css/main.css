@@ -246,6 +246,13 @@ textarea:focus-visible {
   color: var(--accent);
 }
 
+.brut-label__glyph {
+  font-size: 16px;
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 0.15em;
+}
+
 .dot {
   display: inline-block;
   width: 8px;
